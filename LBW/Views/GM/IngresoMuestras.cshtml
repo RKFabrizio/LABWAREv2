@@ -1,0 +1,571 @@
+﻿
+@{
+    ViewData["Title"] = "IngresoMuestras";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using DevExtreme.AspNet.Mvc;
+@using Newtonsoft.Json;
+@using Models;
+
+<style>
+    .user-icon-container {
+        display: flex;
+        align-items: center;
+        margin-left: 30px;
+    }
+
+        .user-icon-container .icon-tabler {
+            margin-right: 10px;
+            width: 50px;
+            height: 50px;
+        }
+
+        .user-icon-container .page-title {
+            margin-left: -4px;
+            color: #a79a66;
+        }
+
+        .user-icon-container .page-title-home {
+            margin-left: -4px;
+            color: #a79a66;
+        }
+
+    .page-title-home {
+        margin-top: 18px;
+    }
+
+    .margen {
+        margin-top: 20px; /* El valor del margen superior que deseas aplicar */
+        margin-bottom: 20px;
+    }
+
+    .hero {
+        width: 100%;
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .1, .2 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+</style>
+
+@section PagePreTitle {
+
+    <div class="col">
+        <!-- Page pre-title -->
+        <div class="user-icon-container">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-test-pipe-2" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M15 3v15a3 3 0 0 1 -6 0v-15" />
+                <path d="M9 12h6" />
+                <path d="M8 3h8" />
+            </svg>
+            <h2 class="page-title-home">
+                Ingreso de Muestras
+            </h2>
+        </div>
+    </div>
+
+}
+
+
+@section PageActions {
+ 
+}
+
+ 
+
+@{
+    var lastIdSample = ViewData["LastIdSample"] as int? ?? 0;
+}
+
+
+<div class="row row-cards">
+    <div class="col-md-12">
+        <div class="form-group mb-3">
+
+                <div class="col-md-12">
+
+                    @(Html.DevExtreme().TabPanel()
+
+                        .Items(items =>
+                        {
+
+                            items.Add()
+                            .Title("Creación de Muestras")
+                            .Template(new TemplateName("TAB1"));
+                            items.Add()
+                            .Title("Asignar Análisis")
+                            .Template(new TemplateName("TAB2"));
+
+                        })
+                        .SelectedIndex(0)
+                        .Loop(false)
+                        .AnimationEnabled(true)
+                        .SwipeEnabled(true)
+                        )
+                </div>
+       
+        </div>
+    </div>
+</div>
+
+@using (Html.DevExtreme().NamedTemplate("TAB1"))
+{
+    @using (Html.BeginForm("Post", "Muestras", FormMethod.Post, new { id = "myForm1", @class = "myForm", enctype = "multipart/form-data" }))
+    {
+        <div style="margin:20px;">
+
+        @(Html.DevExtreme().Form<LBW.Models.Entity.Muestra>()
+                    .ColCount(2)
+                    .Items(items =>
+                    {
+                        items.AddSimple()
+                        .Label(l => l.Text("Id. Solicitud").Location(FormLabelLocation.Top))
+                        .ColSpan(1)
+                        .Template(@<text>
+                            @(Html.DevExtreme().TextBox()
+                            .ID("sampleTextBox")
+                            .ReadOnly(true))
+                        </text>
+                                                );
+
+                         items.AddSimple()
+                         .Label(l => l.Text("Cliente").Location(FormLabelLocation.Top))
+                         .ColSpan(1)
+                         .Template(@<text>
+                            @(Html.DevExtreme().TextBox()
+                            .ID("clienteTextBox")
+                            .ReadOnly(true))
+                        </text>
+                                    );
+
+
+                        items.AddSimpleFor(m => m.SampleNumber)
+                           .Label(l => l.Text("Nro de Muestras").Location(FormLabelLocation.Top))
+                           .Editor(e => e.TextBox().ID("sampleNumberTextBox"));
+
+
+                        items.AddSimpleFor(m => m.SampleType)
+                        .Label(l => l.Text("Tipo de Muestra").Location(FormLabelLocation.Top))
+                        .Editor(e => e
+                        .Lookup()
+                        .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("ListasTipoMuestraLookup").Key("Value"))
+                        .ValueExpr("Value")
+                        .DisplayExpr("Text"));
+
+                        items.AddSimpleFor(m => m.Observaciones)
+                        .ColSpan(2)
+                        .Label(l => l.Text("Observaciones").Location(FormLabelLocation.Top))
+                        .Editor(e => e.TextArea().Height("50px"));
+
+
+                        items.AddSimpleFor(m => m.IdPlanta)
+                        .Label(l => l.Text("Planta").Location(FormLabelLocation.Top))
+                        .Editor(e => e
+                        .Lookup()
+                        .ID("cbxPm")
+                        .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("PlantasPersonalizadoLookup").Key("Value"))
+                        .ValueExpr("Value")
+                        .DisplayExpr("Text")
+                        .OnValueChanged("guardarSeleccion")
+                        );
+
+                        items.AddSimpleFor(m => m.IdPm)
+                           .Label(l => l.Text("Punto de Muestra").Location(FormLabelLocation.Top))
+
+                           .Editor(e => e
+                           .Lookup()
+                           .ID("cbxPm1")
+                           .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("PmLookUp").Key("Value"))
+                           .ValueExpr("Value")
+                           .DisplayExpr("Text")
+                           );
+
+                        items.AddSimpleFor(m => m.ConteoPuntos)
+                        .Label(l => l.Text("Conteo de Puntos").Location(FormLabelLocation.Top));
+
+                        items.AddSimple()
+                                    .Label(l => l.Text("Test List").Location(FormLabelLocation.Top))
+                                    .Template(
+                                                 @<text>
+                            <div style="display:flex; align-items:center;">
+                                <div style="margin-right: 10px;">
+                                    @(Html.DevExtreme().CheckBox()
+                                    .ID("checkbox1")
+                                    .Value(false))
+                                </div>
+                                @(Html.DevExtreme().TextBox()
+                                .ID("tlcliente1")
+                                .ReadOnly(true)
+                                .Width("200px"))
+                            </div>
+                        </text>);
+
+
+
+                        items.AddButton()
+                       .HorizontalAlignment(HorizontalAlignment.Center)
+                       .ButtonOptions(b => b.Text("Enviar")
+                       .Type(ButtonType.Default)
+                       .UseSubmitBehavior(true)
+
+                       )
+                       .CssClass("margen")
+                       .ColSpan(2);
+                    })
+
+            )
+        </div>
+    }
+}
+    
+     
+@using (Html.DevExtreme().NamedTemplate("TAB2"))
+{
+    <div style="margin:20px;">
+        <div class="text">
+
+            <div class="hero">
+                <div class="row">
+                    <div class="1 col-md-6">
+                        @(Html.DevExtreme().Form<LBW.Models.Entity.Muestra>()
+                            .ID("form")
+
+                            .Items(items =>
+                            {
+
+                                items.AddSimpleFor(m => m.IdSample)
+
+                                .Editor(e => e
+                                .Lookup()
+                                .ID("lookupMuestra")
+                                .DataSource(ds => ds.Mvc().Controller("Muestras").LoadAction("TextIdLookup"))
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .OnValueChanged("guardarMuestra")
+                                .SearchEnabled(true))
+                                .Label(label => label.Text("Muestras Registradas").Location(FormLabelLocation.Top)
+                                .Visible(true)
+
+                                );
+
+                            })
+
+                            )
+                    </div>
+                    <div class="2 col-md-6">
+                        @(
+                            Html.DevExtreme().Form<LBW.Models.Entity.Analisis>()
+                            .LabelLocation(FormLabelLocation.Top)
+
+                            .Items(items =>
+                            {
+                                items.AddSimpleFor(m => m.IdAnalisis)
+                                .Editor(e => e
+                                .Lookup()
+                                .ID("combo")
+                                .DataSource(ds => ds.Mvc().Controller("Analisis").LoadAction("NameAnalisis2"))
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .SearchEnabled(true))
+                                .Label(label => label.Text("Análisis asignados").Location(FormLabelLocation.Top)
+                                .Visible(true)
+                                );
+                                ;
+
+                            })
+
+
+                            )
+                    </div>
+                </div>
+                 
+            </div>
+            
+
+            
+
+            <div style="height:5px">
+
+            </div>
+
+            @(Html.DevExtreme().Form<LBW.Models.Entity.Analisis>()
+                    .LabelLocation(FormLabelLocation.Top)
+                    .ID("formAnalisis")
+                    .Items(items =>
+                    {
+
+                        items.AddSimpleFor(m => m.IdAnalisis)
+                        .Editor(e => e
+                        .TagBox()
+                        .ID("lookupAnalisis")
+                        .DataSource(ds => ds.Mvc().Controller("Analisis").LoadAction("NameAnalisissLookup"))
+                        .ValueExpr("Value")
+                        .DisplayExpr("Text")
+                        .SearchEnabled(true))
+                        .Label(label => label.Text("Selecciona tus análisis").Location(FormLabelLocation.Top)
+                        .Visible(true)
+                        );
+                        ;
+
+                    })
+
+
+                    )
+
+
+            <div style="text-align:center; justify-content:center; display:flex; align-content:center;">
+                <button id="btnEnviarDatos" onclick="EnviarDatos()" class="btn" style="margin-top:15px; background-color:#337AB7; color:white;">Enviar Datos</button>
+
+            </div>
+        </div>
+    </div>
+}
+
+
+<script>
+
+    var productoId = 0;
+
+    function onTagBoxContentReady(e) {
+        var tagBox = e.component;
+        var element = tagBox.element();
+
+        element.on('dblclick', '.dx-tag', function (event) {
+            event.preventDefault();
+        });
+    }
+
+    $(function () {
+
+        $.ajax({
+            url: '@Url.Action("ClienteTestList", "Clientes")',
+            method: "GET",
+            async: false,
+            data: {
+                Cliente: 3
+            },
+            success: function (result) {
+
+                value = $("#tlcliente1").dxTextBox("instance");
+                value.option("value", result[0].Text);
+            },
+            error: function (error) {
+                console.error("Error al obtener los datos filtrados:", error);
+            }
+        });
+
+        $.ajax({
+            url: '@Url.Action("ClienteShow", "Muestras")',
+            method: "GET",
+            async: false,
+            data: {
+                Cliente: 3
+            },
+            success: function (result) {
+
+                value = $("#clienteTextBox").dxTextBox("instance");
+                value.option("value", result[0].Text);
+
+            },
+            error: function (error) {
+                console.error("Error al obtener los datos filtrados:", error);
+            }
+        });
+
+       
+
+        $.ajax({
+            url: '@Url.Action("LastSample", "Muestras")',
+            method: "GET",
+            async: false,
+            data: {
+                Cliente: 3
+            },
+            success: function (result) {
+                console.log(result.LastIdSample);
+                value = $("#sampleTextBox").dxTextBox("instance");
+                value.option("value", result.LastIdSample);
+            },
+            error: function (error) {
+                console.error("Error al obtener los datos filtrados:", error);
+            }
+        });
+
+ 
+
+       
+    });
+
+    function guardarSeleccion(e) {
+        var valorSeleccionado = e.value;
+
+        console.log(valorSeleccionado);
+
+        $.ajax({
+            url: '@Url.Action("PmLookUp", "Muestras")',
+            method: "GET",
+            async: false,
+            data: {
+                Planta: valorSeleccionado
+            },
+            success: function (result) {
+
+                var comboBox = $("#cbxPm1").dxLookup("instance"); // Obtener la instancia del ComboBox
+                comboBox.option("dataSource", result); // Actualizar los datos del ComboBox
+
+                // Repintar el ComboBox para mostrar los nuevos datos
+                comboBox.repaint();
+ 
+            },
+            error: function (error) {
+                console.error("Error al obtener los datos filtrados:", error);
+            }
+        });
+    }
+
+    function guardarMuestra(e) {
+        var idMuestra = e.value; // Obtener el valor seleccionado del lookup
+        console.log(idMuestra);
+
+        $.ajax({
+            url: '@Url.Action("NameAnalisis2", "Analisis")', // Ruta al método del controlador
+            type: 'GET', // Utilizar el método POST para enviar los datos
+            async: false,
+            data: {
+                Muestra: idMuestra
+            },
+            success: function (result) {
+                // Manejar la respuesta exitosa del servidor
+                var comboBox = $("#combo").dxLookup("instance"); // Obtener la instancia del ComboBox
+                comboBox.option("dataSource", result);
+                // Realizar cualquier otra acción necesaria
+                comboBox.repaint();
+            },
+            error: function (xhr, status, error) {
+                // Manejar errores
+                console.error('Error al guardar la muestra: ' + error);
+                // Mostrar un mensaje de error al usuario, etc.
+            }
+        });
+    }
+
+    $(document).on('submit', '.myForm', function (e) {
+        e.preventDefault();
+
+        var form = $(this);
+        var url = form.attr('action');
+
+        form.find(':submit').prop('disabled', true);
+
+        var formData = new FormData(form[0]);
+
+        var valorSeleccionado = $("#cbxPm").dxLookup("instance").option("value");
+        var sample = $("#sampleNumberTextBox").dxTextBox("instance").option("value");
+
+        var checkBox = $("#checkbox1").dxCheckBox("instance");
+
+        // Obtener el valor del checkbox
+        var isChecked = checkBox.option("value");
+
+ 
+        $.ajax({
+                        url: '@Url.Action("Post", "Proyectoes")',
+                        method: "POST",
+                        async: false,
+                        data: {
+                            Planta: valorSeleccionado,
+                            Numero: sample
+                        },
+                        success: function (result) {
+                            // Procesar la respuesta si es necesario
+                        },
+                        error: function (error) {
+                            console.error("Error al enviar el dato de planta:", error);
+                        }
+                    });
+
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                DevExpress.ui.notify('Tus muestras fueron creadas exitosamente', 'success', 6000);
+                form.find(':submit').prop('disabled', false);
+                form[0].reset();
+
+                console.log(isChecked)
+                if (isChecked == true) {
+                    $.ajax({
+                        url: '@Url.Action("PostTest", "Resultadoes")',
+                        method: "POST",
+                        async: false,
+                        data: {
+                            Muestra: 3
+                        },
+                        success: function (result) {
+                            // Procesar la respuesta si es necesario
+                        },
+                        error: function (error) {
+                            console.error("Error al crear TestList:", error);
+                        }
+                    });
+                }
+                // setTimeout(function () {
+                //     location.reload();
+                // }, 3000);
+            },
+            error: function () {
+                DevExpress.ui.notify('Hubo un error al enviar la solicitud.', 'error', 6000);
+                form.find(':submit').prop('disabled', false);
+            }
+        });
+    });
+
+    function EnviarDatos(){
+
+                var muestra = $("#lookupMuestra").dxLookup("instance").option("value");
+
+                var form = $("#formAnalisis").dxForm("instance");
+                var analisis = form.option("formData.IdAnalisis");
+                console.log(analisis);
+
+                console.log(muestra);
+
+
+                // Realizar la solicitud AJAX
+                $.ajax({
+                    url: '@Url.Action("Post", "Resultadoes")',
+                    method: "POST",
+                    data: {
+                        Muestra: muestra,
+                        Analisis: analisis
+                    },
+                    success: function (result) {
+                        // Procesar la respuesta si es necesario
+                        DevExpress.ui.notify('Datos enviados correctamente', 'success', 6000);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 3000);
+                    },
+                    error: function (error) {
+                        DevExpress.ui.notify('Error al enviar los datos', 'error', 6000);
+                        console.error("Error al enviar los datos:", error);
+                    }
+                });
+            }
+             
+</script>
+
+  
