@@ -14,6 +14,7 @@ namespace LBW.Models.Entity
             Proyectos = new HashSet<Proyecto>();
             PuntosMuestra = new HashSet<PuntoMuestra>();
             Unidades = new HashSet<Unidad>();
+            PlantillaC = new HashSet<Plantilla>();
         }
 
         public int IdUser { get; set; }
@@ -35,5 +36,6 @@ namespace LBW.Models.Entity
         public virtual ICollection<Planta> Plantas { get; set; }
         public virtual ICollection<Proyecto> Proyectos { get; set; }
         public virtual ICollection<PuntoMuestra> PuntosMuestra { get; set; }
+        public virtual ICollection<Plantilla> PlantillaC { get; set;  }
     }
 }

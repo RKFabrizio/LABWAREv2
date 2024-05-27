@@ -335,14 +335,6 @@
 
     var productoId = 0;
 
-    function onTagBoxContentReady(e) {
-        var tagBox = e.component;
-        var element = tagBox.element();
-
-        element.on('dblclick', '.dx-tag', function (event) {
-            event.preventDefault();
-        });
-    }
 
     $(function () {
 
@@ -493,6 +485,10 @@
                         }
                     });
 
+        console.log("Contenido del FormData:");
+        for (const [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`);
+        }
 
         $.ajax({
             type: 'POST',
@@ -504,6 +500,8 @@
                 DevExpress.ui.notify('Tus muestras fueron creadas exitosamente', 'success', 6000);
                 form.find(':submit').prop('disabled', false);
                 form[0].reset();
+
+                
 
                 console.log(isChecked)
                 if (isChecked == true) {
@@ -522,9 +520,9 @@
                         }
                     });
                 }
-                // setTimeout(function () {
-                //     location.reload();
-                // }, 3000);
+                setTimeout(function () {
+                    location.reload();
+                }, 3000);
             },
             error: function () {
                 DevExpress.ui.notify('Hubo un error al enviar la solicitud.', 'error', 6000);

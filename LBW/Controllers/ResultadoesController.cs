@@ -95,7 +95,7 @@ namespace LBW.Controllers
                                 NameComponent = detalle.NameComponent,
                                 ReportedName = detalle.NameComponent,
                                 Reportable = detalle.Reportable,
-                                Status = 27,
+                                Status = 254,
                                 ChangedOn = DateTime.Now,
                                 Instrument = 1
 
@@ -137,22 +137,21 @@ namespace LBW.Controllers
                 var muestras = _context.Muestras
                 .Where(cl => cl.IdProject == idProyecto)
                 .ToList();
-
-                List<int> idMuestras = new List<int>();
-
+                
+                List<int> idMuestras = muestras.Select(m => m.IdSample).ToList();
  
-
                 var plantillas = _context.Plantillas
                    .Where(cl => cl.IdCliente == usuario.CCliente)
                    .FirstOrDefault();
 
                 int idTl = plantillas.IdTL;
+ 
 
                 var plantillaDetalle = _context.PlantillaDetalles
-                .Where(cl => cl.Id_TL == idTl)
+                .Where(cl => cl.Id_TL == idTl && cl.Name == "PRN_AGUAS")
                 .ToList();
 
-                List<int> idAnalisiss = new List<int>();
+                List<int> idAnalisiss = plantillaDetalle.Select(detalle => detalle.Id_Analysis).ToList();
 
 
                 var nuevosResultados = new List<Resultado>();
@@ -179,6 +178,7 @@ namespace LBW.Controllers
 
                             if (!existeResultado)
                             {
+                                
                                 var nuevoResultado = new Resultado
                                 {
                                     IdSample = muestra,
@@ -192,19 +192,35 @@ namespace LBW.Controllers
                                     NameComponent = detalle.NameComponent,
                                     ReportedName = detalle.NameComponent,
                                     Reportable = detalle.Reportable,
-                                    Status = 27,
+                                    Status = 254,
                                     ChangedOn = DateTime.Now,
                                     Instrument = 1
                                 };
-
-                                nuevosResultados.Add(nuevoResultado);
+                                try
+                                {
+                                    nuevosResultados.Add(nuevoResultado);
+                                }
+                                catch(Exception e)
+                                {
+                                    Console.WriteLine("..............................");
+                                    Console.WriteLine(e.ToString());
+                                    Console.WriteLine("..............................");
+                                }
+                                 
                             }
                         }
                     }
                 }
-
-                _context.Resultados.AddRange(nuevosResultados);
-                _context.SaveChanges();
+                try {
+                    Console.WriteLine("------------------------------");
+                    _context.Resultados.AddRange(nuevosResultados);
+                    _context.SaveChanges();
+                    Console.WriteLine("------------------------------");
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
 
                 return Json(new { success = true });
             }
@@ -274,10 +290,10 @@ namespace LBW.Controllers
         [HttpGet]
         public async Task<IActionResult> MuestrasLookup(DataSourceLoadOptions loadOptions) {
             var lookup = from i in _context.Muestras
-                         orderby i.SampleNumber
+                         orderby i.IdSample
                          select new {
                              Value = i.IdSample,
-                             Text = i.SampleNumber
+                             Text = i.IdSample
                          };
             return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
         }

@@ -162,6 +162,8 @@ namespace LBW.Controllers
             model.Location = location;
             model.Customer = cliente;
 
+ 
+
             if (!TryValidateModel(model))
             {
                 return BadRequest(GetFullErrorMessage(ModelState));
@@ -170,8 +172,10 @@ namespace LBW.Controllers
             // Crear y guardar múltiples instancias del modelo
             for (int i = 0; i < sampleCount; i++)
             {
+ 
                 var newModel = new Muestra
                 {
+ 
                     IdCliente = model.IdCliente,
                     IdLocation = model.IdLocation,
                     IdPm = model.IdPm,
@@ -187,19 +191,31 @@ namespace LBW.Controllers
                     SampleDate = model.SampleDate,
                     RecdDate = model.RecdDate,
                     ReceivedBy = model.ReceivedBy,
+
+                    SampleType = model.SampleType,
+                    IdPlanta = model.IdPlanta,
+                    ConteoPuntos = model.ConteoPuntos,
+ 
                     DateStarted = model.DateStarted,
                     DueDate = model.DueDate,
                     DateReviewed = model.DateReviewed,
                     PreBy = model.PreBy,
                     Reviewer = model.Reviewer,
                     Location = model.Location,
-                    Customer = model.Customer
+                    Customer = model.Customer,
+                    SampleNumber = sampleCount.ToString()
                 };
+                Console.WriteLine("----------------------");
+                Console.WriteLine(newModel.IdPlanta);
+                Console.WriteLine(newModel.SampleType);
+                Console.WriteLine(newModel.ConteoPuntos);
+                Console.WriteLine("----------------------");
 
                 _context.Muestras.Add(newModel);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
+            
 
             return Json(new { message = $"{sampleCount} muestras fueron creadas correctamente" });
         }

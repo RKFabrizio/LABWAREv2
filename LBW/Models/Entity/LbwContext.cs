@@ -69,6 +69,9 @@ namespace LBW.Models.Entity
 
                     entity.ToTable("USUARIO");
 
+                    entity.Property(e => e.IdUser)
+                        .HasColumnName("ID_USER");
+
                     entity.Property(e => e.UsuarioID)
                         .HasColumnName("USER_NAME")
                         .HasMaxLength(100)
@@ -479,8 +482,7 @@ namespace LBW.Models.Entity
                     entity.Property(e => e.IdCliente)
                         .IsRequired()
                         .IsUnicode(false)
-                        .HasColumnName("ID_CLIENTE")
-                        .IsFixedLength();
+                        .HasColumnName("ID_CLIENTE");
 
                     entity.Property(e => e.IdSite)
                        .IsRequired()
@@ -674,8 +676,12 @@ namespace LBW.Models.Entity
                     entity.Property(e => e.IdCliente)
                         .IsRequired()
                         .IsUnicode(false)
-                        .HasColumnName("ID_CLIENTE")
-                        .IsFixedLength();
+                        .HasColumnName("ID_CLIENTE");
+
+                    entity.Property(e => e.ChangedBy)
+                        .HasColumnName("CHANGED_BY")
+                        .IsRequired()
+                        .IsUnicode(false);
 
                     entity.Property(e => e.NameTlist)
                         .HasColumnName("NAME_TLIST")
@@ -692,20 +698,25 @@ namespace LBW.Models.Entity
                       .HasColumnName("CHANGED_ON")
                       .IsRequired(false);
 
-                    entity.Property(e => e.ChangedBy)
-                        .HasMaxLength(100)
-                        .HasColumnName("CHANGED_BY")
-                        .IsRequired(false);
+ 
 
                     entity.Property(e => e.Removed)
                        .HasColumnName("REMOVED")
                        .IsRequired(false);
+
+ 
 
                     entity.HasOne(d => d.IdClienteNavigation)
                       .WithMany(p => p.PlantillaC)
                       .HasForeignKey(d => d.IdCliente)
                       .OnDelete(DeleteBehavior.ClientSetNull)
                       .HasConstraintName("FK_PLANTILLA_CLIENTE");
+
+                    entity.HasOne(d => d.IdUsuarioPlantillaNavigation)
+                                  .WithMany(p => p.PlantillaC)
+                                  .HasForeignKey(d => d.ChangedBy)
+                                  .OnDelete(DeleteBehavior.ClientSetNull)
+                                  .HasConstraintName("FK_PLANTILLA_USUARIO");
                 });
 
                 modelBuilder.Entity<PlantillaDetalle>(entity =>
@@ -887,8 +898,7 @@ namespace LBW.Models.Entity
                     entity.Property(e => e.IdCliente)
                        .IsRequired()
                        .IsUnicode(false)
-                       .HasColumnName("ID_CLIENTE")
-                       .IsFixedLength();
+                       .HasColumnName("ID_CLIENTE");
 
                     entity.Property(e => e.SampleDate)
                      .HasColumnName("SAMPLED_DATE")
@@ -1138,7 +1148,6 @@ namespace LBW.Models.Entity
 
                 entity.Property(e => e.ResultNumber)
                  .HasColumnName("RESULT_NUMBER")
-                 .HasConversion<double>()
                  .IsRequired(false);
 
                 entity.Property(e => e.OrderNum)

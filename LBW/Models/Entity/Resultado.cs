@@ -1,11 +1,27 @@
-﻿namespace LBW.Models.Entity
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace LBW.Models.Entity
 {
     public partial class Resultado
     {
+        [Required]
+        [Display(Name = "Resultado")]
         public int IdResult {  get; set; }
+
+        [Required]
+        [Display(Name = "Muestra")]
         public int IdSample { get; set; }
+
+        [Required]
+        [Display(Name = "Unidad")]
         public int IdUnidad { get; set;}
+
+        [Required]
+        [Display(Name = "Analisis Detalle")]
         public int IdComponent { get; set;}
+
+        [Required]
+        [Display(Name = "Análisis")]
         public int IdAnalysis { get; set;}
         public string? SampleNumber { get; set;}
         public decimal? ResultNumber { get; set;}

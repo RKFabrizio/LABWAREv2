@@ -85,6 +85,17 @@ namespace LBW.Controllers
 
 
         [HttpGet]
+        public async Task<IActionResult> UsuariosLookup(DataSourceLoadOptions loadOptions) {
+            var lookup = from i in _context.Usuarios
+                         orderby i.NombreCompleto
+                         select new {
+                             Value = i.IdUser,
+                             Text = i.NombreCompleto
+                         };
+            return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> ClientesLookup(DataSourceLoadOptions loadOptions) {
             var lookup = from i in _context.Clientes
                          orderby i.NameCliente
@@ -125,7 +136,7 @@ namespace LBW.Controllers
             }
 
             if(values.Contains(CHANGED_BY)) {
-                model.ChangedBy = Convert.ToString(values[CHANGED_BY]);
+                model.ChangedBy = values[CHANGED_BY] != null ? Convert.ToInt32(values[CHANGED_BY]) : (int?)null;
             }
 
             if(values.Contains(REMOVED)) {

@@ -16,6 +16,7 @@ namespace LBW.Models.Entity
         [Required(ErrorMessage = "El número de muestra es requerido.")]
         [RegularExpression("^[1-9][0-9]*$", ErrorMessage = "El número de muestra debe ser un número mayor a 0.")]
         public string? SampleNumber { get; set; }
+
         public string? TextID { get; set; }
         public int Status { get; set; }
         public DateTime? ChangedOn { get; set; }

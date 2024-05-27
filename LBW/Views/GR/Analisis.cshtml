@@ -60,5 +60,63 @@
 
 
 }
+@(Html.DevExtreme().DataGrid<LBW.Models.Entity.Resultado>()
+    .DataSource(ds => ds.Mvc()
+        .Controller("Resultadoes")
+        .LoadAction("Get")
+        .Key("IdResult")
+    )
+    .RemoteOperations(true)
+    .Columns(columns => {
 
+        columns.AddFor(m => m.IdResult);
 
+        columns.AddFor(m => m.IdSample).Lookup(lookup => lookup
+            .DataSource(ds => ds.WebApi().Controller("Resultadoes").LoadAction("MuestrasLookup").Key("Value"))
+            .ValueExpr("Value")
+            .DisplayExpr("Text")
+        );
+
+        columns.AddFor(m => m.IdUnidad).Lookup(lookup => lookup
+            .DataSource(ds => ds.WebApi().Controller("Resultadoes").LoadAction("UnidadesLookup").Key("Value"))
+            .ValueExpr("Value")
+            .DisplayExpr("Text")
+        );
+
+        columns.AddFor(m => m.IdComponent);
+
+        columns.AddFor(m => m.IdAnalysis).Lookup(lookup => lookup
+            .DataSource(ds => ds.WebApi().Controller("Resultadoes").LoadAction("AnalisissLookup").Key("Value"))
+            .ValueExpr("Value")
+            .DisplayExpr("Text")
+        );
+
+        columns.AddFor(m => m.SampleNumber);
+
+        columns.AddFor(m => m.ResultNumber);
+
+        columns.AddFor(m => m.OrderNum);
+
+        columns.AddFor(m => m.AnalysisData);
+
+        columns.AddFor(m => m.NameComponent);
+
+        columns.AddFor(m => m.ReportedName);
+
+        columns.AddFor(m => m.Status).Lookup(lookup => lookup
+            .DataSource(ds => ds.WebApi().Controller("Resultadoes").LoadAction("ListasLookup").Key("Value"))
+            .ValueExpr("Value")
+            .DisplayExpr("Text")
+        );
+
+        columns.AddFor(m => m.Reportable);
+
+        columns.AddFor(m => m.ChangedOn);
+
+        columns.AddFor(m => m.Instrument).Lookup(lookup => lookup
+            .DataSource(ds => ds.WebApi().Controller("Resultadoes").LoadAction("InstrumentosLookup").Key("Value"))
+            .ValueExpr("Value")
+            .DisplayExpr("Text")
+        );
+    })
+)

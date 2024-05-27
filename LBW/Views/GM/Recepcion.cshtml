@@ -54,7 +54,7 @@
 
 }
 
-@section PageActions {
+@* @section PageActions {
     <div id="popupContainer" style="width: 300px;">
         <div id="formContainer" style="width: 300px; margin: 20px auto;">
             <form id="dateForm">
@@ -66,25 +66,7 @@
                     <label for="endDate">Fecha de fin:</label>
                     <div id="endDateBox"></div>
                 </div>
-            </form>
-            <div style="height:10px;">
-            </div>
-            <!-- Agregar el selector de IdProducto aquí -->
-            @(Html.DevExtreme().Form<LBW.Models.Entity.Muestra>()
-                .Items(items =>
-                {
-                    items.AddSimpleFor(m => m.IdCliente)
-                    .Label(l => l.Text("Cliente").Location(FormLabelLocation.Top))
-                    .Editor(e => e
-                    .Lookup()
-                    .ID("clienteLookup")
-                    .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("ClientesLookup").Key("Value"))
-                    .ValueExpr("Value")
-                    .DisplayExpr("Text")
-                    );
-                })
-
-                )
+            </form>          
         </div>
             <div style="height: 100px;"></div>
         <div style="text-align: center; margin-top: 10px;">
@@ -93,76 +75,108 @@
     </div>
 }
 
-@* @(Html.DevExtreme().Button()
+@(Html.DevExtreme().Button()
     .Text("Asignado")
     .OnClick("cambiarStatus")
 )
+@* .LoadAction("GetByFilter") *@
 
-@(Html.DevExtreme().DataGrid<LBW.Models.Entity.Muestra>()
-
+@(Html.DevExtreme().DataGrid<LBW.Models.Entity.Resultado>()
     .DataSource(ds => ds.Mvc()
-        .Controller("Muestras")
+        .Controller("Resultadoes")
         .LoadAction("Get")
-        .Key("IdSample")
-        
+        .Key("IdResult")
     )
     .RemoteOperations(true)
-    .ID("gridContainer")
     .Columns(columns => {
 
-        columns.Add().Width(40).CellTemplate(@<text>
-            @(Html.DevExtreme().CheckBox()
-            .Value(new JS("data.Selected"))
-            .OnValueChanged("function(e) { e.component.option('value', e.value); }")
-            )
-        </text>);
+        columns.AddFor(m => m.IdResult);
 
-        columns.Add().Caption("").Width(40).CellTemplate(@<text>
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-test-pipe-2" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-        <path d="M15 3v15a3 3 0 0 1 -6 0v-15" />
-        <path d="M9 12h6" />
-        <path d="M8 3h8" />
-        </svg>
-        </text>);
+        columns.AddFor(m => m.IdSample).Lookup(lookup => lookup
+            .DataSource(ds => ds.WebApi().Controller("Resultadoes").LoadAction("MuestrasLookup").Key("Value"))
+            .ValueExpr("Value")
+            .DisplayExpr("Text")
+        );
 
-        columns.AddFor(m => m.TextID).Caption("Muestra");
+        columns.AddFor(m => m.IdUnidad).Lookup(lookup => lookup
+            .DataSource(ds => ds.WebApi().Controller("Resultadoes").LoadAction("UnidadesLookup").Key("Value"))
+            .ValueExpr("Value")
+            .DisplayExpr("Text")
+        );
+
+        columns.AddFor(m => m.IdComponent);
+
+        columns.AddFor(m => m.IdAnalysis).Lookup(lookup => lookup
+            .DataSource(ds => ds.WebApi().Controller("Resultadoes").LoadAction("AnalisissLookup").Key("Value"))
+            .ValueExpr("Value")
+            .DisplayExpr("Text")
+        );
+
+        columns.AddFor(m => m.Status).Lookup(lookup => lookup
+            .DataSource(ds => ds.WebApi().Controller("Resultadoes").LoadAction("ListasLookup").Key("Value"))
+            .ValueExpr("Value")
+            .DisplayExpr("Text")
+        );
+
+        columns.AddFor(m => m.ChangedOn);
+
+        columns.AddFor(m => m.Instrument).Lookup(lookup => lookup
+            .DataSource(ds => ds.WebApi().Controller("Resultadoes").LoadAction("InstrumentosLookup").Key("Value"))
+            .ValueExpr("Value")
+            .DisplayExpr("Text")
+        );
+
     })
-          
-            .ShowBorders(true)
+    .ShowBorders(true)
+            .AllowColumnReordering(true)
             .RowAlternationEnabled(false)
             .ShowColumnLines(true)
+            .Grouping(g => g.AutoExpandAll(true))
             .ShowRowLines(true)
             .Paging(paging => paging.PageSize(20))
             .FilterRow(f => f.Visible(true))
-            .HeaderFilter(f => f.Visible(true))
-            .SearchPanel(searchPanel => searchPanel.Visible(true))
+            .Pager(pager =>
+            {
+                pager.ShowPageSizeSelector(true);
+                pager.AllowedPageSizes(new[] { 20, 50, 100 });
+                pager.ShowInfo(true);
+            })
+            .SearchPanel(s => s
+                .Visible(true)
+                .HighlightCaseSensitive(true)
+            )
 )
 
+@* @(Html.DevExtreme().TreeList<LBW.Models.Entity.Resultado>()
+    .DataSource(ds => ds.Mvc()
+        .Controller("Resultadoes")
+        .LoadAction("Get")
+        .Key("IdResult")
+    )
+ 
+    .ParentIdExpr("IdResult")
+    .ShowRowLines(true)
+    .ShowBorders(true)
+    .Selection(s => s
+        .Mode(SelectionMode.Multiple)
+        .Recursive(false)
+    )
+    .Columns(columns =>
+    {
+        columns.AddFor(m => m.NameComponent);
+ 
+    })
+    .ColumnAutoWidth(true)
+    .ExpandedRowKeys(new[] { 1, 2, 10 })
+) *@
+
+
 <script>
-    var clienteId = 0;
+    var clienteId = 3;
     var startDate = 0;
     var endDate = 0;
-    var estado = 26;
+    var estado = 254;
 
-
-    // function actualizarVisibilidadPorEstado() {
-    //     switch (estado) {
-    //         case 26:
-    //             $("#pendiente").show();
-    //             $("#aprobado").hide();
-    //             $("#cancelado").hide();
-    //         case 2:
-    //             $("#pendiente").hide();
-    //             $("#aprobado").hide();
-    //             $("#cancelado").show();
-    //         case 3:
-    //             $("#pendiente").hide();
-    //             $("#aprobado").show();
-    //             $("#cancelado").hide();
-    //     }
-
-    // }
 
     $(function () {
         var popupInstance = $("#popupContainer").dxPopup({
@@ -181,32 +195,9 @@
             width: 120,
             onClick: function (e) {
 
-                var clienteLookup = $("#clienteLookup").dxLookup("instance");
+
                 // var estadoLookup = $("#estadoLookup").dxLookup("instance");
 
-
-
-                if (clienteLookup) {
-                    var selectedClienttId = clienteLookup.option("value");
-                    if (selectedClienttId == null) {
-                        DevExpress.ui.notify('Seleccione un cliente.', 'error', 3000);
-                        console.log(selectedClienttId);
-                        return;
-                    }
-                    console.log("Cliente ID seleccionado:", selectedClienttId);
-                } else {
-                    console.error("El control Lookup no se ha inicializado correctamente.");
-                }
-
-                // var selectedEstadoId = estadoLookup.option("value");
-
-                // estado = selectedEstadoId;
-
-                // if (selectedEstadoId == null) {
-                //     estado = 26;
-                // }
-
-                clienteId = selectedClienttId;
 
                 // Obtener las fechas seleccionadas en formato dd/MM/yyyy
                 var startDateBox = $("#startDateBox").dxDateBox("instance");
@@ -226,7 +217,7 @@
                     data: {
                         StartDate: startDate,
                         EndDate: endDate,
-                        Cliente: clienteId,
+                        Cliente: 3,
                         Estado: estado
                     },
                     success: function (result) {
@@ -353,39 +344,4 @@
 
 
     // });
-</script> *@
-
-@(Html.DevExtreme().DataGrid<LBW.Models.Entity.Unidad>()
-    .DataSource(ds => ds.Mvc()
-        .Controller("Unidads")
-        .LoadAction("Get")
-        .InsertAction("Post")
-        .UpdateAction("Put")
-        .Key("IdUnidad")
-    )
-    .RemoteOperations(true)
-    .Columns(columns => {
-
-        columns.AddFor(m => m.IdUnidad).Lookup(lookup => lookup
-            .DataSource(ds => ds.WebApi().Controller("Unidads").LoadAction("UsuariosLookup").Key("Value"))
-            .ValueExpr("Value")
-            .DisplayExpr("Text")
-        );
-
-        columns.AddFor(m => m.NameUnidad);
-
-        columns.AddFor(m => m.DisplayString);
-
-        columns.AddFor(m => m.ChangedBy);
-
-        columns.AddFor(m => m.ChangedOn);
-
-        columns.AddFor(m => m.Removed);
-
-        columns.AddFor(m => m.Description);
-    })
-    .Editing(e => e
-        .AllowAdding(true)
-        .AllowUpdating(true)
-    )
-)
+</script>
