@@ -1,25 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\fabri\\OneDrive\\Desktop\\LABWARE\\LBW\\LBW.csproj": {}
+    "C:\\Users\\esteb\\Desktop\\LabWare\\LABWAREv2\\LBW\\LBW.csproj": {}
   },
   "projects": {
-    "C:\\Users\\fabri\\OneDrive\\Desktop\\LABWARE\\LBW\\LBW.csproj": {
+    "C:\\Users\\esteb\\Desktop\\LabWare\\LABWAREv2\\LBW\\LBW.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABWARE\\LBW\\LBW.csproj",
+        "projectUniqueName": "C:\\Users\\esteb\\Desktop\\LabWare\\LABWAREv2\\LBW\\LBW.csproj",
         "projectName": "LBW",
-        "projectPath": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABWARE\\LBW\\LBW.csproj",
-        "packagesPath": "C:\\Users\\fabri\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABWARE\\LBW\\obj\\",
+        "projectPath": "C:\\Users\\esteb\\Desktop\\LabWare\\LABWAREv2\\LBW\\LBW.csproj",
+        "packagesPath": "C:\\Users\\esteb\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\esteb\\Desktop\\LabWare\\LABWAREv2\\LBW\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\DevExpress 22.1\\Components\\Offline Packages",
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\fabri\\OneDrive\\Desktop\\LABWARE\\NuGet.Config",
-          "C:\\Users\\fabri\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\esteb\\Desktop\\LabWare\\LABWAREv2\\NuGet.Config",
+          "C:\\Users\\esteb\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 22.1.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -31,6 +31,7 @@
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\DevExpress 22.1\\Components\\System\\Components\\Packages": {},
           "C:\\Program Files\\DevExpress 22.1\\DevExtreme\\System\\DevExtreme\\Bin\\AspNetCore": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -43,11 +44,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -106,6 +102,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[6.0.26, 6.0.26]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[6.0.26, 6.0.26]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[6.0.26, 6.0.26]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[6.0.26, 6.0.26]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -114,7 +128,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

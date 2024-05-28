@@ -66,6 +66,54 @@ namespace LBW.Controllers
             return Json(await DataSourceLoader.LoadAsync(muestras, loadOptions));
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> GetBySampleId(int idSample, DataSourceLoadOptions loadOptions)
+        {
+            Console.WriteLine("dasdadasdasd/-------------------------");
+            Console.WriteLine(idSample.ToString());
+            var muestras = _context.Muestras
+                .Where(r => r.IdSample == idSample)
+                .Select(i => new {
+                i.IdSample,
+                i.IdPm,
+                i.IdCliente,
+                i.IdLocation,
+                i.SampleNumber,
+                i.TextID,
+                i.Status,
+                i.ChangedOn,
+                i.OriginalSample,
+                i.LoginDate,
+                i.LoginBy,
+                i.SampleDate,
+                i.RecdDate,
+                i.ReceivedBy,
+                i.DateStarted,
+                i.DueDate,
+                i.DateCompleted,
+                i.DateReviewed,
+                i.PreBy,
+                i.Reviewer,
+                i.SamplingPoint,
+                i.SampleType,
+                i.IdProject,
+                i.SampleName,
+                i.Location,
+                i.Customer,
+                i.Observaciones,
+                i.IdPlanta
+            });
+
+            // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
+            // This can make SQL execution plans more efficient.
+            // For more detailed information, please refer to this discussion: https://github.com/DevExpress/DevExtreme.AspNet.Data/issues/336.
+            // loadOptions.PrimaryKey = new[] { "IdSample" };
+            // loadOptions.PaginateViaPrimaryKey = true;
+
+            return Json(await DataSourceLoader.LoadAsync(muestras, loadOptions));
+        }
+
         [HttpGet]
         public IActionResult GetByFilter(DateTime StartDate, DateTime EndDate, int Cliente, int Estado)
         {

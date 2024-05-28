@@ -52,6 +52,37 @@ namespace LBW.Controllers
             return Json(await DataSourceLoader.LoadAsync(resultados, loadOptions));
         }
 
+        public async Task<IActionResult> GetIdSample(int id, DataSourceLoadOptions loadOptions)
+        {
+            var resultados = _context.Resultados
+                .Where(m => m.IdSample == id)
+                .Select(i => new {
+                i.IdResult,
+                i.IdSample,
+                i.IdUnidad,
+                i.IdComponent,
+                i.IdAnalysis,
+                i.SampleNumber,
+                i.ResultNumber,
+                i.OrderNum,
+                i.AnalysisData,
+                i.NameComponent,
+                i.ReportedName,
+                i.Status,
+                i.Reportable,
+                i.ChangedOn,
+                i.Instrument
+            });
+
+            // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
+            // This can make SQL execution plans more efficient.
+            // For more detailed information, please refer to this discussion: https://github.com/DevExpress/DevExtreme.AspNet.Data/issues/336.
+            // loadOptions.PrimaryKey = new[] { "IdResult" };
+            // loadOptions.PaginateViaPrimaryKey = true;
+
+            return Json(await DataSourceLoader.LoadAsync(resultados, loadOptions));
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post(Resultado model, int Muestra, List<int> Analisis)
         {
