@@ -537,23 +537,22 @@ namespace LBW.Models.Entity
                     entity.ToTable("PUNTO_MUESTRA");
 
                     entity.Property(e => e.IdPm)
-                        .HasColumnName("ID_PM");
+                        .HasColumnName("ID_PM")
+                        .IsRequired()
+                        ;
 
                     entity.Property(e => e.IdPlanta)
                         .IsRequired()
-                        .IsUnicode(false)
                         .HasColumnName("ID_PLANTA")
                         .IsFixedLength();
 
                     entity.Property(e => e.ChangedBy)
-                       .IsRequired()
-                       .IsUnicode(false)
+                       .IsRequired(false)
                        .HasColumnName("CHANGED_BY")
                        .IsFixedLength();
 
                     entity.Property(e => e.NamePm)
                         .HasColumnName("NAME_PM")
-
                         .IsRequired(false);
 
                     
@@ -891,7 +890,6 @@ namespace LBW.Models.Entity
 
                     entity.Property(e => e.IdPm)
                         .IsRequired()
-                        .IsUnicode(false)
                         .HasColumnName("ID_PM")
                         .IsFixedLength();
 
