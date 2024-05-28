@@ -78,7 +78,7 @@
 
 }
 
-@* @(Html.DevExtreme().DataGrid<LBW.Models.Entity.Proyecto>()
+ @(Html.DevExtreme().DataGrid<LBW.Models.Entity.Proyecto>()
     .DataSource(ds => ds.Mvc()
         .Controller("Proyectoes")
         .LoadAction("Get")
@@ -136,103 +136,83 @@
         columns.AddFor(m => m.NumSamples);
     })
 )
- *@
-@(Html.DevExtreme().DataGrid<LBW.Models.Entity.Muestra>()
-    .DataSource(ds => ds.Mvc()
-        .Controller("Muestras")
-        .LoadAction("Get")
-        .Key("IdSample")
-    )
-    .RemoteOperations(true)
-    .Columns(columns => {
-
-        columns.AddFor(m => m.IdSample);
-
-        columns.AddFor(m => m.IdPm).Lookup(lookup => lookup
-            .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("PuntoMuestrasLookup").Key("Value"))
-            .ValueExpr("Value")
-            .DisplayExpr("Text")
-        );
-
-        columns.AddFor(m => m.IdCliente).Lookup(lookup => lookup
-            .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("ClientesLookup").Key("Value"))
-            .ValueExpr("Value")
-            .DisplayExpr("Text")
-        );
-
-        columns.AddFor(m => m.IdLocation).Lookup(lookup => lookup
-            .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("UbicacionesLookup").Key("Value"))
-            .ValueExpr("Value")
-            .DisplayExpr("Text")
-        );
-
-        columns.AddFor(m => m.SampleNumber);
-
-        columns.AddFor(m => m.TextID);
-
-
-        columns.AddFor(m => m.ChangedOn);
-
-        columns.AddFor(m => m.OriginalSample);
-
-        columns.AddFor(m => m.LoginDate);
-
-        columns.AddFor(m => m.LoginBy).Lookup(lookup => lookup
-            .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("UsuariosLookup").Key("Value"))
-            .ValueExpr("Value")
-            .DisplayExpr("Text")
-        );
-
-        columns.AddFor(m => m.SampleDate);
-
-        columns.AddFor(m => m.RecdDate);
-
-        columns.AddFor(m => m.ReceivedBy).Lookup(lookup => lookup
-            .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("UsuariosLookup").Key("Value"))
-            .ValueExpr("Value")
-            .DisplayExpr("Text")
-        );
-
-        columns.AddFor(m => m.DateStarted);
-
-        columns.AddFor(m => m.DueDate);
-
-        columns.AddFor(m => m.DateCompleted);
-
-        columns.AddFor(m => m.DateReviewed);
-
-        columns.AddFor(m => m.PreBy);
-
-        columns.AddFor(m => m.Reviewer);
-
-        columns.AddFor(m => m.SamplingPoint);
-
-
-        columns.AddFor(m => m.IdProject).Lookup(lookup => lookup
-            .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("ProyectosLookup").Key("Value"))
-            .ValueExpr("Value")
-            .DisplayExpr("Text")
-        );
-
-        columns.AddFor(m => m.SampleName);
-
-        columns.AddFor(m => m.Location);
-
-        columns.AddFor(m => m.Customer);
-
-        columns.AddFor(m => m.Observaciones);
-
-        columns.AddFor(m => m.IdPlanta).Lookup(lookup => lookup
-            .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("PlantasLookup").Key("Value"))
-            .ValueExpr("Value")
-            .DisplayExpr("Text")
-        );
-
-        columns.AddFor(m => m.ConteoPuntos);
-    })
-)
+ 
+ 
 
 <script>
 
+    $(function () {
+        var popupInstance = $("#popupContainer").dxPopup({
+            title: "Filtrar Proyectos",
+            maxWidth: 500,
+            visible: true,
+            onHidden: function (e) {
+                console.log("Pop-up cerrado");
+            }
+        }).dxPopup("instance");
+
+        $("#selectButton").dxButton({
+            stylingMode: "contained",
+            text: "Enviar",
+            type: "default",
+            width: 120,
+            onClick: function (e) {
+
+
+                // Obtener las fechas seleccionadas en formato dd/MM/yyyy
+                var startDateBox = $("#startDateBox").dxDateBox("instance");
+                var endDateBox = $("#endDateBox").dxDateBox("instance");
+
+                startDate = formatDate(startDateBox.option("value"), 'MM-dd-yyyy');
+                endDate = formatDate(endDateBox.option("value"), 'MM-dd-yyyy');
+
+                console.log(estado);
+
+
+                // Realizar la solicitud AJAX al controlador
+                $.ajax({
+                    url: '@Url.Action("GetByFilter", "Proyectoes")',
+                    method: "GET",
+                    async: false,
+                    data: {
+                        StartDate: startDate,
+                        EndDate: endDate
+                    },
+                    success: function (result) {
+                        console.log(result);
+                        // Manejar la respuesta del controlador, por ejemplo, actualizar el DataGrid
+                        var dataGrid = $("#gridContainer").dxDataGrid("instance");
+                        dataGrid.option("dataSource", result);
+                    },
+                    error: function (error) {
+                        console.error("Error al obtener los datos filtrados:", error);
+                    }
+                });
+
+                popupInstance.hide();
+            },
+            elementAttr: {
+                style: "text-align: center; line-height: normal;"
+            }
+        });
+
+        // Inicializar dateBoxes
+        $("#startDateBox").dxDateBox({
+            type: "date",
+            value: new Date(),
+            onValueChanged: function (e) {
+                startDate = e.value;
+            }
+        });
+
+        $("#endDateBox").dxDateBox({
+            type: "date",
+            value: new Date(),
+            onValueChanged: function (e) {
+                endDate = e.value;
+            }
+        });
+
+    });
 
 </script>

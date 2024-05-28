@@ -3,20 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABWARE\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|c:\\users\\fabri\\onedrive\\desktop\\labware\\lbw\\views\\gm\\recepcion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|solutionrelative:lbw\\views\\gm\\recepcion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|c:\\users\\fabri\\onedrive\\desktop\\labware\\lbw\\views\\gr\\analisis.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|solutionrelative:lbw\\views\\gr\\analisis.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|c:\\users\\fabri\\onedrive\\desktop\\labware\\lbw\\models\\entity\\muestra.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|solutionrelative:lbw\\models\\entity\\muestra.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|c:\\users\\fabri\\onedrive\\desktop\\labware\\lbw\\controllers\\muestrascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|solutionrelative:lbw\\controllers\\muestrascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|c:\\users\\fabri\\onedrive\\desktop\\labware\\lbw\\views\\gm\\recepcion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|solutionrelative:lbw\\views\\gm\\recepcion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|c:\\users\\fabri\\onedrive\\desktop\\labware\\lbw\\controllers\\proyectoescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|solutionrelative:lbw\\controllers\\proyectoescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|c:\\users\\fabri\\onedrive\\desktop\\labware\\lbw\\controllers\\resultadoescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -39,58 +35,45 @@
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "MuestrasController.cs",
-              "DocumentMoniker": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABWARE\\LBW\\Controllers\\MuestrasController.cs",
-              "RelativeDocumentMoniker": "LBW\\Controllers\\MuestrasController.cs",
-              "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABWARE\\LBW\\Controllers\\MuestrasController.cs",
-              "RelativeToolTip": "LBW\\Controllers\\MuestrasController.cs",
-              "ViewState": "AQIAAAEBAAAAAAAAAADgvwABAAAvAAAA",
+              "Title": "ProyectoesController.cs",
+              "DocumentMoniker": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABWARE\\LBW\\Controllers\\ProyectoesController.cs",
+              "RelativeDocumentMoniker": "LBW\\Controllers\\ProyectoesController.cs",
+              "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABWARE\\LBW\\Controllers\\ProyectoesController.cs",
+              "RelativeToolTip": "LBW\\Controllers\\ProyectoesController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-28T00:14:18.259Z",
+              "WhenOpened": "2024-05-28T00:51:51.037Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Muestra.cs",
-              "DocumentMoniker": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABWARE\\LBW\\Models\\Entity\\Muestra.cs",
-              "RelativeDocumentMoniker": "LBW\\Models\\Entity\\Muestra.cs",
-              "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABWARE\\LBW\\Models\\Entity\\Muestra.cs",
-              "RelativeToolTip": "LBW\\Models\\Entity\\Muestra.cs",
-              "ViewState": "AQIAACsAAAAAAAAAAAAxwAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-27T18:44:28.987Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
               "Title": "Analisis.cshtml",
               "DocumentMoniker": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABWARE\\LBW\\Views\\GR\\Analisis.cshtml",
               "RelativeDocumentMoniker": "LBW\\Views\\GR\\Analisis.cshtml",
               "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABWARE\\LBW\\Views\\GR\\Analisis.cshtml",
               "RelativeToolTip": "LBW\\Views\\GR\\Analisis.cshtml",
-              "ViewState": "AQIAAGcAAAAAAAAAAAAvwGwAAAAAAAAA",
+              "ViewState": "AQIAAJIAAAAAAAAAAAAywLIAAAAoAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-05-27T18:25:56.589Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "Recepcion.cshtml",
               "DocumentMoniker": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABWARE\\LBW\\Views\\GM\\Recepcion.cshtml",
               "RelativeDocumentMoniker": "LBW\\Views\\GM\\Recepcion.cshtml",
               "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABWARE\\LBW\\Views\\GM\\Recepcion.cshtml",
               "RelativeToolTip": "LBW\\Views\\GM\\Recepcion.cshtml",
-              "ViewState": "AQIAAEAAAAAAAAAAAAAUwEoAAAAKAAAA",
+              "ViewState": "AQIAAE0AAAAAAAAAAAAywJMAAAAEAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-05-23T20:42:25.791Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "ResultadoesController.cs",
               "DocumentMoniker": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABWARE\\LBW\\Controllers\\ResultadoesController.cs",
               "RelativeDocumentMoniker": "LBW\\Controllers\\ResultadoesController.cs",
@@ -103,7 +86,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "Resultado.cs",
               "DocumentMoniker": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABWARE\\LBW\\Models\\Entity\\Resultado.cs",
               "RelativeDocumentMoniker": "LBW\\Models\\Entity\\Resultado.cs",

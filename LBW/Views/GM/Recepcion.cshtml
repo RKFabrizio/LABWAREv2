@@ -81,7 +81,7 @@
 )
 @* .LoadAction("GetByFilter") *@
 
-@(Html.DevExtreme().DataGrid<LBW.Models.Entity.Resultado>()
+@* @(Html.DevExtreme().DataGrid<LBW.Models.Entity.Resultado>()
     .DataSource(ds => ds.Mvc()
         .Controller("Resultadoes")
         .LoadAction("Get")
@@ -145,31 +145,105 @@
                 .Visible(true)
                 .HighlightCaseSensitive(true)
             )
-)
-
-@* @(Html.DevExtreme().TreeList<LBW.Models.Entity.Resultado>()
-    .DataSource(ds => ds.Mvc()
-        .Controller("Resultadoes")
-        .LoadAction("Get")
-        .Key("IdResult")
-    )
- 
-    .ParentIdExpr("IdResult")
-    .ShowRowLines(true)
-    .ShowBorders(true)
-    .Selection(s => s
-        .Mode(SelectionMode.Multiple)
-        .Recursive(false)
-    )
-    .Columns(columns =>
-    {
-        columns.AddFor(m => m.NameComponent);
- 
-    })
-    .ColumnAutoWidth(true)
-    .ExpandedRowKeys(new[] { 1, 2, 10 })
 ) *@
 
+@(Html.DevExtreme().DataGrid<LBW.Models.Entity.Muestra>()
+    .DataSource(ds => ds.Mvc()
+        .Controller("Muestras")
+        .LoadAction("Get")
+        .Key("IdSample")
+    )
+    .RemoteOperations(true)
+    .Columns(columns => {
+
+        columns.AddFor(m => m.IdSample);
+
+        columns.AddFor(m => m.IdPm).Lookup(lookup => lookup
+            .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("PuntoMuestrasLookup").Key("Value"))
+            .ValueExpr("Value")
+            .DisplayExpr("Text")
+        );
+
+        columns.AddFor(m => m.IdCliente).Lookup(lookup => lookup
+            .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("ClientesLookup").Key("Value"))
+            .ValueExpr("Value")
+            .DisplayExpr("Text")
+        );
+
+        columns.AddFor(m => m.IdLocation).Lookup(lookup => lookup
+            .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("UbicacionesLookup").Key("Value"))
+            .ValueExpr("Value")
+            .DisplayExpr("Text")
+        );
+
+        columns.AddFor(m => m.SampleNumber);
+
+        columns.AddFor(m => m.TextID);
+
+
+        columns.AddFor(m => m.ChangedOn);
+
+        columns.AddFor(m => m.OriginalSample);
+
+        columns.AddFor(m => m.LoginDate);
+
+        columns.AddFor(m => m.LoginBy).Lookup(lookup => lookup
+            .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("UsuariosLookup").Key("Value"))
+            .ValueExpr("Value")
+            .DisplayExpr("Text")
+        );
+
+        columns.AddFor(m => m.SampleDate);
+
+        columns.AddFor(m => m.RecdDate);
+
+        columns.AddFor(m => m.ReceivedBy).Lookup(lookup => lookup
+            .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("UsuariosLookup").Key("Value"))
+            .ValueExpr("Value")
+            .DisplayExpr("Text")
+        );
+
+        columns.AddFor(m => m.DateStarted);
+
+        columns.AddFor(m => m.DueDate);
+
+        columns.AddFor(m => m.DateCompleted);
+
+        columns.AddFor(m => m.DateReviewed);
+
+        columns.AddFor(m => m.PreBy);
+
+        columns.AddFor(m => m.Reviewer);
+
+        columns.AddFor(m => m.SamplingPoint);
+
+
+        columns.AddFor(m => m.IdProject).Lookup(lookup => lookup
+            .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("ProyectosLookup").Key("Value"))
+            .ValueExpr("Value")
+            .DisplayExpr("Text")
+        );
+
+        columns.AddFor(m => m.SampleName);
+
+        columns.AddFor(m => m.Location);
+
+        columns.AddFor(m => m.Customer);
+
+        columns.AddFor(m => m.Observaciones);
+
+        columns.AddFor(m => m.IdPlanta).Lookup(lookup => lookup
+            .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("PlantasLookup").Key("Value"))
+            .ValueExpr("Value")
+            .DisplayExpr("Text")
+        );
+
+        columns.AddFor(m => m.ConteoPuntos);
+    })
+)
+
+
+}
 
 <script>
     var clienteId = 3;
