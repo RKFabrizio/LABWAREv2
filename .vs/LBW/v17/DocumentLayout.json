@@ -32,7 +32,7 @@
               "RelativeDocumentMoniker": "LBW\\Views\\GM\\Recepcion.cshtml",
               "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABGIT\\LBW\\Views\\GM\\Recepcion.cshtml",
               "RelativeToolTip": "LBW\\Views\\GM\\Recepcion.cshtml",
-              "ViewState": "AQIAAE4BAAAAAAAAAAAiwFoBAAAsAAAA",
+              "ViewState": "AQIAAMQAAAAAAAAAAAAUwMoAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-05-29T23:43:35.189Z",
               "EditorCaption": ""
@@ -45,7 +45,7 @@
               "RelativeDocumentMoniker": "LBW\\Controllers\\MuestrasController.cs",
               "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABGIT\\LBW\\Controllers\\MuestrasController.cs",
               "RelativeToolTip": "LBW\\Controllers\\MuestrasController.cs",
-              "ViewState": "AQIAAJgAAAAAAAAAAAAqwKIAAAAzAAAA",
+              "ViewState": "AQIAAEMAAAAAAAAAAAAIwEUAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-30T00:24:43.368Z",
               "EditorCaption": ""
@@ -60,8 +60,7 @@
               "RelativeToolTip": "LBW\\Models\\Entity\\Muestra.cs",
               "ViewState": "AQIAAAUAAAAAAAAAAAAQwAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-30T00:24:41.158Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-30T00:24:41.158Z"
             }
           ]
         }

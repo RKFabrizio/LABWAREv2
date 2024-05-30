@@ -68,47 +68,48 @@ namespace LBW.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetDate (int Estado, DataSourceLoadOptions loadOptions)
+        public IActionResult GetDate(int Estado)
         {
             Console.WriteLine(Estado + "ESTADO:");
-            
             var muestras = _context.Muestras
-                .Where(m =>m.Status == Estado)
+                .Where(m => m.Status == Estado)
                 .OrderByDescending(m => m.LoginDate)
                 .Select(i => new {
-                i.IdSample,
-                i.IdPm,
-                i.IdCliente,
-                i.IdLocation,
-                i.SampleNumber,
-                i.TextID,
-                i.Status,
-                i.ChangedOn,
-                i.OriginalSample,
-                i.LoginDate,
-                i.LoginBy,
-                i.SampleDate,
-                i.RecdDate,
-                i.ReceivedBy,
-                i.DateStarted,
-                i.DueDate,
-                i.DateCompleted,
-                i.DateReviewed,
-                i.PreBy,
-                i.Reviewer,
-                i.SamplingPoint,
-                i.SampleType,
-                i.IdProject,
-                i.SampleName,
-                i.Location,
-                i.Customer,
-                i.Observaciones,
-                i.IdPlanta
-            });
+                    i.IdSample,
+                    i.IdPm,
+                    i.IdCliente,
+                    i.IdLocation,
+                    i.SampleNumber,
+                    i.TextID,
+                    i.Status,
+                    i.ChangedOn,
+                    i.OriginalSample,
+                    i.LoginDate,
+                    i.LoginBy,
+                    i.SampleDate,
+                    i.RecdDate,
+                    i.ReceivedBy,
+                    i.DateStarted,
+                    i.DueDate,
+                    i.DateCompleted,
+                    i.DateReviewed,
+                    i.PreBy,
+                    i.Reviewer,
+                    i.SamplingPoint,
+                    i.SampleType,
+                    i.IdProject,
+                    i.SampleName,
+                    i.Location,
+                    i.Customer,
+                    i.Observaciones,
+                    i.IdPlanta
+                })
+                .ToList(); // Convertir a lista
 
-
-            return Json(DataSourceLoader.Load(muestras, loadOptions));
+            return Json(muestras);
         }
+
+    
 
         [HttpGet]
         public async Task<IActionResult> Get2(DataSourceLoadOptions loadOptions)
