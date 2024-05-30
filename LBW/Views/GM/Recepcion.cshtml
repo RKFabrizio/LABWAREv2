@@ -55,28 +55,10 @@
 
 
 
-@* @section PageActions {
+ @section PageActions {
 
-    <div id="popupcontainer" style="width: 300px;">
 
-            <form id="dateform">
-                <div>
-                    <label for="startdate">fecha de inicio:</label>
-                    <div id="startdatebox"></div>
-                </div>
-                <div>
-                    <label for="enddate">fecha de fin:</label>
-                    <div id="enddatebox"></div>
-                </div>
-            </form>
-
-        <div style="height: 100px;"></div>
-        <div style="text-align: center; margin-top: 10px;">
-            <button id="selectbutton"></button>
-        </div>
-    </div>
-
-} *@
+} 
 
  
 <div class="row row-cards">
@@ -125,21 +107,24 @@
         </div>
 
 
-        @(Html.DevExtreme().DataGrid<LBW.Models.Entity.Muestra>()
-                .ID("gridContainer")
-                .DataSource(ds => ds.Mvc()
-                .Controller("Muestras")
-                .LoadAction("Get2")
-                .Key("IdSample")
-                )
-                .ShowBorders(true)
-                .RemoteOperations(true)
-                .Selection(s => s.Mode(SelectionMode.Multiple))
-                .OnSelectionChanged("onSelectionChanged")
-                .Columns(columns =>
-                {
-                    columns.AddFor(m => m.IdSample).Caption("").Width(40)
-                .CellTemplate(@<text>
+        @(
+        Html.DevExtreme().DataGrid<LBW.Models.Entity.Muestra>()
+                    .ID("gridContainer")
+                    .DataSource(ds => ds.Mvc()
+                    .Controller("Muestras")
+                    .LoadAction("Get2")
+                    .UpdateAction("Put")
+                    .Key("IdSample")
+                    )
+                    .ShowBorders(true)
+                    .RemoteOperations(true)
+                    .Selection(s => s.Mode(SelectionMode.Multiple))
+                    .OnSelectionChanged("onSelectionChanged")
+                    .Columns(columns =>
+                    {
+                        @* columns.AddFor(m => m.IdSample); *@
+                        columns.AddFor(m => m.IdSample).Caption("").Width(40)
+                    .CellTemplate(@<text>
         <svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170.85 222.32" width="20" height="20">
             <defs>
                 <style>
@@ -171,31 +156,35 @@
             <g id="DCAivGtc0hmVc-qZseLuG"><path class="cls-2" d="M127,22.19v3.4" transform="translate(0.06 0)" /></g>
             <g id="QSyN0JoNGEdJp41vkXrTn"><path class="cls-2" d="M57,28.93h56" transform="translate(0.06 0)" /></g>
         </svg>
-    </text>);
+    </text>
+                    );
 
-                    columns.AddFor(m => m.TextID).Caption("Muestra");
-                    @*         columns.AddFor(m => m.LoginDate).Caption("Fecha")
-    .Format("yyyy-MM-dd");
-    ; *@
-                })
+                        columns.AddFor(m => m.TextID).Caption("Muestra");
+                        columns.AddFor(m => m.LoginDate).Caption("Fecha").Width(330)
+                        .Format("yyyy-MM-dd")
+                        .SortOrder(SortOrder.Desc);
+                    })
+ 
+ 
             .ShowBorders(true)
-            .AllowColumnReordering(true)
-            .RowAlternationEnabled(false)
-            .ShowColumnLines(true)
-            .Grouping(g => g.AutoExpandAll(true))
-            .ShowRowLines(true)
-            .Paging(paging => paging.PageSize(20))
-            .FilterRow(f => f.Visible(true))
-            .Pager(pager =>
-            {
-                pager.ShowPageSizeSelector(true);
-                pager.AllowedPageSizes(new[] { 20, 50, 100 });
-                pager.ShowInfo(true);
-            })
-            .SearchPanel(s => s
-            .Visible(true)
-            .HighlightCaseSensitive(true)
-            )
+                .AllowColumnReordering(true)
+                .RowAlternationEnabled(false)
+                .ShowColumnLines(true)
+                .Grouping(g => g.AutoExpandAll(true))
+                .Scrolling(s => s.Mode(GridScrollingMode.Virtual))
+                .ShowRowLines(true)
+                .Paging(paging => paging.PageSize(20))
+                .FilterRow(f => f.Visible(true))
+                .Pager(pager =>
+                {
+                    pager.ShowPageSizeSelector(true);
+                    pager.AllowedPageSizes(new[] { 20, 50, 100 });
+                    pager.ShowInfo(true);
+                })
+                .SearchPanel(s => s
+                .Visible(true)
+                .HighlightCaseSensitive(true)
+                )
             )
     </div> 
 }
@@ -221,26 +210,19 @@
         </div>
         @(
         Html.DevExtreme().DataGrid<LBW.Models.Entity.Muestra>()
-                .ID("gridContainer2")
-                .DataSource(ds => ds.Mvc()
-                .Controller("Muestras")
-                .LoadAction("GetDate")
-                .Key("IdSample")
-            )
-            .ShowBorders(true)
-            .Columns(columns => {
+                    .ID("gridContainer2")
+                    .DataSource(ds => ds.Mvc()
+                    .Controller("Muestras")
+                    .LoadAction("GetDate")
+                    .Key("IdSample")
+                )
+                .ShowBorders(true)
+                .Columns(columns => {
 
-        columns.Add()
-                    .Caption("")
-                    .CellTemplate(@<text>
-                  <div id="unreceived">
-                    <p>U</p>
-                  </div>
-                  <div id="incomplete">
-                      <p>I</p>
-                  </div>
-            </text>).Width(50);
-        columns.AddFor(m => m.TextID).Caption("Muestra");
+                
+
+                columns.AddFor(m => m.TextID).Caption("Muestra");
+                    
 
         }
         )
@@ -249,6 +231,7 @@
             .RowAlternationEnabled(false)
             .ShowColumnLines(true)
             .Paging(paging => paging.PageSize(20))
+            .Scrolling(scrolling => scrolling.Mode(GridScrollingMode.Virtual))
             .FilterRow(f => f.Visible(true))
             .ShowRowLines(true)
             .Pager(pager =>
@@ -261,6 +244,7 @@
             .Visible(true)
             .HighlightCaseSensitive(true)
             )
+
 )
         
         
@@ -352,41 +336,42 @@
                 success: function (result) {
                     DevExpress.ui.notify('Datos enviados correctamente', 'success', 6000);
                     console.log(status);
+                    // Recargar los datos del DataGrid
+                            var dataGrid = $("#gridContainer2").dxDataGrid("instance");
+                            dataGrid.option("dataSource", result);
+                            dataGrid.repaint();
+                            console.log(dataGrid.option("dataSource"));
+                     // Suscribirse al evento contentReady del DataGrid
+                      dataGrid.on("contentReady", function () {
+                    // Mostrar u ocultar divs según el valor del Status
+                    console.log(status);
+                        switch (status) {
+                        case 254:
+                            $("#unreceived").show();
+                            $("#incomplete").hide();
+                            break;
+                        case 25:
+                            $("#unreceived").hide();
+                            $("#incomplete").show();
+                            break;
+                        default:
+                            $("#unreceived").hide();
+                            $("#incomplete").hide();
+                            break;
+                            }
+                        });
 
-                // Ocultar ambos divs por defecto
-                $("#unreceived").hide();
-                $("#incomplete").hide();
-
-                // Recargar los datos del DataGrid
-                    var dataGrid = $("#gridContainer2").dxDataGrid("instance");
-                    dataGrid.option("dataSource", result);
-                    dataGrid.repaint();
-
-
-                // Mostrar u ocultar divs según el valor del Status
-                switch (status) {
-                    case 254:
-
-                        $("#unreceived").show();
-                        $("#incomplete").hide();
-                        break;
-                    case 25:
-
-                        $("#unreceived").hide();
-                        $("#incomplete").show();
-                        break;
-                }
- 
                 },
                 error: function (error) {
                     DevExpress.ui.notify('Error al enviar los datos', 'error', 6000);
                     console.error("Error al enviar los datos:", error);
-                },
-
+                }
+                 
             });
         
-         
+
     }
+
 
 
 

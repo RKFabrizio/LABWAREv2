@@ -75,7 +75,7 @@ namespace LBW.Models.Entity
                     entity.Property(e => e.UsuarioID)
                         .HasColumnName("USER_NAME")
                         .HasMaxLength(100)
-                        .IsRequired(false);
+                        .IsRequired(true);
 
                     entity.Property(e => e.NombreCompleto)
                         .HasColumnName("FULL_NAME")

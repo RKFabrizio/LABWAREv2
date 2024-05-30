@@ -63,6 +63,7 @@ namespace LBW.Controllers
         [HttpPut]
         public async Task<IActionResult> Put(string key, string values) {
             var model = await _context.Usuarios.FirstOrDefaultAsync(item => item.UsuarioID == key);
+
             if(model == null)
                 return StatusCode(409, "Object not found");
 

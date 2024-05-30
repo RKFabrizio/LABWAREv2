@@ -148,6 +148,8 @@ namespace LBW.Controllers
                 i.IdPlanta
             });
 
+
+
             // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
             // This can make SQL execution plans more efficient.
             // For more detailed information, please refer to this discussion: https://github.com/DevExpress/DevExtreme.AspNet.Data/issues/336.
@@ -394,6 +396,7 @@ namespace LBW.Controllers
                 foreach (var muestraItem in muestrasList)
                 {
                     muestraItem.Status = 25; // Modificar el estado según lo requerido
+                    muestraItem.RecdDate = DateTime.Now;
                 }
 
                 await _context.SaveChangesAsync();
