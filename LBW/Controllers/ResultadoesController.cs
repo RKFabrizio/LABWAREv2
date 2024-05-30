@@ -179,12 +179,12 @@ namespace LBW.Controllers
  
 
                 var plantillaDetalle = _context.PlantillaDetalles
-                .Where(cl => cl.Id_TL == idTl && cl.Name == "PRN_AGUAS")
+                .Where(cl => cl.Id_TL == idTl)
                 .ToList();
 
                 List<int> idAnalisiss = plantillaDetalle.Select(detalle => detalle.Id_Analysis).ToList();
 
-
+                Console.WriteLine("-------------------------SI FUNCIONAAAAA");
                 var nuevosResultados = new List<Resultado>();
 
                 foreach (int muestra in idMuestras)
@@ -233,7 +233,7 @@ namespace LBW.Controllers
                                 }
                                 catch(Exception e)
                                 {
-                                    Console.WriteLine("..............................");
+                                    Console.WriteLine("..............NO FUNCIONAAA................");
                                     Console.WriteLine(e.ToString());
                                     Console.WriteLine("..............................");
                                 }
@@ -243,7 +243,7 @@ namespace LBW.Controllers
                     }
                 }
                 try {
-                    Console.WriteLine("------------------------------");
+                    Console.WriteLine("--------SIIII----------------------");
                     _context.Resultados.AddRange(nuevosResultados);
                     _context.SaveChanges();
                     Console.WriteLine("------------------------------");
@@ -347,6 +347,19 @@ namespace LBW.Controllers
                          select new {
                              Value = i.IdUnidad,
                              Text = i.NameUnidad
+                         };
+            return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UnidadesStringLookup(DataSourceLoadOptions loadOptions)
+        {
+            var lookup = from i in _context.Unidades
+                         orderby i.DisplayString
+                         select new
+                         {
+                             Value = i.IdUnidad,
+                             Text = i.DisplayString
                          };
             return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
         }

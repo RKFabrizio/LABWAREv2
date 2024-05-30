@@ -962,15 +962,9 @@ namespace LBW.Models.Entity
                      .HasColumnName("LOGIN_DATE")
                      .IsRequired(false);
 
-                    
-
-                     
-
                     entity.Property(e => e.RecdDate)
                     .HasColumnName("RECD_DATE")
                     .IsRequired(false);
-
-                    
                     
                     entity.Property(e => e.DateStarted)
                   .HasColumnName("DATE_STARTED")

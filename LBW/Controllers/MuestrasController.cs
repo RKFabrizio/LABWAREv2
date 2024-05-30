@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LBW.Models.Entity;
 using System.Xml.Linq;
+using System.Data;
 
 namespace LBW.Controllers
 {
@@ -66,11 +67,99 @@ namespace LBW.Controllers
             return Json(await DataSourceLoader.LoadAsync(muestras, loadOptions));
         }
 
+        [HttpGet]
+        public IActionResult GetDate (int Estado, DataSourceLoadOptions loadOptions)
+        {
+            Console.WriteLine(Estado + "ESTADO:");
+            
+            var muestras = _context.Muestras
+                .Where(m =>m.Status == Estado)
+                .OrderByDescending(m => m.LoginDate)
+                .Select(i => new {
+                i.IdSample,
+                i.IdPm,
+                i.IdCliente,
+                i.IdLocation,
+                i.SampleNumber,
+                i.TextID,
+                i.Status,
+                i.ChangedOn,
+                i.OriginalSample,
+                i.LoginDate,
+                i.LoginBy,
+                i.SampleDate,
+                i.RecdDate,
+                i.ReceivedBy,
+                i.DateStarted,
+                i.DueDate,
+                i.DateCompleted,
+                i.DateReviewed,
+                i.PreBy,
+                i.Reviewer,
+                i.SamplingPoint,
+                i.SampleType,
+                i.IdProject,
+                i.SampleName,
+                i.Location,
+                i.Customer,
+                i.Observaciones,
+                i.IdPlanta
+            });
+
+
+            return Json(DataSourceLoader.Load(muestras, loadOptions));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get2(DataSourceLoadOptions loadOptions)
+        {
+            var muestras = _context.Muestras
+                .Where(m => m.Status == 254) // Filtrar por Status 254
+                .OrderByDescending(m => m.LoginDate)
+                .Select(i => new {
+                i.IdSample,
+                i.IdPm,
+                i.IdCliente,
+                i.IdLocation,
+                i.SampleNumber,
+                i.TextID,
+                i.Status,
+                i.ChangedOn,
+                i.OriginalSample,
+                i.LoginDate,
+                i.LoginBy,
+                i.SampleDate,
+                i.RecdDate,
+                i.ReceivedBy,
+                i.DateStarted,
+                i.DueDate,
+                i.DateCompleted,
+                i.DateReviewed,
+                i.PreBy,
+                i.Reviewer,
+                i.SamplingPoint,
+                i.SampleType,
+                i.IdProject,
+                i.SampleName,
+                i.Location,
+                i.Customer,
+                i.Observaciones,
+                i.IdPlanta
+            });
+
+            // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
+            // This can make SQL execution plans more efficient.
+            // For more detailed information, please refer to this discussion: https://github.com/DevExpress/DevExtreme.AspNet.Data/issues/336.
+            // loadOptions.PrimaryKey = new[] { "IdSample" };
+            // loadOptions.PaginateViaPrimaryKey = true;
+
+            return Json(await DataSourceLoader.LoadAsync(muestras, loadOptions));
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetBySampleId(int idSample, DataSourceLoadOptions loadOptions)
         {
-            Console.WriteLine("dasdadasdasd/-------------------------");
+
             Console.WriteLine(idSample.ToString());
             var muestras = _context.Muestras
                 .Where(r => r.IdSample == idSample)
@@ -115,10 +204,10 @@ namespace LBW.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetByFilter(DateTime StartDate, DateTime EndDate, int Cliente, int Estado)
+        public IActionResult GetByFilter(DateTime StartDate, DateTime EndDate)
         {
             var muestras = _context.Muestras
-            .Where(ms => ms.LoginDate >= StartDate && ms.LoginDate <= EndDate && ms.IdCliente == Cliente && ms.Status == Estado)
+            .Where(ms => ms.LoginDate >= StartDate && ms.LoginDate <= EndDate && ms.IdCliente == 3)
             .Select(i => new
             {
                 i.IdSample,
@@ -191,7 +280,7 @@ namespace LBW.Controllers
                 .OrderByDescending(cl => cl.DateCreated) // Suponiendo que hay un campo "FechaIngreso" que indica cuándo se ingresó el proyecto
                 .FirstOrDefaultAsync();
 
-            model.TextID = $"{description}_{DateTime.Now:yyyyMMdd}";
+            model.TextID = $"{DateTime.Now:yyyyMMdd}_{description}";
             model.Status = 254;
             model.ChangedOn = DateTime.Now;
             model.LoginDate = DateTime.Now;
@@ -284,6 +373,68 @@ namespace LBW.Controllers
             return Ok();
         }
 
+        [HttpPut]
+        public async Task<IActionResult> PutStatus1(List<int> muestras)
+        {
+            try
+            {
+                if (muestras == null || !muestras.Any())
+                {
+                    return BadRequest("No IDs provided.");
+                }
+
+
+                // Obtener las muestras a actualizar
+                var muestrasList = await _context.Muestras
+                    .Where(m => muestras.Contains(m.IdSample))
+                    .ToListAsync();
+
+                // Actualizar el estado de cada muestra
+                foreach (var muestraItem in muestrasList)
+                {
+                    muestraItem.Status = 25; // Modificar el estado según lo requerido
+                }
+
+                await _context.SaveChangesAsync();
+                return Ok(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error: {ex.Message}");
+            }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> PutStatus2(List<int> muestras)
+        {
+            try
+            {
+                if (muestras == null || !muestras.Any())
+                {
+                    return BadRequest("No IDs provided.");
+                }
+
+
+                // Obtener las muestras a actualizar
+                var muestrasList = await _context.Muestras
+                    .Where(m => muestras.Contains(m.IdSample))
+                    .ToListAsync();
+
+                // Actualizar el estado de cada muestra
+                foreach (var muestraItem in muestrasList)
+                {
+                    muestraItem.Status = 27; // Modificar el estado según lo requerido
+                }
+
+                await _context.SaveChangesAsync();
+                return Ok(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error: {ex.Message}");
+            }
+        }
+
         [HttpDelete]
         public async Task Delete(int key) {
             var model = await _context.Muestras.FirstOrDefaultAsync(item => item.IdSample == key);
@@ -306,6 +457,21 @@ namespace LBW.Controllers
                          };
             return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ListasLookup(DataSourceLoadOptions loadOptions)
+        {
+            var lookup = from i in _context.Listas
+                         where (i.IdLista >= 21 && i.IdLista <= 27 || i.IdLista == 254) && i.IdLista != 22
+                         orderby i.List
+                         select new
+                         {
+                             Value = i.IdLista,
+                             Text = i.Value
+                         };
+            return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
+        }
+
 
 
         public IActionResult LastSample(int Cliente)
