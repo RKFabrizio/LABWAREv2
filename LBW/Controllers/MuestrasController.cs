@@ -68,6 +68,52 @@ namespace LBW.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetMuestrasRec(DataSourceLoadOptions loadOptions)
+        {
+            var muestras = _context.Muestras
+                 .Where(m => m.Status >= 24 && m.Status <= 26)
+                .Select(i => new {
+                i.IdSample,
+                i.IdPm,
+                i.IdCliente,
+                i.IdLocation,
+                i.SampleNumber,
+                i.TextID,
+                i.Status,
+                i.ChangedOn,
+                i.OriginalSample,
+                i.LoginDate,
+                i.LoginBy,
+                i.SampleDate,
+                i.RecdDate,
+                i.ReceivedBy,
+                i.DateStarted,
+                i.DueDate,
+                i.DateCompleted,
+                i.DateReviewed,
+                i.PreBy,
+                i.Reviewer,
+                i.SamplingPoint,
+                i.SampleType,
+                i.IdProject,
+                i.SampleName,
+                i.Location,
+                i.Customer,
+                i.Observaciones,
+                i.IdPlanta
+            });
+
+            // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
+            // This can make SQL execution plans more efficient.
+            // For more detailed information, please refer to this discussion: https://github.com/DevExpress/DevExtreme.AspNet.Data/issues/336.
+            // loadOptions.PrimaryKey = new[] { "IdSample" };
+            // loadOptions.PaginateViaPrimaryKey = true;
+
+            return Json(await DataSourceLoader.LoadAsync(muestras, loadOptions));
+        }
+
+
+        [HttpGet]
         public IActionResult GetDate(int Estado)
         {
             Console.WriteLine(Estado + "ESTADO:");
@@ -546,7 +592,7 @@ namespace LBW.Controllers
                          orderby i.Name
                          select new {
                              Value = i.IdProyecto,
-                             Text = i.Name
+                             Text = i.Name + " " + i.DateCreated
                          };
             return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
         }

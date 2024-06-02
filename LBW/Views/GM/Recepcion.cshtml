@@ -122,9 +122,14 @@
                     .OnSelectionChanged("onSelectionChanged")
                     .Columns(columns =>
                     {
-                        @* columns.AddFor(m => m.IdSample); *@
+                        columns.AddFor(m => m.IdProject)
+                        .Lookup(lookup => lookup
+                        .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("ProyectosLookup").Key("Value"))
+                        .ValueExpr("Value")
+                        .DisplayExpr("Text")).GroupIndex(0).Caption("Proyecto").SortOrder(SortOrder.Desc);
+                        
                         columns.AddFor(m => m.IdSample).Caption("").Width(40)
-                    .CellTemplate(@<text>
+                        .CellTemplate(@<text>
         <svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170.85 222.32" width="20" height="20">
             <defs>
                 <style>
@@ -157,7 +162,7 @@
             <g id="QSyN0JoNGEdJp41vkXrTn"><path class="cls-2" d="M57,28.93h56" transform="translate(0.06 0)" /></g>
         </svg>
     </text>
-                    );
+                        );
 
                         columns.AddFor(m => m.TextID).Caption("Muestra");
                         columns.AddFor(m => m.LoginDate).Caption("Fecha").Width(330)
@@ -219,12 +224,18 @@
                 .ShowBorders(true)
                 .Columns(columns => {
 
-                
 
+                columns.AddFor(m => m.IdProject)
+                .Lookup(lookup => lookup
+                .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("ProyectosLookup").Key("Value"))
+                .ValueExpr("Value")
+                .DisplayExpr("Text")).GroupIndex(0).Caption("Proyecto").SortOrder(SortOrder.Desc);
                 columns.AddFor(m => m.TextID).Caption("Muestra");
-                    
+                columns.AddFor(m => m.LoginDate).Caption("Fecha").Width(330)
+                .Format("yyyy-MM-dd")
+                .SortOrder(SortOrder.Desc);
 
-        }
+            }
         )
             .ShowBorders(true)
             .AllowColumnReordering(true)

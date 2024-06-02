@@ -272,16 +272,24 @@ namespace LBW.Controllers
 
 
         [HttpPut]
-        public async Task<IActionResult> Put(int key, string values) {
+        public async Task<IActionResult> Put(int key, string values)
+        {
             var model = await _context.Resultados.FirstOrDefaultAsync(item => item.IdResult == key);
-            if(model == null)
+            if (model == null)
                 return StatusCode(409, "Object not found");
 
             var valuesDict = JsonConvert.DeserializeObject<IDictionary>(values);
             PopulateModel(model, valuesDict);
 
-            if(!TryValidateModel(model))
+            if (!TryValidateModel(model))
                 return BadRequest(GetFullErrorMessage(ModelState));
+
+            // Obtener el idResult y el idMuestra
+            int idResult = model.IdResult;
+            int idMuestra = model.IdSample;
+
+            // Imprimir los valores en la consola
+            Console.WriteLine($"idResult: {idResult}, idMuestra: {idMuestra}");
 
             await _context.SaveChangesAsync();
             return Json(new { message = $"Resultados fueron creados correctamente" });

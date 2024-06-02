@@ -65,14 +65,14 @@
     .ID("gridContainer")
     .DataSource(ds => ds.Mvc()
         .Controller("Muestras")
-        .LoadAction("Get")
+        .LoadAction("GetMuestrasRec")
         .Key("IdSample")
 
     )
     .ShowBorders(true)
     .RemoteOperations(true)
 
-    .Selection(s => s.Mode(SelectionMode.Multiple))
+
     .Columns(columns =>
     {
 
@@ -109,17 +109,20 @@
         <g id="DCAivGtc0hmVc-qZseLuG"><path class="cls-2" d="M127,22.19v3.4" transform="translate(0.06 0)" /></g>
         <g id="QSyN0JoNGEdJp41vkXrTn"><path class="cls-2" d="M57,28.93h56" transform="translate(0.06 0)" /></g>
     </svg>
-</text>
-);
+            </text>
+            );
         columns.AddFor(m => m.TextID).Caption("Muestra");
         columns.AddFor(m => m.LoginDate).Caption("Fecha")
         .Format("yyyy-MM-dd")
         .SortOrder(SortOrder.Desc);
-        columns.AddFor(m => m.IdProject).Caption("Proyecto").GroupIndex(0)
-        .SortOrder(SortOrder.Desc)
-        ;
+        columns.AddFor(m => m.IdProject)
+                       .Lookup(lookup => lookup
+                       .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("ProyectosLookup").Key("Value"))
+                       .ValueExpr("Value")
+                       .DisplayExpr("Text")).GroupIndex(0).Caption("Proyecto").SortOrder(SortOrder.Desc);
 
     })
+      .FilterRow(f => f.Visible(true))
       .MasterDetail(detail =>
       {
           detail.Enabled(true);
@@ -128,13 +131,20 @@
     .DataSource(ds => ds.Mvc()
     .Controller("Resultadoes")
     .LoadAction("GetIdSample")
+    .UpdateAction("Put")
     .LoadParams(new { id = new JS("data.IdSample") })
     .Key("IdResult")
     )
     .RemoteOperations(true)
     .Columns(columns => {
 
-    columns.AddFor(m => m.IdAnalysis).GroupIndex(0);
+  
+    columns.AddFor(m => m.IdAnalysis)
+    .Lookup(lookup => lookup
+    .DataSource(ds => ds.WebApi().Controller("Resultadoes").LoadAction("AnalisissLookup").Key("Value"))
+    .ValueExpr("Value")
+    .DisplayExpr("Text")).GroupIndex(0).Caption("Análisis");
+
     columns.AddFor(m => m.NameComponent).Caption("Componente").AllowEditing(false);
     columns.AddFor(m => m.ResultNumber).Caption("Valor");
     columns.AddFor(m => m.IdUnidad).Lookup(lookup => lookup
@@ -161,10 +171,12 @@
     .Visible(true)
     .HighlightCaseSensitive(true)
     )
-    .Editing(editing => editing
-    .Mode(GridEditMode.Row)
-    .AllowUpdating(true)
-    )
+    .Editing(editing => {
+        editing.Mode(GridEditMode.Batch);
+        editing.AllowUpdating(true);
+        editing.SelectTextOnEditStart(true);
+        editing.StartEditAction(GridStartEditAction.Click);
+    })
     )
 </text>);
       })
