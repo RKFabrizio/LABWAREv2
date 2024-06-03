@@ -284,15 +284,75 @@ namespace LBW.Controllers
             if (!TryValidateModel(model))
                 return BadRequest(GetFullErrorMessage(ModelState));
 
-            // Obtener el idResult y el idMuestra
             int idResult = model.IdResult;
             int idMuestra = model.IdSample;
 
-            // Imprimir los valores en la consola
-            Console.WriteLine($"idResult: {idResult}, idMuestra: {idMuestra}");
+            await _context.SaveChangesAsync();
+
+            // Actualizar el estado de la muestra según los criterios mencionados
+            await UpdateMuestraStatus(idMuestra);
+
+            return Json(new { message = $"Resultados fueron creados correctamente" });
+        }
+
+        private async Task UpdateMuestraStatus(int idMuestra)
+        {
+            var muestra = await _context.Muestras.FirstOrDefaultAsync(m => m.IdSample == idMuestra);
+            if (muestra == null)
+                return; // Manejar error, muestra no encontrada
+
+            // Verificar si todos los Resultados de esta muestra tienen un valor
+            var resultadosSinValor = await _context.Resultados
+                .Where(r => r.IdSample == idMuestra && r.ResultNumber == null)
+                .CountAsync();
+
+            int idProject = muestra.IdProject.Value;
+
+            if (resultadosSinValor == 0)
+            {
+                // Todos los Resultados tienen un valor, actualizar el estado a 27
+                muestra.Status = 24;
+
+                await _context.SaveChangesAsync();
+                await UpdateProyectoStatus(idProject);
+            }
+            else
+            {
+                // Algunos Resultados aún no tienen un valor, actualizar el estado a 26
+                muestra.Status = 26;
+                await _context.SaveChangesAsync();
+            }
 
             await _context.SaveChangesAsync();
-            return Json(new { message = $"Resultados fueron creados correctamente" });
+        }
+
+        private async Task UpdateProyectoStatus(int idProyecto)
+        {
+            var proyecto = await _context.Proyectos.FirstOrDefaultAsync(p => p.IdProyecto == idProyecto);
+            if (proyecto == null)
+                return; // Manejar error, proyecto no encontrado
+
+            var muestrasCompletadas = await _context.Muestras
+                .Where(m => m.IdProject == idProyecto)
+                .CountAsync();
+
+            var muestrasTotal = await _context.Muestras
+                .Where(m => m.IdProject == idProyecto)
+                .CountAsync();
+
+            if (muestrasCompletadas == muestrasTotal)
+            {
+                // Todas las muestras del proyecto están completadas
+                proyecto.Status = 24;
+            }
+            else
+            {
+                // Algunas muestras del proyecto están completadas
+                proyecto.Status = 26;
+            }
+ 
+
+            await _context.SaveChangesAsync();
         }
 
         [HttpDelete]
