@@ -69,6 +69,7 @@
         .Key("IdSample")
 
     )
+
     .ShowBorders(true)
     .RemoteOperations(true)
 
@@ -78,6 +79,7 @@
 
         columns.AddFor(m => m.IdSample).Caption("").Width(40)
             .CellTemplate(@<text>
+                <!--
     <svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170.85 222.32" width="20" height="20">
         <defs>
             <style>
@@ -109,19 +111,23 @@
         <g id="DCAivGtc0hmVc-qZseLuG"><path class="cls-2" d="M127,22.19v3.4" transform="translate(0.06 0)" /></g>
         <g id="QSyN0JoNGEdJp41vkXrTn"><path class="cls-2" d="M57,28.93h56" transform="translate(0.06 0)" /></g>
     </svg>
+    -->
+            <div class="id-sample-cell"></div>
             </text>
             );
+        columns.AddFor(m => m.Status).Caption("Status");
         columns.AddFor(m => m.TextID).Caption("Muestra");
         columns.AddFor(m => m.LoginDate).Caption("Fecha")
         .Format("yyyy-MM-dd")
         .SortOrder(SortOrder.Desc);
         columns.AddFor(m => m.IdProject)
-                       .Lookup(lookup => lookup
+                       .Lookup( lookup => lookup
                        .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("ProyectosLookup").Key("Value"))
                        .ValueExpr("Value")
                        .DisplayExpr("Text")).GroupIndex(0).Caption("Proyecto").SortOrder(SortOrder.Desc);
 
     })
+    .OnCellPrepared("onCellPrepared")
       .FilterRow(f => f.Visible(true))
       .MasterDetail(detail =>
       {
@@ -185,7 +191,38 @@
  
 
 <script>
+    function onCellPrepared(e) {
+        if (e.rowType === "data" && e.column.dataField === "IdSample") {
+            var cellElement = e.cellElement.get(0);
+            var idSampleCell = cellElement.querySelector('.id-sample-cell');
+            if (idSampleCell) {
+                var status;
+                if (e.rowType === "data" && e.data.IdSample) {
+                    for (var key in e.data) {
+                        if (e.data.hasOwnProperty(key) && key == "Status"){
+                       //     console.log(key + ": " + e.data[key]);
+                            status = e.data[key]
+                        }
+                    }
+                }
+               
+                console.log()    
+                var svgContent;
 
-    
+                if (status == 26) {
+                    svgContent = "😍";
+                } else if (status == 7) {
+                    svgContent = `
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#A79A66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M12 17.75l-6.172 3.946l1.179-7.228l-5.251-5.009l7.277-1.057l3.077-6.222l3.077 6.222l7.277 1.057l-5.251 5.009l1.179 7.228z" />
+                                </svg>`;
+                } else {
+                    svgContent = status;
+                }
 
+                idSampleCell.innerHTML = svgContent;
+            }
+        }
+    }
 </script>
