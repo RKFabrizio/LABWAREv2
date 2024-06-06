@@ -9,11 +9,13 @@ namespace LBW.Models.Entity
             ResultadosM = new HashSet<Resultado>();
         }
         public int IdSample { get; set; }
+
+        [Required(ErrorMessage = "Seleccione el Punto de Muestra correspondiente.")]
         public int IdPm { get; set; }
         public int IdCliente { get; set; }
         public int? IdLocation { get; set; }
 
-        [Required(ErrorMessage = "El número de muestra es requerido.")]
+        [Required(ErrorMessage = "La cantidad de muestras es requerido.")]
         [RegularExpression("^[1-9][0-9]*$", ErrorMessage = "El número de muestra debe ser un número mayor a 0.")]
         public string? SampleNumber { get; set; }
 
@@ -32,14 +34,23 @@ namespace LBW.Models.Entity
         public DateTime? DateReviewed { get; set; }
         public string? PreBy { get; set; }
         public string? Reviewer { get; set; }
+
+
         public string? SamplingPoint { get; set; }
+
+        [Required(ErrorMessage = "Seleccione el Tipo de Muestra.")]
         public int? SampleType { get; set; }
         public int? IdProject { get; set; }
         public string? SampleName { get; set; }
         public string? Location { get; set; }
         public string? Customer { get; set; }
         public string? Observaciones { get; set; }
+
+        [Required(ErrorMessage = "Seleccione la Planta correspondiente.")]
         public int? IdPlanta { get; set; }
+
+        [Required(ErrorMessage = "Los Conteo de Puntos es requerido.")]
+        [RegularExpression("^[1-9][0-9]*$", ErrorMessage = "Los conteo de puntos deben ser un número mayor a 0.")]
         public string? ConteoPuntos { get; set; }
 
 

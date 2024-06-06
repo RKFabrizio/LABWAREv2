@@ -68,6 +68,51 @@ namespace LBW.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetIdProject(int id, DataSourceLoadOptions loadOptions)
+        {
+            var muestras = _context.Muestras
+                .Where(m => m.IdProject == id)
+                .Select(i => new {
+                i.IdSample,
+                i.IdPm,
+                i.IdCliente,
+                i.IdLocation,
+                i.SampleNumber,
+                i.TextID,
+                i.Status,
+                i.ChangedOn,
+                i.OriginalSample,
+                i.LoginDate,
+                i.LoginBy,
+                i.SampleDate,
+                i.RecdDate,
+                i.ReceivedBy,
+                i.DateStarted,
+                i.DueDate,
+                i.DateCompleted,
+                i.DateReviewed,
+                i.PreBy,
+                i.Reviewer,
+                i.SamplingPoint,
+                i.SampleType,
+                i.IdProject,
+                i.SampleName,
+                i.Location,
+                i.Customer,
+                i.Observaciones,
+                i.IdPlanta
+            });
+
+            // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
+            // This can make SQL execution plans more efficient.
+            // For more detailed information, please refer to this discussion: https://github.com/DevExpress/DevExtreme.AspNet.Data/issues/336.
+            // loadOptions.PrimaryKey = new[] { "IdSample" };
+            // loadOptions.PaginateViaPrimaryKey = true;
+
+            return Json(await DataSourceLoader.LoadAsync(muestras, loadOptions));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetMuestrasRec(DataSourceLoadOptions loadOptions)
         {
             var muestras = _context.Muestras
@@ -326,8 +371,11 @@ namespace LBW.Controllers
 
             var ultimoProyecto = await _context.Proyectos
                 .Where(cl => cl.Owner == usuario.IdUser)
-                .OrderByDescending(cl => cl.DateCreated) // Suponiendo que hay un campo "FechaIngreso" que indica cuándo se ingresó el proyecto
+                .OrderByDescending(cl => cl.IdProyecto) // Ordenar por la clave principal (ProyectoId)
                 .FirstOrDefaultAsync();
+
+            Console.WriteLine("---------------------");
+            Console.WriteLine(ultimoProyecto.IdProyecto);
 
             model.TextID = $"{DateTime.Now:yyyyMMdd}_{description}";
             model.Status = 254;
@@ -484,6 +532,41 @@ namespace LBW.Controllers
                 return BadRequest($"Error: {ex.Message}");
             }
         }
+
+        [HttpPut]
+        public async Task<IActionResult> PutStatus3(List<int> muestras)
+        {
+            try
+            {
+                if (muestras == null || !muestras.Any())
+                {
+                    return BadRequest("No IDs provided.");
+                }
+
+
+                // Obtener las muestras a actualizar
+                var muestrasList = await _context.Muestras
+                    .Where(m => muestras.Contains(m.IdSample))
+                    .ToListAsync();
+
+                // Actualizar el estado de cada muestra
+                foreach (var muestraItem in muestrasList)
+                {
+                    muestraItem.Status = 21; // Modificar el estado según lo requerido
+                    muestraItem.RecdDate = DateTime.Now;
+                }
+
+                await _context.SaveChangesAsync();
+                return Ok(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error: {ex.Message}");
+            }
+        }
+
+
+        
 
         [HttpDelete]
         public async Task Delete(int key) {
@@ -686,7 +769,7 @@ namespace LBW.Controllers
             // Primera búsqueda: Obtener el último proyecto realizado por el usuario
             var ultimoProyecto = await _context.Proyectos
                 .Where(p => p.Owner == usuario.IdUser)
-                .OrderByDescending(p => p.DateCreated)
+                .OrderByDescending(p => p.IdProyecto)
                 .FirstOrDefaultAsync();
 
             if (ultimoProyecto == null)
@@ -701,7 +784,7 @@ namespace LBW.Controllers
             // Segunda búsqueda: Obtener las muestras registradas en los últimos diez minutos asociadas al último proyecto
             var ultimasMuestras = await _context.Muestras
                 .Where(m => m.IdProject == ultimoProyecto.IdProyecto)
-                .OrderByDescending(m => m.DateStarted)
+                .OrderByDescending(m => m.IdProject)
                 .Select(m => new
                 {
                     Value = m.IdSample, // Asegúrate de que "TextID" es el nombre correcto del campo en tu base de datos

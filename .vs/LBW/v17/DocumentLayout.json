@@ -11,28 +11,12 @@
       "RelativeMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|solutionrelative:lbw\\controllers\\muestrascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|c:\\users\\fabri\\onedrive\\desktop\\labgit\\lbw\\views\\gm\\ingresomuestras.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|solutionrelative:lbw\\views\\gm\\ingresomuestras.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|c:\\users\\fabri\\onedrive\\desktop\\labgit\\lbw\\views\\gr\\analisis.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|solutionrelative:lbw\\views\\gr\\analisis.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|c:\\users\\fabri\\onedrive\\desktop\\labgit\\lbw\\views\\gm\\recepcion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|solutionrelative:lbw\\views\\gm\\recepcion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|c:\\users\\fabri\\onedrive\\desktop\\labgit\\lbw\\views\\gr\\autorizar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|solutionrelative:lbw\\views\\gr\\autorizar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|c:\\users\\fabri\\onedrive\\desktop\\labgit\\lbw\\models\\entity\\muestra.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|solutionrelative:lbw\\models\\entity\\muestra.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|c:\\users\\fabri\\onedrive\\desktop\\labgit\\lbw\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|solutionrelative:lbw\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|c:\\users\\fabri\\onedrive\\desktop\\labgit\\lbw\\views\\gm\\ingresomuestras.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|solutionrelative:lbw\\views\\gm\\ingresomuestras.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,20 +26,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Autorizar.cshtml",
-              "DocumentMoniker": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABGIT\\LBW\\Views\\GR\\Autorizar.cshtml",
-              "RelativeDocumentMoniker": "LBW\\Views\\GR\\Autorizar.cshtml",
-              "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABGIT\\LBW\\Views\\GR\\Autorizar.cshtml",
-              "RelativeToolTip": "LBW\\Views\\GR\\Autorizar.cshtml",
-              "ViewState": "AQIAAEgAAAAAAAAAAAAkwFEAAAABAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-06-03T07:02:22.144Z"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -64,46 +36,10 @@
               "RelativeDocumentMoniker": "LBW\\Controllers\\ResultadoesController.cs",
               "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABGIT\\LBW\\Controllers\\ResultadoesController.cs",
               "RelativeToolTip": "LBW\\Controllers\\ResultadoesController.cs",
-              "ViewState": "AQIAAEEBAAAAAAAAAAAywF0BAABCAAAA",
+              "ViewState": "AQIAAJ0AAAAAAAAAAAAUwKQAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-30T22:05:17.696Z",
+              "WhenOpened": "2024-06-06T20:46:01.523Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Muestra.cs",
-              "DocumentMoniker": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABGIT\\LBW\\Models\\Entity\\Muestra.cs",
-              "RelativeDocumentMoniker": "LBW\\Models\\Entity\\Muestra.cs",
-              "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABGIT\\LBW\\Models\\Entity\\Muestra.cs",
-              "RelativeToolTip": "LBW\\Models\\Entity\\Muestra.cs",
-              "ViewState": "AQIAAAcAAAAAAAAAAAAgwBYAAAAuAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-30T19:57:55.575Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABGIT\\LBW\\Views\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "LBW\\Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABGIT\\LBW\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "LBW\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AQIAAGMAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-05-30T19:57:34.032Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "IngresoMuestras.cshtml",
-              "DocumentMoniker": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABGIT\\LBW\\Views\\GM\\IngresoMuestras.cshtml",
-              "RelativeDocumentMoniker": "LBW\\Views\\GM\\IngresoMuestras.cshtml",
-              "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABGIT\\LBW\\Views\\GM\\IngresoMuestras.cshtml",
-              "RelativeToolTip": "LBW\\Views\\GM\\IngresoMuestras.cshtml",
-              "ViewState": "AQIAAJMAAAAAAAAAAAAAAJoAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-05-30T19:57:30.133Z"
             },
             {
               "$type": "Document",
@@ -113,33 +49,35 @@
               "RelativeDocumentMoniker": "LBW\\Controllers\\MuestrasController.cs",
               "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABGIT\\LBW\\Controllers\\MuestrasController.cs",
               "RelativeToolTip": "LBW\\Controllers\\MuestrasController.cs",
-              "ViewState": "AQIAAEwCAAAAAAAAAAAkwEECAAARAAAA",
+              "ViewState": "AQIAAEACAAAAAAAAAAAIwAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-30T19:14:27.569Z"
+              "WhenOpened": "2024-06-06T20:45:59.658Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Autorizar.cshtml",
+              "DocumentMoniker": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABGIT\\LBW\\Views\\GR\\Autorizar.cshtml",
+              "RelativeDocumentMoniker": "LBW\\Views\\GR\\Autorizar.cshtml",
+              "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABGIT\\LBW\\Views\\GR\\Autorizar.cshtml",
+              "RelativeToolTip": "LBW\\Views\\GR\\Autorizar.cshtml",
+              "ViewState": "AQIAABkAAAAAAAAAAAAuwB4AAAAWAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-06-06T01:20:53.391Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Analisis.cshtml",
-              "DocumentMoniker": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABGIT\\LBW\\Views\\GR\\Analisis.cshtml",
-              "RelativeDocumentMoniker": "LBW\\Views\\GR\\Analisis.cshtml",
-              "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABGIT\\LBW\\Views\\GR\\Analisis.cshtml",
-              "RelativeToolTip": "LBW\\Views\\GR\\Analisis.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAEAAAAAAAAA",
+              "Title": "IngresoMuestras.cshtml",
+              "DocumentMoniker": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABGIT\\LBW\\Views\\GM\\IngresoMuestras.cshtml",
+              "RelativeDocumentMoniker": "LBW\\Views\\GM\\IngresoMuestras.cshtml",
+              "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABGIT\\LBW\\Views\\GM\\IngresoMuestras.cshtml",
+              "RelativeToolTip": "LBW\\Views\\GM\\IngresoMuestras.cshtml",
+              "ViewState": "AQIAALcAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-05-30T19:45:00.332Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Recepcion.cshtml",
-              "DocumentMoniker": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABGIT\\LBW\\Views\\GM\\Recepcion.cshtml",
-              "RelativeDocumentMoniker": "LBW\\Views\\GM\\Recepcion.cshtml",
-              "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\LABGIT\\LBW\\Views\\GM\\Recepcion.cshtml",
-              "RelativeToolTip": "LBW\\Views\\GM\\Recepcion.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAHAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-05-30T17:34:10.072Z"
+              "WhenOpened": "2024-06-05T23:38:26.793Z"
             }
           ]
         }

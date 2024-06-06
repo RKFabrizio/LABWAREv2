@@ -158,7 +158,7 @@ namespace LBW.Controllers
 
                 var ultimoProyecto = _context.Proyectos
                    .Where(cl => cl.Owner == usuario.IdUser)
-                   .OrderByDescending(cl => cl.DateCreated) // Suponiendo que hay un campo "FechaIngreso" que indica cuándo se ingresó el proyecto
+                   .OrderByDescending(cl => cl.IdProyecto) // Suponiendo que hay un campo "FechaIngreso" que indica cuándo se ingresó el proyecto
                    .FirstOrDefault();
 
                 int idProyecto = ultimoProyecto.IdProyecto;

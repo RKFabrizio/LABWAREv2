@@ -53,6 +53,39 @@ namespace LBW.Controllers
             return Json(await DataSourceLoader.LoadAsync(proyectos, loadOptions));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetProyecto(DataSourceLoadOptions loadOptions)
+        {
+            var proyectos = _context.Proyectos
+                .Where(i => i.Status == 24)
+                .Select(i => new {
+                i.IdProyecto,
+                i.ID_TL,
+                i.ID_Cliente,
+                i.Name,
+                i.TemplateVersion,
+                i.Description,
+                i.Note,
+                i.Status,
+                i.DateCreated,
+                i.DateRecieved,
+                i.DateStarted,
+                i.DateCompleted,
+                i.DateReviewed,
+                i.DateUpdated,
+                i.Owner,
+                i.NumSamples
+            });
+
+            // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
+            // This can make SQL execution plans more efficient.
+            // For more detailed information, please refer to this discussion: https://github.com/DevExpress/DevExtreme.AspNet.Data/issues/336.
+            // loadOptions.PrimaryKey = new[] { "IdProyecto" };
+            // loadOptions.PaginateViaPrimaryKey = true;
+
+            return Json(await DataSourceLoader.LoadAsync(proyectos, loadOptions));
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post(Proyecto model, int Planta, int Numero) {
 
