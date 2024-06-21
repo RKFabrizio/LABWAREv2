@@ -23,7 +23,10 @@ namespace LBW.Models.Entity
         [Required]
         [Display(Name = "Análisis")]
         public int IdAnalysis { get; set;}
+
         public string? SampleNumber { get; set;}
+
+        [RegularExpression("^[1-9][0-9]*$", ErrorMessage = "El valor del resultado debe ser un número mayor a 0.")]
         public decimal? ResultNumber { get; set;}
         public int? OrderNum { get; set;}
         public string? AnalysisData { get; set;}

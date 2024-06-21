@@ -11,6 +11,8 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using LBW.Models.Entity;
+ 
+
 
 namespace LBW.Controllers
 {
@@ -54,10 +56,21 @@ namespace LBW.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> ExportToExcel()
+        {
+            var projects = await _context.Proyectos
+                .Include(p => p.MuestraPr)
+                .ThenInclude(m => m.ResultadosM)
+                .ToListAsync();
+
+            return Ok(projects);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetProyecto(DataSourceLoadOptions loadOptions)
         {
             var proyectos = _context.Proyectos
-                .Where(i => i.Status == 24)
+                .Where(i => i.Status == 24 || i.Status == 21)
                 .Select(i => new {
                 i.IdProyecto,
                 i.ID_TL,
@@ -82,6 +95,35 @@ namespace LBW.Controllers
             // For more detailed information, please refer to this discussion: https://github.com/DevExpress/DevExtreme.AspNet.Data/issues/336.
             // loadOptions.PrimaryKey = new[] { "IdProyecto" };
             // loadOptions.PaginateViaPrimaryKey = true;
+
+            return Json(await DataSourceLoader.LoadAsync(proyectos, loadOptions));
+        }
+ 
+
+        [HttpGet]
+        public async Task<IActionResult> GetCliente(DataSourceLoadOptions loadOptions)
+        {
+            var proyectos = _context.Proyectos
+                .Where(p => _context.Muestras.Any(m => m.IdProject == p.IdProyecto))
+                .Select(i => new {
+                    i.IdProyecto,
+                    i.ID_TL,
+                    i.ID_Cliente,
+                    i.Name,
+                    i.TemplateVersion,
+                    i.Description,
+                    i.Note,
+                    i.Status,
+                    i.DateCreated,
+                    i.DateRecieved,
+                    i.DateStarted,
+                    i.DateCompleted,
+                    i.DateReviewed,
+                    i.DateUpdated,
+                    i.Owner,
+                    i.NumSamples
+                });
+ 
 
             return Json(await DataSourceLoader.LoadAsync(proyectos, loadOptions));
         }
@@ -167,6 +209,8 @@ namespace LBW.Controllers
             _context.Proyectos.Remove(model);
             await _context.SaveChangesAsync();
         }
+
+         
 
 
         [HttpGet]

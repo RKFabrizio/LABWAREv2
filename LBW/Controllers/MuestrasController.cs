@@ -71,7 +71,7 @@ namespace LBW.Controllers
         public async Task<IActionResult> GetIdProject(int id, DataSourceLoadOptions loadOptions)
         {
             var muestras = _context.Muestras
-                .Where(m => m.IdProject == id)
+                .Where(m => m.IdProject == id &&  m.Status == 21)
                 .Select(i => new {
                 i.IdSample,
                 i.IdPm,
@@ -102,6 +102,96 @@ namespace LBW.Controllers
                 i.Observaciones,
                 i.IdPlanta
             });
+
+            // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
+            // This can make SQL execution plans more efficient.
+            // For more detailed information, please refer to this discussion: https://github.com/DevExpress/DevExtreme.AspNet.Data/issues/336.
+            // loadOptions.PrimaryKey = new[] { "IdSample" };
+            // loadOptions.PaginateViaPrimaryKey = true;
+
+            return Json(await DataSourceLoader.LoadAsync(muestras, loadOptions));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetIdProjectA(int id, DataSourceLoadOptions loadOptions)
+        {
+            var muestras = _context.Muestras
+                .Where(m => m.IdProject == id && m.Status == 24 || m.Status == 21)
+                .Select(i => new {
+                    i.IdSample,
+                    i.IdPm,
+                    i.IdCliente,
+                    i.IdLocation,
+                    i.SampleNumber,
+                    i.TextID,
+                    i.Status,
+                    i.ChangedOn,
+                    i.OriginalSample,
+                    i.LoginDate,
+                    i.LoginBy,
+                    i.SampleDate,
+                    i.RecdDate,
+                    i.ReceivedBy,
+                    i.DateStarted,
+                    i.DueDate,
+                    i.DateCompleted,
+                    i.DateReviewed,
+                    i.PreBy,
+                    i.Reviewer,
+                    i.SamplingPoint,
+                    i.SampleType,
+                    i.IdProject,
+                    i.SampleName,
+                    i.Location,
+                    i.Customer,
+                    i.Observaciones,
+                    i.IdPlanta
+                });
+
+            // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
+            // This can make SQL execution plans more efficient.
+            // For more detailed information, please refer to this discussion: https://github.com/DevExpress/DevExtreme.AspNet.Data/issues/336.
+            // loadOptions.PrimaryKey = new[] { "IdSample" };
+            // loadOptions.PaginateViaPrimaryKey = true;
+
+            return Json(await DataSourceLoader.LoadAsync(muestras, loadOptions));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetIdProjectA1(int id, DataSourceLoadOptions loadOptions)
+        {
+            var muestras = _context.Muestras
+                .Where(m => m.IdProject == id)
+                .Select(i => new {
+                    i.IdSample,
+                    i.IdPm,
+                    i.IdCliente,
+                    i.IdLocation,
+                    i.SampleNumber,
+                    i.TextID,
+                    i.Status,
+                    i.ChangedOn,
+                    i.OriginalSample,
+                    i.LoginDate,
+                    i.LoginBy,
+                    i.SampleDate,
+                    i.RecdDate,
+                    i.ReceivedBy,
+                    i.DateStarted,
+                    i.DueDate,
+                    i.DateCompleted,
+                    i.DateReviewed,
+                    i.PreBy,
+                    i.Reviewer,
+                    i.SamplingPoint,
+                    i.SampleType,
+                    i.IdProject,
+                    i.SampleName,
+                    i.Location,
+                    i.Customer,
+                    i.Observaciones,
+                    i.IdPlanta
+                });
 
             // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
             // This can make SQL execution plans more efficient.
@@ -156,6 +246,52 @@ namespace LBW.Controllers
 
             return Json(await DataSourceLoader.LoadAsync(muestras, loadOptions));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetMuestrasA(DataSourceLoadOptions loadOptions)
+        {
+            var muestras = _context.Muestras
+                 .Where(m => m.Status == 21 || m.Status == 24)
+                .Select(i => new {
+                    i.IdSample,
+                    i.IdPm,
+                    i.IdCliente,
+                    i.IdLocation,
+                    i.SampleNumber,
+                    i.TextID,
+                    i.Status,
+                    i.ChangedOn,
+                    i.OriginalSample,
+                    i.LoginDate,
+                    i.LoginBy,
+                    i.SampleDate,
+                    i.RecdDate,
+                    i.ReceivedBy,
+                    i.DateStarted,
+                    i.DueDate,
+                    i.DateCompleted,
+                    i.DateReviewed,
+                    i.PreBy,
+                    i.Reviewer,
+                    i.SamplingPoint,
+                    i.SampleType,
+                    i.IdProject,
+                    i.SampleName,
+                    i.Location,
+                    i.Customer,
+                    i.Observaciones,
+                    i.IdPlanta
+                });
+
+            // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
+            // This can make SQL execution plans more efficient.
+            // For more detailed information, please refer to this discussion: https://github.com/DevExpress/DevExtreme.AspNet.Data/issues/336.
+            // loadOptions.PrimaryKey = new[] { "IdSample" };
+            // loadOptions.PaginateViaPrimaryKey = true;
+
+            return Json(await DataSourceLoader.LoadAsync(muestras, loadOptions));
+        }
+
 
 
         [HttpGet]
@@ -549,11 +685,26 @@ namespace LBW.Controllers
                     .Where(m => muestras.Contains(m.IdSample))
                     .ToListAsync();
 
+                //Obtener los resultados a actualizar
+                var resultadosList = await _context.Resultados
+                    .Where(r => muestrasList.Select(m => m.IdSample).Contains(r.IdSample))
+                    .ToListAsync();
+
+                //Actualizar el estado de proyecto
+
+
                 // Actualizar el estado de cada muestra
                 foreach (var muestraItem in muestrasList)
                 {
                     muestraItem.Status = 21; // Modificar el estado según lo requerido
                     muestraItem.RecdDate = DateTime.Now;
+                }
+
+                // Actualizar el estado de cada muestra
+                foreach (var resultadoItem in resultadosList)
+                {
+                    resultadoItem.Status = 21; // Modificar el estado según lo requerido
+                    resultadoItem.ChangedOn = DateTime.Now;
                 }
 
                 await _context.SaveChangesAsync();

@@ -324,7 +324,6 @@
 
             <div style="text-align:center; justify-content:center; display:flex; align-content:center;">
                 <button id="btnEnviarDatos" onclick="EnviarDatos()" class="btn" style="margin-top:15px; background-color:#337AB7; color:white;">Enviar Datos</button>
-
             </div>
         </div>
     </div>
@@ -553,9 +552,16 @@
                     success: function (result) {
                         // Procesar la respuesta si es necesario
                         DevExpress.ui.notify('Datos enviados correctamente', 'success', 6000);
-                        setTimeout(function () {
-                            location.reload();
-                        }, 3000);
+                        var lookupMuestra = $("#lookupMuestra").dxLookup("instance");
+                        var tagboxAnalisis = $("#lookupAnalisis").dxTagBox("instance");
+
+                        tagboxAnalisis.option("isRequired", false);
+                        lookupMuestra.option("isRequired", false);
+
+                        lookupMuestra.option("value", null);
+                        tagboxAnalisis.option("value", []);
+
+         
                     },
                     error: function (error) {
                         DevExpress.ui.notify('Error al enviar los datos', 'error', 6000);

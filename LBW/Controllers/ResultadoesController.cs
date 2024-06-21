@@ -284,6 +284,15 @@ namespace LBW.Controllers
             if (!TryValidateModel(model))
                 return BadRequest(GetFullErrorMessage(ModelState));
 
+            if(model.ResultNumber == null)
+            {
+                model.Status = 254; 
+            }
+            else
+            {
+                model.Status = 26;
+            }
+
             int idResult = model.IdResult;
             int idMuestra = model.IdSample;
 

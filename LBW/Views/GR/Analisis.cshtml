@@ -104,9 +104,10 @@
 
     })
     .OnCellPrepared("onCellPrepared")
-      .FilterRow(f => f.Visible(true))
+    .FilterRow(f => f.Visible(true))
           .MasterDetail(m => m
             .Enabled(true)
+            .AutoExpandAll(false)
             .Template(new TemplateName("gridContainer-details1"))
             )
 )
@@ -154,7 +155,7 @@
         .AllowColumnReordering(true)
         .RowAlternationEnabled(false)
         .ShowColumnLines(true)
-        .Grouping(g => g.AutoExpandAll(true))
+        .Grouping(g => g.AutoExpandAll(false))
         .ShowRowLines(true)
         .Paging(paging => paging.PageSize(20))
         .FilterRow(f => f.Visible(true))

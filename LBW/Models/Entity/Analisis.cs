@@ -9,7 +9,8 @@ namespace LBW.Models.Entity
             PlantillaDetalleA = new HashSet<PlantillaDetalle>();
             ResultadosA = new HashSet<Resultado>();
         }
-        [Required(ErrorMessage = "El Análisis es obligatorio")]
+
+        [Required(ErrorMessage = "No te olvides de seleccionar tu análisis.")]
         public int IdAnalisis { get; set; }
 
         [Required(ErrorMessage = "El Tipo de Analisis es obligatorio")]

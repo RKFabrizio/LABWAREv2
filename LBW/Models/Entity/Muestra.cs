@@ -8,6 +8,7 @@ namespace LBW.Models.Entity
         {
             ResultadosM = new HashSet<Resultado>();
         }
+        [Required(ErrorMessage = "No te olvides de seleccionar tu muestra.")]
         public int IdSample { get; set; }
 
         [Required(ErrorMessage = "Seleccione el Punto de Muestra correspondiente.")]
