@@ -29,6 +29,7 @@ namespace LBW.Data
                             _usuario.Add(new Usuario()
                             {
                                 IdUser= dr["IdUser"] != DBNull.Value ? Convert.ToInt32(dr["IdUser"]) : 0,
+                                Password = dr["Password"] != DBNull.Value ? dr["Password"].ToString() : string.Empty,
                                 UsuarioID = dr["UsuarioID"] != DBNull.Value ? dr["UsuarioID"].ToString() : string.Empty,
                                 NombreCompleto = dr["NombreCompleto"] != DBNull.Value ? dr["NombreCompleto"].ToString() : string.Empty,
                                 Correo = dr["Correo"] != DBNull.Value ? dr["Correo"].ToString() : string.Empty,
@@ -53,10 +54,10 @@ namespace LBW.Data
 
         }
 
-        public Usuario ValidarUsuario(string _usuario)
+        public Usuario ValidarUsuario(string _usuario, string _password)
         {
             Console.WriteLine("Pass 2 😍",_usuario);
-            return ListaUsuario().Where(item => item.UsuarioID == _usuario ).FirstOrDefault();
+            return ListaUsuario().Where(item => item.UsuarioID == _usuario && item.Password == _password).FirstOrDefault();
         }
 
         public static string ConvertirSha256(string texto)

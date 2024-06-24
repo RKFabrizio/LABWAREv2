@@ -77,6 +77,10 @@ namespace LBW.Models.Entity
                         .HasMaxLength(100)
                         .IsRequired(true);
 
+                    entity.Property(e => e.Password)
+                        .HasColumnName("Contraseña")
+                        .IsRequired(true);
+
                     entity.Property(e => e.NombreCompleto)
                         .HasColumnName("FULL_NAME")
                         .HasMaxLength(100)

@@ -27,7 +27,7 @@ namespace LBW.Controllers
         public async Task<IActionResult> Login(Usuario _usuario)
         {
 
-            var usuario = _UsuarioDatos.ValidarUsuario(_usuario.UsuarioID);
+            var usuario = _UsuarioDatos.ValidarUsuario(_usuario.UsuarioID, _usuario.Password);
             
             try
             {

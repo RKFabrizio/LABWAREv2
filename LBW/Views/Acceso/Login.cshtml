@@ -38,7 +38,13 @@
                         .Placeholder("Usuario")
                         .ElementAttr(new { @class = "form-input-user" })
                         );
-                            
+                            groupItems.AddSimpleFor(m => m.Password)
+                        .Label(l => l.Visible(false))
+                        .Editor(e => e.TextBox()
+                        .Mode(TextBoxMode.Password)
+                        .Placeholder("Contraseña")
+                        .ElementAttr(new { @class = "form-input-user" })
+                        );
                         });
 
                         items.AddButton()

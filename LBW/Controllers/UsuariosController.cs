@@ -27,6 +27,7 @@ namespace LBW.Controllers
         public async Task<IActionResult> Get(DataSourceLoadOptions loadOptions) {
             var usuarios = _context.Usuarios.Select(i => new {
                 i.UsuarioID,
+                i.Password,
                 i.NombreCompleto,
                 i.Correo,
                 i.Rol,
@@ -89,6 +90,7 @@ namespace LBW.Controllers
         private void PopulateModel(Usuario model, IDictionary values) {
             string USUARIO_ID = nameof(Usuario.UsuarioID);
             string NOMBRE_COMPLETO = nameof(Usuario.NombreCompleto);
+            string PASSWORD = nameof(Usuario.Password);
             string CORREO = nameof(Usuario.Correo);
             string ROL = nameof(Usuario.Rol);
             string GMT_OFFSET = nameof(Usuario.GMT_OFFSET);
@@ -100,7 +102,13 @@ namespace LBW.Controllers
                 model.UsuarioID = Convert.ToString(values[USUARIO_ID]);
             }
 
-            if(values.Contains(NOMBRE_COMPLETO)) {
+            if (values.Contains(PASSWORD))
+            {
+                model.Password = Convert.ToString(values[PASSWORD]);
+            }
+
+
+            if (values.Contains(NOMBRE_COMPLETO)) {
                 model.NombreCompleto = Convert.ToString(values[NOMBRE_COMPLETO]);
             }
 

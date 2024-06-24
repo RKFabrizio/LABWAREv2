@@ -6,6 +6,7 @@ namespace LBW.Models
     {
         public int IdUser { get; set; }
         public string? UsuarioID { get; set; }
+        public string Password { get; set; }
         public string? NombreCompleto { get; set; }
         public string? Correo { get; set; }
         public bool? Rol { get; set; }
