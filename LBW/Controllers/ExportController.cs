@@ -11,7 +11,11 @@ using Microsoft.VisualBasic;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.Net.Mail;
-
+using NuGet.Protocol;
+using System.Net.Mime;
+using Microsoft.AspNetCore.Authorization;
+using System.Text;
+using CoreHtmlToImage;
 
 
 namespace LBW.Controllers
@@ -439,6 +443,74 @@ namespace LBW.Controllers
             //    Attachment attachment = new Attachment(lastProformacotizacionFilePath);
             //    email.Attachments.Add(attachment);
             //}
+
+
+            string html = @"
+                    <DOCTYPE html>
+                    <html>
+                    <head>
+                        <meta charset='UTF-8'>
+                    </head>
+                    <body>
+              
+                    </body>
+                    </html>
+             ";
+
+            // Crea una instancia de HtmlConverter
+
+            // Crea una instancia de HtmlConverter
+            var converter = new HtmlConverter();
+
+            // Convierte el HTML en bytes de imagen
+            var bytes = converter.FromHtmlString(html);
+
+            // Crea una instancia de LinkedResource para la imagen
+        //    var inlineLogo = new LinkedResource(new MemoryStream(bytes), MediaTypeNames.Image.Jpeg);
+        //    inlineLogo.ContentId = "MyImage"; 
+
+
+            string correo_emisor = "leedryk@gmail.com";
+            string clave_emisor = "xxrlviitjlpqytrj";
+
+
+            MailAddress receptor = new(correo_emisor, clave_emisor);
+            MailAddress emisor = new(correo_emisor);
+
+            MailMessage email = new MailMessage(emisor, receptor);
+            email.Subject = "Testeo 1";
+
+
+            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(html, null, MediaTypeNames.Text.Html);
+       //     htmlView.LinkedResources.Add(inlineLogo); 
+            email.AlternateViews.Add(htmlView);
+            email.Body = html;
+            email.IsBodyHtml = true;
+            try
+            {
+                SmtpClient smtp = new();
+                smtp.Host = "smtp.gmail.com";
+                smtp.Port = 587;
+                smtp.Credentials = new System.Net.NetworkCredential(correo_emisor, clave_emisor);
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.EnableSsl = true;
+
+                smtp.Send(email);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+           
+
+            //var client = new SmtpClient("CHISANEMP1");
+            //var client = new SmtpClient(SERVER);
+            //client.Credentials = new System.Net.NetworkCredential("svc-vd-pino@barrick.com", "");
+            //client.Credentials = new System.Net.NetworkCredential(SERVER_EMAIL, PASSWORD);
+            //client.DeliveryMethod = SmtpDeliveryMethod.Network;
+
+            //client.Send(emailCC);
+
 
             return Ok();
         }
