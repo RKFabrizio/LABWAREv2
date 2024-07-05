@@ -62,10 +62,15 @@
 
 }
 
+@(Html.DevExtreme().Button()
+    .Text("Exportar Reporte")
+    .OnClick("exportToPdf")
+)
 
- 
+<div style="height:10px;">
 
- 
+</div>
+
 @(Html.DevExtreme().DataGrid<LBW.Models.Entity.Proyecto>()
     .DataSource(ds => ds.Mvc()
         .Controller("Proyectoes")
@@ -78,6 +83,7 @@
     .ShowBorders(true)
     .ID("dataGridContainer")
     .RemoteOperations(true)
+    .OnSelectionChanged("onSelectionChanged")
     .Columns(columns =>
     {
         columns.AddFor(m => m.IdProyecto).Caption("").Width(60)
@@ -119,6 +125,8 @@
 
 
 <script>
+
+ 
 
     function onRowUpdating(e) {
         // Mostrar un indicador de carga o bloquear la interfaz de usuario
@@ -258,24 +266,27 @@
         Ids = e.selectedRowKeys;
     }
 
-    function exportToExcel() {
+    var selectedProjectId;
+    function onSelectionChanged(e) {
+        selectedProjectId = e.selectedRowsData[0].IdProyecto;
+    }
 
-        if (Ids.length === 0) {
+    function exportToPdf() {
+
+        if (selectedProjectId.length === 0) {
             alert("No hay AAAAA seleccionados.");
             return;
         }
 
-        console.log(Ids);
+        console.log(selectedProjectId);
 
         $.ajax({
-            url: '@Url.Action("ExportExcel", "Export")',
+            url: '@Url.Action("ExportPdf", "Export")',
             method: "POST",
-            data: { proyectos: Ids },
+            data: { proyecto: selectedProjectId },
             success: function (result) {
                 DevExpress.ui.notify('Datos enviados correctamente', 'success', 6000);
-                setTimeout(function () {
-                    location.reload();
-                }, 3000);
+               
             },
             error: function (error) {
                 DevExpress.ui.notify('Error al enviar los datos', 'error', 6000);
@@ -284,21 +295,7 @@
         });
     }
 
-    function exportToPdf() {
-        if (selectedIds.length === 0) {
-            alert("No hay elementos seleccionados.");
-            return;
-        }
-        // Implementa la lógica para exportar a PDF aquí
-    }
-
-    function sendByEmail() {
-        if (selectedIds.length === 0) {
-            alert("No hay elementos seleccionados.");
-            return;
-        }
-
-    }
+     
 </script>
 
 

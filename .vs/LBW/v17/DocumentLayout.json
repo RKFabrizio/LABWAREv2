@@ -3,8 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|c:\\users\\fabri\\onedrive\\desktop\\giteste\\lbw\\wwwroot\\informeprincipal\\report1.rdl||{420F4200-DD61-4785-81F3-52669CBC208E}",
+      "RelativeMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|solutionrelative:lbw\\wwwroot\\informeprincipal\\report1.rdl||{420F4200-DD61-4785-81F3-52669CBC208E}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|c:\\users\\fabri\\onedrive\\desktop\\giteste\\lbw\\controllers\\exportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|solutionrelative:lbw\\controllers\\exportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|c:\\users\\fabri\\onedrive\\desktop\\giteste\\lbw\\views\\reportecliente\\reporte.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|solutionrelative:lbw\\views\\reportecliente\\reporte.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{CF352EB4-047F-4999-B22E-52C809F07719}|InformePrincipal\\InformePrincipal.rptproj|C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\InformePrincipal\\Report1.rdl||{420F4200-DD61-4785-81F3-52669CBC208E}",
       "RelativeMoniker": "D:0:0:{CF352EB4-047F-4999-B22E-52C809F07719}|InformePrincipal\\InformePrincipal.rptproj|solutionrelative:InformePrincipal\\Report1.rdl||{420F4200-DD61-4785-81F3-52669CBC208E}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|c:\\users\\fabri\\onedrive\\desktop\\giteste\\lbw\\views\\gm\\recepcion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4C84968F-4784-49E6-8A8B-173B4840493F}|LBW\\LBW.csproj|solutionrelative:lbw\\views\\gm\\recepcion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -19,14 +35,63 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Report1.rdl [XML]",
+              "DocumentMoniker": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\InformePrincipal\\Report1.rdl",
+              "RelativeDocumentMoniker": "LBW\\wwwroot\\InformePrincipal\\Report1.rdl",
+              "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\InformePrincipal\\Report1.rdl [XML]",
+              "RelativeToolTip": "LBW\\wwwroot\\InformePrincipal\\Report1.rdl [XML]",
+              "ViewState": "AQIAAA8AAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-07-05T11:47:25.122Z",
+              "EditorCaption": " [XML]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ExportController.cs",
+              "DocumentMoniker": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\Controllers\\ExportController.cs",
+              "RelativeDocumentMoniker": "LBW\\Controllers\\ExportController.cs",
+              "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\Controllers\\ExportController.cs",
+              "RelativeToolTip": "LBW\\Controllers\\ExportController.cs",
+              "ViewState": "AQIAAA0AAAAAAAAAAAAcwC4AAAA8AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-05T10:00:57.061Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Reporte.cshtml",
+              "DocumentMoniker": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\Views\\ReporteCliente\\Reporte.cshtml",
+              "RelativeDocumentMoniker": "LBW\\Views\\ReporteCliente\\Reporte.cshtml",
+              "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\Views\\ReporteCliente\\Reporte.cshtml",
+              "RelativeToolTip": "LBW\\Views\\ReporteCliente\\Reporte.cshtml",
+              "ViewState": "AQIAABQBAAAAAAAAAAAmwBsBAAAyAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-05T09:27:11.714Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Recepcion.cshtml",
+              "DocumentMoniker": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\Views\\GM\\Recepcion.cshtml",
+              "RelativeDocumentMoniker": "LBW\\Views\\GM\\Recepcion.cshtml",
+              "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\Views\\GM\\Recepcion.cshtml",
+              "RelativeToolTip": "LBW\\Views\\GM\\Recepcion.cshtml",
+              "ViewState": "AQIAAGUBAAAAAAAAAAAAAHABAAALAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-05T09:58:20.298Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "Report1.rdl [Dise\u00F1o]",
               "DocumentMoniker": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\InformePrincipal\\Report1.rdl",
               "RelativeDocumentMoniker": "InformePrincipal\\Report1.rdl",
               "ToolTip": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\InformePrincipal\\Report1.rdl [Dise\u00F1o]",
               "RelativeToolTip": "InformePrincipal\\Report1.rdl [Dise\u00F1o]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-07-05T01:00:13.028Z",
-              "EditorCaption": " [Dise\u00F1o]"
+              "WhenOpened": "2024-07-05T01:00:13.028Z"
             }
           ]
         }

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "XTby96WemLUBu6m25Dg7gB64OfLjUbjOPt/EZ4zOAmE=",
+  "Hash": "ITABmqOJ1yCKPAmnRuKurX4MxZ3ZQbfma/5ctC1eBZQ=",
   "Source": "LBW",
   "BasePath": "_content/LBW",
   "Mode": "Default",
@@ -15766,6 +15766,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\img\\Tubo Blanco.svg"
+    },
+    {
+      "Identity": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\InformePrincipal\\Report1.rdl",
+      "SourceId": "LBW",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\",
+      "BasePath": "_content/LBW",
+      "RelativePath": "InformePrincipal/Report1.rdl",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\InformePrincipal\\Report1.rdl"
     },
     {
       "Identity": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\js\\devextreme\\aspnet\\dx.aspnet.data.js",

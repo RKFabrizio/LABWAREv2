@@ -1,6 +1,10 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\InformePrincipal\\Report1.rdl",
+      "PackagePath": "staticwebassets\\InformePrincipal\\Report1.rdl"
+    },
+    {
       "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\css\\Barrick.css",
       "PackagePath": "staticwebassets\\css\\Barrick.css"
     },
