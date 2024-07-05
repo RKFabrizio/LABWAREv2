@@ -35,8 +35,8 @@ namespace LBW.Models.Entity
         public DateTime? DateReviewed { get; set; }
         public string? PreBy { get; set; }
         public string? Reviewer { get; set; }
-
-
+        public int? IdGrado {  get; set; }
+        public string? AnalisisMuestra { get; set; }
         public string? SamplingPoint { get; set; }
 
         [Required(ErrorMessage = "Seleccione el Tipo de Muestra.")]
@@ -55,7 +55,6 @@ namespace LBW.Models.Entity
         public string? ConteoPuntos { get; set; }
 
 
-
         public virtual Lista IdStatusNavigation { get; set; }
         public virtual Usuario IdReceivedByNavigation { get; set; }
         public virtual Usuario IdLoginByNavigation { get; set; }
@@ -65,6 +64,7 @@ namespace LBW.Models.Entity
         public virtual Cliente IdClienteNavigation { get; set; }
         public virtual Planta IdPlantaNavigation { get; set; }
         public virtual Lista IdListaNavigation { get; set; }
+        public virtual Grado IdGradoNavigation { get; set; }
         public virtual ICollection<Resultado> ResultadosM { get; set; }
     }
 }

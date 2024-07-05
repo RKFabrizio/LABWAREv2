@@ -24,13 +24,42 @@ namespace LBW.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Get0(DataSourceLoadOptions loadOptions)
+        {
+            string usuarioInfoJson = HttpContext.Request.Cookies["UsuarioInfo"];
+            LBW.Models.Usuario usuario = JsonConvert.DeserializeObject<LBW.Models.Usuario>(usuarioInfoJson);
+
+            var usuarios = _context.Usuarios
+                .Where(p => p.IdUser ==  usuario.IdUser)
+                .Select(i => new {
+                i.UsuarioID,
+                i.Password,
+                i.NombreCompleto,
+                i.Correo,
+                i.IdRol,
+                i.GMT_OFFSET,
+                i.UsuarioDeshabilitado,
+                i.FechaDeshabilitado,
+                i.CCliente
+            });
+
+            // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
+            // This can make SQL execution plans more efficient.
+            // For more detailed information, please refer to this discussion: https://github.com/DevExpress/DevExtreme.AspNet.Data/issues/336.
+            // loadOptions.PrimaryKey = new[] { "UsuarioID" };
+            // loadOptions.PaginateViaPrimaryKey = true;
+
+            return Json(await DataSourceLoader.LoadAsync(usuarios, loadOptions));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Get(DataSourceLoadOptions loadOptions) {
             var usuarios = _context.Usuarios.Select(i => new {
                 i.UsuarioID,
                 i.Password,
                 i.NombreCompleto,
                 i.Correo,
-                i.Rol,
+                i.IdRol,
                 i.GMT_OFFSET,
                 i.UsuarioDeshabilitado,
                 i.FechaDeshabilitado,
@@ -78,6 +107,21 @@ namespace LBW.Controllers
             return Ok();
         }
 
+        //RolLookup
+
+        [HttpGet]
+        public async Task<IActionResult> RolLookup(DataSourceLoadOptions loadOptions)
+        {
+            var lookup = from i in _context.Roles
+                         orderby i.IdRol
+                         select new
+                         {
+                             Value = i.IdRol,
+                             Text = i.Nombre
+                         };
+            return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
+        }
+
         [HttpDelete]
         public async Task Delete(string key) {
             var model = await _context.Usuarios.FirstOrDefaultAsync(item => item.UsuarioID == key);
@@ -92,7 +136,7 @@ namespace LBW.Controllers
             string NOMBRE_COMPLETO = nameof(Usuario.NombreCompleto);
             string PASSWORD = nameof(Usuario.Password);
             string CORREO = nameof(Usuario.Correo);
-            string ROL = nameof(Usuario.Rol);
+            string ROL = nameof(Usuario.IdRol);
             string GMT_OFFSET = nameof(Usuario.GMT_OFFSET);
             string USUARIO_DESHABILITADO = nameof(Usuario.UsuarioDeshabilitado);
             string FECHA_DESHABILITADO = nameof(Usuario.FechaDeshabilitado);
@@ -117,7 +161,7 @@ namespace LBW.Controllers
             }
 
             if(values.Contains(ROL)) {
-                model.Rol = values[ROL] != null ? Convert.ToBoolean(values[ROL]) : (bool?)null;
+                model.IdRol = values[ROL] != null ? Convert.ToInt32(values[ROL]) : (int?)null;
             }
 
             if(values.Contains(GMT_OFFSET)) {

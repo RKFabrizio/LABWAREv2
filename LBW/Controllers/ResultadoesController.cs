@@ -84,61 +84,73 @@ namespace LBW.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Resultado model, int Muestra, List<int> Analisis)
+        public async Task<IActionResult> Post(Resultado model, List<int> Muestra, List<int> Analisis)
         {
             try
             {
-                model.IdSample = Muestra;
 
-                if (!TryValidateModel(model))
-                    return BadRequest(GetFullErrorMessage(ModelState));
-
+                if (Muestra == null || Analisis == null || !Muestra.Any() || !Analisis.Any())
+                    return BadRequest("Se requieren muestras y análisis.");
 
                 var nuevosResultados = new List<Resultado>();
 
-                foreach (var idAnalisis in Analisis)
+                var analisisNames = _context.Analisiss
+                    .Where(a => Analisis.Contains(a.IdAnalisis))
+                    .Select(a => a.NameAnalisis)
+                    .ToList();
+
+                var analisisMuestraString = string.Join(", ", analisisNames);
+
+
+
+                foreach (var idMuestra in Muestra)
                 {
-                    var detallesAnalisis = _context.AnalisisDetalles
-                        .Where(ad => ad.IdAnalisis == idAnalisis)
-                        .GroupBy(ad => ad.NameComponent)
-                        .Select(g => g.OrderByDescending(ad => ad.Version).FirstOrDefault())
-                        .ToList();
-
-
-                    foreach (var detalle in detallesAnalisis)
+                    var muestra = await _context.Muestras.FindAsync(idMuestra);
+                    if (muestra != null)
                     {
-                        var existeResultado = _context.Resultados
-                            .Any(r => r.IdSample == Muestra && r.IdAnalysis == idAnalisis && r.IdComponent == detalle.IdComp);
+                        muestra.AnalisisMuestra = analisisMuestraString;
+                    }
 
-                        if (!existeResultado)
+                    foreach (var idAnalisis in Analisis)
+                    {
+                        var detallesAnalisis = _context.AnalisisDetalles
+                            .Where(ad => ad.IdAnalisis == idAnalisis)
+                            .GroupBy(ad => ad.NameComponent)
+                            .Select(g => g.OrderByDescending(ad => ad.Version).FirstOrDefault())
+                            .ToList();
+
+                        foreach (var detalle in detallesAnalisis)
                         {
-                            var nuevoResultado = new Resultado
+                            var existeResultado = _context.Resultados
+                                .Any(r => r.IdSample == idMuestra && r.IdAnalysis == idAnalisis && r.IdComponent == detalle.IdComp);
+
+                            if (!existeResultado)
                             {
-
-                                IdSample = Muestra,
-                                IdAnalysis = idAnalisis,
-                                IdComponent = detalle.IdComp,
-                                SampleNumber = null, // O asignar un valor según sea necesario
-                                ResultNumber = null, // O asignar un valor según sea necesario
-                                OrderNum = null,
-                                IdUnidad = detalle.IdUnidad,
-                                AnalysisData = _context.Analisiss.Find(idAnalisis)?.NameAnalisis, // Obtener NameAnalisis desde la tabla Analisis
-                                NameComponent = detalle.NameComponent,
-                                ReportedName = detalle.NameComponent,
-                                Reportable = detalle.Reportable,
-                                Status = 254,
-                                ChangedOn = DateTime.Now,
-                                Instrument = 1
-
-                            };
-                            nuevosResultados.Add(nuevoResultado);
+                                var nuevoResultado = new Resultado
+                                {
+                                    IdSample = idMuestra,
+                                    IdAnalysis = idAnalisis,
+                                    IdComponent = detalle.IdComp,
+                                    SampleNumber = model.SampleNumber,
+                                    ResultNumber = model.ResultNumber,
+                                    OrderNum = model.OrderNum,
+                                    IdUnidad = detalle.IdUnidad,
+                                    AnalysisData = _context.Analisiss.Find(idAnalisis)?.NameAnalisis,
+                                    NameComponent = detalle.NameComponent,
+                                    ReportedName = detalle.NameComponent,
+                                    Reportable = detalle.Reportable,
+                                    Status = 254,
+                                    ChangedOn = DateTime.Now,
+                                    Instrument = 1
+                                };
+                                nuevosResultados.Add(nuevoResultado);
+                            }
                         }
                     }
                 }
 
                 _context.Resultados.AddRange(nuevosResultados);
                 await _context.SaveChangesAsync();
-
                 return Json(new { success = true });
             }
             catch (Exception ex)

@@ -88,10 +88,10 @@
 
 
 <div class="row row-cards">
-    <div class="col-md-12">
+    <div class=".col-lg-10">
         <div class="form-group mb-3">
 
-                <div class="col-md-12">
+            <div class=".col-lg-10">
 
                     @(Html.DevExtreme().TabPanel()
 
@@ -109,8 +109,10 @@
                         .SelectedIndex(0)
                         .Loop(false)
                         .AnimationEnabled(true)
-                        .SwipeEnabled(true)
+                        .SwipeEnabled(false)
+                        
                         )
+                       
                 </div>
        
         </div>
@@ -216,7 +218,6 @@
                        .ButtonOptions(b => b.Text("Enviar")
                        .Type(ButtonType.Default)
                        .UseSubmitBehavior(true)
-
                        )
                        .CssClass("margen")
                        .ColSpan(2);
@@ -226,78 +227,20 @@
         </div>
     }
 }
-    
-     
+
+
 @using (Html.DevExtreme().NamedTemplate("TAB2"))
 {
-    <div style="margin:20px;">
-        <div class="text">
+    <div style="margin:10px">
+        <div style="height:15px;">
+        </div>
+             
+ 
 
-            <div class="hero">
-                <div class="row">
-                    <div class="1 col-md-6">
-                        @(Html.DevExtreme().Form<LBW.Models.Entity.Muestra>()
-                            .ID("form")
-
-                            .Items(items =>
-                            {
-
-                                items.AddSimpleFor(m => m.IdSample)
-
-                                .Editor(e => e
-                                .Lookup()
-                                .ID("lookupMuestra")
-                                .DataSource(ds => ds.Mvc().Controller("Muestras").LoadAction("TextIdLookup"))
-                                .ValueExpr("Value")
-                                .DisplayExpr("Text")
-                                .OnValueChanged("guardarMuestra")
-                                .SearchEnabled(true))
-                                .Label(label => label.Text("Muestras Registradas").Location(FormLabelLocation.Top)
-                                .Visible(true)
-
-                                );
-
-                            })
-
-                            )
-                    </div>
-                    <div class="2 col-md-6">
-                        @(
-                            Html.DevExtreme().Form<LBW.Models.Entity.Analisis>()
-                            .LabelLocation(FormLabelLocation.Top)
-
-                            .Items(items =>
-                            {
-                                items.AddSimpleFor(m => m.IdAnalisis)
-                                .Editor(e => e
-                                .Lookup()
-                                .ID("combo")
-                                .DataSource(ds => ds.Mvc().Controller("Analisis").LoadAction("NameAnalisis2"))
-                                .ValueExpr("Value")
-                                .DisplayExpr("Text")
-                                .SearchEnabled(true))
-                                .Label(label => label.Text("Análisis asignados").Location(FormLabelLocation.Top)
-                                .Visible(true)
-                                );
-                                ;
-
-                            })
-
-
-                            )
-                    </div>
-                </div>
-                 
-            </div>
-            
-
-            
-
-            <div style="height:5px">
-
+      <div style="height:30px;">
             </div>
 
-            @(Html.DevExtreme().Form<LBW.Models.Entity.Analisis>()
+                @(Html.DevExtreme().Form<LBW.Models.Entity.Analisis>()
                     .LabelLocation(FormLabelLocation.Top)
                     .ID("formAnalisis")
                     .Items(items =>
@@ -320,13 +263,104 @@
 
 
                     )
+                
+                 
 
+            
+            <div style="height:30px;">
+
+            </div>
+        @(Html.DevExtreme().DataGrid<LBW.Models.Entity.Muestra>()
+            .ID("muestrasGrid")
+            .DataSource(ds => ds.Mvc()
+
+            .Controller("Muestras")
+            .LoadAction("GetMuestraPrevio")
+            .UpdateAction("Put")
+            .Key("IdSample")
+            )
+            .DataSourceOptions(o => o.ReshapeOnPush(true))
+            .RepaintChangesOnly(true)
+            .ColumnAutoWidth(true)
+            .Selection(s => s.Mode(SelectionMode.Multiple))
+            .RemoteOperations(true)
+           
+            .ShowBorders(true)
+            .Editing(editing =>
+            {
+                editing.Mode(GridEditMode.Cell);
+                editing.AllowUpdating(true);
+            })
+            .ShowBorders(true)
+            .Scrolling(scrolling => scrolling.RowRenderingMode(GridRowRenderingMode.Virtual))
+            .Paging(paging => paging.PageSize(5))
+            .Pager(pager =>
+            {
+                pager.Visible(true);
+                pager.DisplayMode(GridPagerDisplayMode.Full);
+                pager.ShowPageSizeSelector(true);
+                pager.AllowedPageSizes(new JS("[5]"));
+                pager.ShowInfo(true);
+                pager.ShowNavigationButtons(true);
+            })
+            .CustomizeColumns(@<text>
+                function(columns) {
+                columns[0].width = 70;
+                columns[4].dataType = "date";
+                }
+            </text>)
+            .ColumnHidingEnabled(true)
+            .Columns(columns =>
+            {
+                columns.AddFor(m => m.IdPlanta).Lookup(lookup => lookup
+                .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("LaboratorioLookup").Key("Value"))
+                .ValueExpr("Value")
+                .DisplayExpr("Text")
+                ).Caption("Laboratorio").AllowEditing(false);
+
+
+                columns.AddFor(m => m.LoginDate).Caption("Hora muestreo").AllowEditing(false);
+
+                columns.AddFor(m => m.IdPm).Lookup(lookup => lookup
+                .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("PuntoMuestrasLookup").Key("Value"))
+                .ValueExpr("Value")
+                .DisplayExpr("Text")
+                ).Caption("Buscar Punto").AllowEditing(false);
+
+                columns.AddFor(m => m.IdPm).Lookup(lookup => lookup
+                .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("CodigoPuntoMuestrasLookup").Key("Value"))
+                .ValueExpr("Value")
+                .DisplayExpr("Text")
+                ).Caption("Codigo Punto").AllowEditing(false);
+
+                columns.AddFor(m => m.IdPlanta).Lookup(lookup => lookup
+                .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("PlantasPersonalizadoLookup").Key("Value"))
+                .ValueExpr("Value")
+                .DisplayExpr("Text")
+                ).Caption("Planta").AllowEditing(false);
+
+                columns.AddFor(m => m.IdGrado).Lookup(lookup => lookup
+                .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("GradosLookup").Key("Value"))
+                .ValueExpr("Value")
+                .DisplayExpr("Text")
+                ).Caption("Grado");
+
+                columns.AddFor(m => m.AnalisisMuestra).Caption("Análisis Asignados").AllowEditing(false);
+
+                columns.AddFor(m => m.IdProject)
+                .Lookup(lookup => lookup
+                .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("ProyectosLookup").Key("Value"))
+                .ValueExpr("Value")
+                .DisplayExpr("Text")).GroupIndex(0).Caption("Proyecto");
+            })
+            )
 
             <div style="text-align:center; justify-content:center; display:flex; align-content:center;">
-                <button id="btnEnviarDatos" onclick="EnviarDatos()" class="btn" style="margin-top:15px; background-color:#337AB7; color:white;">Enviar Datos</button>
+                <button id="btnEnviarDatos" onclick="EnviarDatos()" class="btn" style="margin-top:15px; background-color:#337AB7; color:white; width:200px;">Asignar Análisis</button>
             </div>
-        </div>
-    </div>
+    </div>  
+
+   
 }
 
 
@@ -489,6 +523,8 @@
             console.log(`${key}: ${value}`);
         }
 
+        
+
         $.ajax({
             type: 'POST',
             url: url,
@@ -496,32 +532,36 @@
             processData: false,
             contentType: false,
             success: function (response) {
-                DevExpress.ui.notify('Tus muestras fueron creadas exitosamente', 'success', 6000);
-                form.find(':submit').prop('disabled', false);
-                form[0].reset();
+                if (response.success) {
+                    DevExpress.ui.notify(response.message, 'success', 6000);
+                    form.find(':submit').prop('disabled', false);
+                    form[0].reset();
 
-                
-
-                console.log(isChecked)
-                if (isChecked == true) {
-                    $.ajax({
-                        url: '@Url.Action("PostTest", "Resultadoes")',
-                        method: "POST",
-                        async: false,
-                        data: {
-                            Muestra: 3
-                        },
-                        success: function (result) {
-                            // Procesar la respuesta si es necesario
-                        },
-                        error: function (error) {
-                            console.error("Error al crear TestList:", error);
-                        }
-                    });
+                    console.log(isChecked)
+                    if (isChecked == true) {
+                        $.ajax({
+                            url: '@Url.Action("PostTest", "Resultadoes")',
+                            method: "POST",
+                            async: false,
+                            data: {
+                                Muestra: 3
+                            },
+                            success: function (result) {
+                                // Procesar la respuesta si es necesario
+                            },
+                            error: function (error) {
+                                console.error("Error al crear TestList:", error);
+                            }
+                        });
+                    }
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
                 }
-                setTimeout(function () {
-                    location.reload();
-                }, 3000);
+                else {
+                    DevExpress.ui.notify(response.message, 'error', 6000);
+                    form.find(':submit').prop('disabled', false);
+                }
             },
             error: function () {
                 DevExpress.ui.notify('Hubo un error al enviar la solicitud.', 'error', 6000);
@@ -532,33 +572,37 @@
 
     function EnviarDatos(){
 
-                var muestra = $("#lookupMuestra").dxLookup("instance").option("value");
+                var dataGrid = $("#muestrasGrid").dxDataGrid("instance");
+                var muestrasSeleccionadas = dataGrid.getSelectedRowKeys();
+
+                if (muestrasSeleccionadas.length === 0) {
+                    DevExpress.ui.notify("Por favor, seleccione al menos una muestra.", "warning", 3000);
+                    return;
+                }
 
                 var form = $("#formAnalisis").dxForm("instance");
                 var analisis = form.option("formData.IdAnalisis");
                 console.log(analisis);
 
-                console.log(muestra);
-
-
                 // Realizar la solicitud AJAX
                 $.ajax({
                     url: '@Url.Action("Post", "Resultadoes")',
                     method: "POST",
-                    data: {
-                        Muestra: muestra,
+                    data:
+                    {
+                        Muestra: muestrasSeleccionadas,
                         Analisis: analisis
                     },
                     success: function (result) {
                         // Procesar la respuesta si es necesario
                         DevExpress.ui.notify('Datos enviados correctamente', 'success', 6000);
-                        var lookupMuestra = $("#lookupMuestra").dxLookup("instance");
+                        setTimeout(function () {
+                            location.reload();
+                        }, 3000);
                         var tagboxAnalisis = $("#lookupAnalisis").dxTagBox("instance");
 
                         tagboxAnalisis.option("isRequired", false);
-                        lookupMuestra.option("isRequired", false);
 
-                        lookupMuestra.option("value", null);
                         tagboxAnalisis.option("value", []);
 
          
@@ -569,7 +613,42 @@
                     }
                 });
             }
-             
+
+    // function deleteProyect() {
+
+
+    //     // Realizar la solicitud AJAX
+    //     $.ajax({
+    //         url: '@Url.Action("Delete", "Resultadoes")',
+    //         method: "POST",
+    //         data:
+    //         {
+    //             Muestra: muestrasSeleccionadas,
+    //             Analisis: analisis
+    //         },
+    //         success: function (result) {
+    //             // Procesar la respuesta si es necesario
+    //             DevExpress.ui.notify('Datos enviados correctamente', 'success', 6000);
+    //             setTimeout(function () {
+    //                 location.reload();
+    //             }, 3000);
+    //             var tagboxAnalisis = $("#lookupAnalisis").dxTagBox("instance");
+
+    //             tagboxAnalisis.option("isRequired", false);
+
+    //             tagboxAnalisis.option("value", []);
+
+
+    //         },
+    //         error: function (error) {
+    //             DevExpress.ui.notify('Error al enviar los datos', 'error', 6000);
+    //             console.error("Error al enviar los datos:", error);
+    //         }
+    //     });
+    // }
+
+
+ 
 </script>
 
   

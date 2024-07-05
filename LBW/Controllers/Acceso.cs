@@ -28,12 +28,12 @@ namespace LBW.Controllers
         {
 
             var usuario = _UsuarioDatos.ValidarUsuario(_usuario.UsuarioID, _usuario.Password);
-            
+
             try
             {
                 if (usuario != null)
                 {
-                   var claims = new List<Claim>
+                    var claims = new List<Claim>
                         {
                          new Claim(ClaimTypes.Name, usuario.NombreCompleto),
                          new Claim("UsuarioID", usuario.UsuarioID),
@@ -65,7 +65,7 @@ namespace LBW.Controllers
                 TempData["Error"] = "Error al iniciar sesión: " + ex.Message;
                 return View();
             }
-            if(usuario == null)
+            if (usuario == null)
             {
                 TempData["Error"] = "No hay usuario";
             }

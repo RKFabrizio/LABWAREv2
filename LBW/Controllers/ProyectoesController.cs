@@ -55,16 +55,7 @@ namespace LBW.Controllers
             return Json(await DataSourceLoader.LoadAsync(proyectos, loadOptions));
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ExportToExcel()
-        {
-            var projects = await _context.Proyectos
-                .Include(p => p.MuestraPr)
-                .ThenInclude(m => m.ResultadosM)
-                .ToListAsync();
 
-            return Ok(projects);
-        }
 
         [HttpGet]
         public async Task<IActionResult> GetProyecto(DataSourceLoadOptions loadOptions)
@@ -104,7 +95,7 @@ namespace LBW.Controllers
         public async Task<IActionResult> GetCliente(DataSourceLoadOptions loadOptions)
         {
             var proyectos = _context.Proyectos
-                .Where(p => _context.Muestras.Any(m => m.IdProject == p.IdProyecto))
+                .Where(p => _context.Muestras.Any(m => m.IdProject == p.IdProyecto) && p.Status == 24)
                 .Select(i => new {
                     i.IdProyecto,
                     i.ID_TL,

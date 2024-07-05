@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.VisualBasic;
 
 namespace LBW.Models.Entity
@@ -29,7 +30,9 @@ namespace LBW.Models.Entity
             public DbSet<Proyecto> Proyectos { get; set; }
             public DbSet<Muestra> Muestras { get; set; }
             public DbSet<Resultado> Resultados { get; set; }
-            protected override void OnModelCreating(ModelBuilder modelBuilder)
+            public DbSet<Rol> Roles { get; set; }
+            public DbSet<Grado> Grados { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
             {
                 /*
                 modelBuilder.Entity<Usuario>(entity =>
@@ -91,8 +94,8 @@ namespace LBW.Models.Entity
                         .HasMaxLength(100)
                         .IsRequired(false);
 
-                    entity.Property(e => e.Rol)
-                        .HasColumnName("ROL")   // Convertir de bit a bool
+                    entity.Property(e => e.IdRol)
+                        .HasColumnName("IdRol")   // Convertir de bit a bool
                         .IsRequired(false);        // Asumiendo que el campo es requerido
 
                     entity.Property(e => e.GMT_OFFSET)
@@ -117,6 +120,12 @@ namespace LBW.Models.Entity
                       .HasForeignKey(d => d.CCliente)
                       .OnDelete(DeleteBehavior.ClientSetNull)
                       .HasConstraintName("FK_CLIENTE_USUARIO");
+
+                    entity.HasOne(d => d.IdRolNavigation)
+                      .WithMany(p => p.Usuarios)
+                      .HasForeignKey(d => d.IdRol)
+                      .OnDelete(DeleteBehavior.ClientSetNull)
+                      .HasConstraintName("FK_Usuario_Rol");
 
                     // Si quieres que el campo FechaDeshabilitado tenga un valor predeterminado
                     // de la fecha actual en caso de ser NULL, podrías usar algo como esto:
@@ -952,7 +961,14 @@ namespace LBW.Models.Entity
                      .HasColumnName("TEXT_ID")
                      .IsRequired(false);
 
-                     
+                    entity.Property(e => e.AnalisisMuestra)
+                     .HasMaxLength(100)
+                     .HasColumnName("AnalisisMuestra")
+                     .IsRequired(false);
+
+              
+
+
 
                     entity.Property(e => e.ChangedOn)
                       .HasColumnName("CHANGED_ON")
@@ -1009,6 +1025,10 @@ namespace LBW.Models.Entity
                     .IsUnicode(false)
                     .IsFixedLength();
 
+                    entity.Property(e => e.IdGrado)
+                    .HasColumnName("IdGrado")
+                    .IsRequired(false);
+
                     entity.Property(e => e.SampleName)
                   .HasMaxLength(100)
                   .HasColumnName("SAMPLE_NAME")
@@ -1044,6 +1064,12 @@ namespace LBW.Models.Entity
                       .HasForeignKey(d => d.Status)
                       .OnDelete(DeleteBehavior.ClientSetNull)
                       .HasConstraintName("FK_MUESTRA_LISTA1");
+
+                    entity.HasOne(d => d.IdGradoNavigation)
+                      .WithMany(p => p.Muestras)
+                      .HasForeignKey(d => d.IdGrado)
+                      .OnDelete(DeleteBehavior.ClientSetNull)
+                      .HasConstraintName("FK_Muestra_Grado");
 
                     entity.HasOne(d => d.IdClienteNavigation)
                       .WithMany(p => p.MuestraC)
@@ -1208,8 +1234,31 @@ namespace LBW.Models.Entity
 
             });
 
+            modelBuilder.Entity<Rol>(entity =>
+            {
+                entity.HasKey(e => e.IdRol);
+
+                entity.ToTable("ROL");
+
+                entity.Property(e => e.Nombre)
+                    .HasColumnName("Nombre");
+
+            });
+
+            modelBuilder.Entity<Grado>(entity =>
+            {
+                entity.HasKey(e => e.IdGrado);
+
+                entity.ToTable("GRADO");
+
+                entity.Property(e => e.Nombre)
+                    .HasColumnName("Nombre");
+
+            });
+
             OnModelCreatingPartial(modelBuilder);
-            }
+ 
+        }
 
             partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
         }

@@ -9,7 +9,7 @@ namespace LBW.Models
         public string Password { get; set; }
         public string? NombreCompleto { get; set; }
         public string? Correo { get; set; }
-        public bool? Rol { get; set; }
+        public int? IdRol { get; set; }
         public int? GMT_OFFSET { get; set; }
         public bool? UsuarioDeshabilitado { get; set; }
         public DateTime? FechaDeshabilitado { get; set; }

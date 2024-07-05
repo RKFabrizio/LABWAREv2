@@ -13,7 +13,6 @@
  
 
 <div class="page page-center" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-   
     <h1 style="margin-bottom:3%;">
         ACCESO AL SISTEMA
     </h1>
@@ -29,47 +28,41 @@
                     .Items(items =>
                     {
                         items.AddGroup()
-
                         .Items(groupItems =>
                         {
                             groupItems.AddSimpleFor(m => m.UsuarioID)
                         .Label(l => l.Visible(false))
                         .Editor(e => e.TextBox()
                         .Placeholder("Usuario")
-                        .ElementAttr(new { @class = "form-input-user" })
-                        );
+                        .ElementAttr(new { @class = "form-input-user" }));
+
                             groupItems.AddSimpleFor(m => m.Password)
                         .Label(l => l.Visible(false))
                         .Editor(e => e.TextBox()
                         .Mode(TextBoxMode.Password)
                         .Placeholder("Contraseña")
-                        .ElementAttr(new { @class = "form-input-user" })
-                        );
+                        .ElementAttr(new { @class = "form-input-user" }));
                         });
 
                         items.AddButton()
-
                         .ButtonOptions(b => b.Text("Acceder")
                         .Type(ButtonType.Default)
                         .UseSubmitBehavior(true)
-                        .ElementAttr(new { @class = "botton" })
-                        );
-
+                        .ElementAttr(new { @class = "botton" }));
                     })
-                    .FormData(Model)
-                    )
+                    .FormData(Model))
             }
         }
-
     </div>
     @if (TempData["Error"] != null)
     {
-        <div class="alert alert-danger" style="width: 300px; height: 100px; margin: auto; margin-top: 20px;">@TempData["Error"]</div>
+        <div class="alert alert-danger" style="width: 300px; height: 100px; margin: auto; margin-top: 20px;">
+            @TempData["Error"]
+        </div>
     }
 </div>
 <div class="dx-form-validation-summary dx-validationsummary dx-widget dx-collection">
     <div class="dx-item dx-validationsummary-item">
         <div class="dx-item-content dx-validationsummary-item-content">@ViewBag.msg</div>
-
-</div>
+    </div>
 </div>

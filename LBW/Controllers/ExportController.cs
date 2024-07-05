@@ -29,10 +29,161 @@ namespace LBW.Controllers
             _context = context;
         }
 
+        [HttpPost]
+        public ActionResult ExportExcel(int[] proyectos)
+        {
+           
+            // Verifica si el array no es nulo y contiene elementos
+            if (proyectos != null && proyectos.Length > 0)
+            {
+                foreach (var id in proyectos)
+                {
+                    Console.WriteLine($"Proyecto ID: {id}");
+                }
+
+                // Recopila los datos de las tablas anidadas
+                var projects = _context.Proyectos
+                    .Where(m => proyectos.Contains(m.IdProyecto))
+                    .Include(p => p.MuestraPr.Where(m => m.Status == 21))
+                        .ThenInclude(m => m.ResultadosM)
+                                    .Join(
+                                        _context.Usuarios,
+                                        p => p.Owner,
+                                        u => u.IdUser,
+                                        (p, u) => new { Proyecto = p, Usuario = u }
+                                    )
+                                    .Select(item => new
+                                    {
+                                        item.Proyecto,
+                                        item.Usuario,
+                                        MuestrasPr = item.Proyecto.MuestraPr.Select(m => new
+                                        {
+                                            m.TextID,
+                                            m.Customer,
+                                            ResultadosM = m.ResultadosM.Select(r => new
+                                            {
+                                                r.IdAnalysis,
+                                                NameAnalysis = _context.Analisiss
+                                                    .Where(a => a.IdAnalisis == r.IdAnalysis)
+                                                    .Select(a => a.NameAnalisis)
+                                                    .FirstOrDefault(),
+                                                r.IdComponent,
+                                                NameComponent = _context.AnalisisDetalles
+                                                    .Where(ad => ad.IdComp == r.IdComponent)
+                                                    .Select(ad => ad.NameComponent)
+                                                    .FirstOrDefault(),
+                                                r.ResultNumber,
+                                                r.IdUnidad,
+                                                UnidadDisplayString = _context.Unidades
+                                                    .Where(u => u.IdUnidad == r.IdUnidad)
+                                                    .Select(u => u.DisplayString)
+                                                    .FirstOrDefault()
+                                            }).ToList()
+                                        }).ToList()
+                                    }).ToList();
+
+                //// Crea el archivo Excel
+                //using (var package = new ExcelPackage())
+                //{
+                //    // Hoja para Proyectos, Muestras y Resultados
+                //    var worksheet = package.Workbook.Worksheets.Add("Datos");
+
+                //    // Encabezados de Proyectos
+                //    worksheet.Cells["A1"].Value = "Proyecto";
+                //    worksheet.Cells["B1"].Value = "Creador";
+
+                //    // Aplicar color de fondo a los encabezados
+                //    worksheet.Cells["A1:B1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                //    worksheet.Cells["A1:B1"].Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml("#DAE9F8"));
+
+
+                //    int row = 2;
+                //    foreach (var item in projects)
+                //    {
+                //        // Datos de Proyectos
+                //        worksheet.Cells[row, 1].Value = item.Proyecto.Description;
+                //        worksheet.Cells[row, 2].Value = item.Usuario.NombreCompleto;
+
+                //        // Aplicar color de fondo a los datos
+                //        worksheet.Cells[row, 1, row, 2].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                //        worksheet.Cells[row, 1, row, 2].Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml("#F2F2F2"));
+
+
+                //        row++;
+
+                //        // Encabezados de Muestras
+
+                //        worksheet.Cells[row, 2].Value = "Muestra";
+                //        worksheet.Cells[row, 3].Value = "Cliente";
+
+                //        // Aplicar color de fondo #C1F0C8 a las celdas de las columnas 1, 2 y 3
+                //        worksheet.Cells[row, 1, row, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                //        worksheet.Cells[row, 1, row, 3].Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml("#C1F0C8"));
+
+                //        foreach (var sample in item.Proyecto.MuestraPr)
+                //        {
+                //            row++;
+
+                //            // Datos de Muestras
+                //            worksheet.Cells[row, 2].Value = sample.TextID;
+                //            worksheet.Cells[row, 3].Value = sample.Customer;
+
+                //            // Aplicar color de fondo a los datos
+                //            worksheet.Cells[row, 2, row, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                //            worksheet.Cells[row, 2, row, 3].Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml("#F2F2F2"));
+
+                //            row++;
+
+                //            // Encabezados de Resultados
+
+                //            worksheet.Cells[row, 3].Value = "Análisis";
+                //            worksheet.Cells[row, 4].Value = "Componente";
+                //            worksheet.Cells[row, 5].Value = "Valor";
+                //            worksheet.Cells[row, 6].Value = "Unidad";
+
+                //            // Aplicar color de fondo #C1F0C8 a las celdas de las columnas 1, 2 y 3
+                //            worksheet.Cells[row, 2, row, 6].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                //            worksheet.Cells[row, 2, row, 6].Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml("#FFFF99"));
+
+                //            foreach (var result in sample.ResultadosM)
+                //            {
+                //                row++;
+
+                //                var analisis = _context.Analisiss.FirstOrDefault(a => a.IdAnalisis == result.IdAnalysis);
+                //                var componente = _context.AnalisisDetalles.FirstOrDefault(ad => ad.IdComp == result.IdComponent);
+                //                var unidad = _context.Unidades.FirstOrDefault(u => u.IdUnidad == result.IdUnidad);
+
+                //                // Datos de Resultados
+                //                worksheet.Cells[row, 3].Value = analisis?.NameAnalisis ?? result.IdAnalysis.ToString();
+                //                worksheet.Cells[row, 4].Value = result.NameComponent;
+                //                worksheet.Cells[row, 5].Value = result.ResultNumber;
+                //                worksheet.Cells[row, 6].Value = unidad?.DisplayString ?? result.IdUnidad.ToString();
+                //            }
+                //        }
+
+                //        row += 1; // Espaciado entre Proyectos
+                //    }
+                //    // Ajustar el ancho de las columnas automáticamente
+                //    worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+                //    // Guarda el archivo en un stream
+                //    var stream = new MemoryStream();
+                //    package.SaveAs(stream);
+                //    var content = stream.ToArray();
+
+                //    // Retorna el archivo para su descarga
+                //    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Report.xlsx");
+                // }
+            }
+            else
+            {
+                Console.WriteLine("No se recibieron IDs de proyectos.");
+            }
+
+            return Json(new { success = true });
+        }
+
         public ActionResult ExportToExcel()
         {
-
-
 
             // Recopila los datos de las tablas anidadas
             var projects = _context.Proyectos
@@ -471,18 +622,18 @@ namespace LBW.Controllers
 
 
             string correo_emisor = "leedryk@gmail.com";
-            string clave_emisor = "xxrlviitjlpqytrj";
+            string clave_emisor = "elxjbuxeordgixyg";
 
 
-            MailAddress receptor = new(correo_emisor, clave_emisor);
-            MailAddress emisor = new(correo_emisor);
+            MailAddress emisor = new(correo_emisor, clave_emisor);
+            MailAddress receptor = new(correo_emisor);
 
             MailMessage email = new MailMessage(emisor, receptor);
-            email.Subject = "Testeo 1";
+            email.Subject = "Correo Enviado Correctamente - Para la seleccion de Muestras";
 
 
             AlternateView htmlView = AlternateView.CreateAlternateViewFromString(html, null, MediaTypeNames.Text.Html);
-       //     htmlView.LinkedResources.Add(inlineLogo); 
+ 
             email.AlternateViews.Add(htmlView);
             email.Body = html;
             email.IsBodyHtml = true;

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using LBW.Models.Entity;
 using System.Xml.Linq;
 using System.Data;
+using LBW.Models;
 
 namespace LBW.Controllers
 {
@@ -55,7 +56,9 @@ namespace LBW.Controllers
                 i.Location,
                 i.Customer,
                 i.Observaciones,
-                i.IdPlanta
+                i.IdPlanta,
+                i.IdGrado,
+                i.AnalisisMuestra
             });
 
             // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
@@ -66,6 +69,65 @@ namespace LBW.Controllers
 
             return Json(await DataSourceLoader.LoadAsync(muestras, loadOptions));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetMuestraPrevio(DataSourceLoadOptions loadOptions)
+        {
+            // Obtener la información del usuario desde las cookies
+            string usuarioInfoJson = HttpContext.Request.Cookies["UsuarioInfo"];
+            LBW.Models.Usuario usuario = JsonConvert.DeserializeObject<LBW.Models.Usuario>(usuarioInfoJson);
+
+            // Primera búsqueda: Obtener el último proyecto realizado por el usuario
+            var ultimoProyecto = await _context.Proyectos
+                .Where(p => p.Owner == usuario.IdUser)
+                .OrderByDescending(p => p.IdProyecto)
+                .FirstOrDefaultAsync();
+
+            var muestras = _context.Muestras
+                .Where(p => p.IdProject == ultimoProyecto.IdProyecto)
+                .Select(i => new {
+                i.IdSample,
+                i.IdPm,
+                i.IdCliente,
+                i.IdLocation,
+                i.SampleNumber,
+                i.TextID,
+                i.Status,
+                i.ChangedOn,
+                i.OriginalSample,
+                i.LoginDate,
+                i.LoginBy,
+                i.SampleDate,
+                i.RecdDate,
+                i.ReceivedBy,
+                i.DateStarted,
+                i.DueDate,
+                i.DateCompleted,
+                i.DateReviewed,
+                i.PreBy,
+                i.Reviewer,
+                i.SamplingPoint,
+                i.SampleType,
+                i.IdProject,
+                i.SampleName,
+                i.Location,
+                i.Customer,
+                i.Observaciones,
+                i.IdPlanta,
+                i.IdGrado,
+                    i.AnalisisMuestra
+                });
+
+            // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
+            // This can make SQL execution plans more efficient.
+            // For more detailed information, please refer to this discussion: https://github.com/DevExpress/DevExtreme.AspNet.Data/issues/336.
+            // loadOptions.PrimaryKey = new[] { "IdSample" };
+            // loadOptions.PaginateViaPrimaryKey = true;
+
+            return Json(await DataSourceLoader.LoadAsync(muestras, loadOptions));
+        }
+
+
 
         [HttpGet]
         public async Task<IActionResult> GetIdProject(int id, DataSourceLoadOptions loadOptions)
@@ -100,8 +162,10 @@ namespace LBW.Controllers
                 i.Location,
                 i.Customer,
                 i.Observaciones,
-                i.IdPlanta
-            });
+                i.IdPlanta,
+                i.IdGrado,
+                    i.AnalisisMuestra
+                });
 
             // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
             // This can make SQL execution plans more efficient.
@@ -145,7 +209,9 @@ namespace LBW.Controllers
                     i.Location,
                     i.Customer,
                     i.Observaciones,
-                    i.IdPlanta
+                    i.IdPlanta,
+                    i.IdGrado,
+                    i.AnalisisMuestra
                 });
 
             // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
@@ -190,7 +256,9 @@ namespace LBW.Controllers
                     i.Location,
                     i.Customer,
                     i.Observaciones,
-                    i.IdPlanta
+                    i.IdPlanta,
+                    i.IdGrado,
+                    i.AnalisisMuestra
                 });
 
             // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
@@ -235,8 +303,11 @@ namespace LBW.Controllers
                 i.Location,
                 i.Customer,
                 i.Observaciones,
-                i.IdPlanta
-            });
+                i.IdPlanta,
+                i.IdGrado,
+                    i.AnalisisMuestra
+
+                });
 
             // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
             // This can make SQL execution plans more efficient.
@@ -280,7 +351,9 @@ namespace LBW.Controllers
                     i.Location,
                     i.Customer,
                     i.Observaciones,
-                    i.IdPlanta
+                    i.IdPlanta,
+                    i.IdGrado,
+                    i.AnalisisMuestra
                 });
 
             // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
@@ -329,7 +402,9 @@ namespace LBW.Controllers
                     i.Location,
                     i.Customer,
                     i.Observaciones,
-                    i.IdPlanta
+                    i.IdPlanta,
+                    i.IdGrado,
+                    i.AnalisisMuestra
                 })
                 .ToList(); // Convertir a lista
 
@@ -372,8 +447,10 @@ namespace LBW.Controllers
                 i.Location,
                 i.Customer,
                 i.Observaciones,
-                i.IdPlanta
-            });
+                i.IdPlanta,
+                i.IdGrado,
+                    i.AnalisisMuestra
+                });
 
 
 
@@ -421,8 +498,10 @@ namespace LBW.Controllers
                 i.Location,
                 i.Customer,
                 i.Observaciones,
-                i.IdPlanta
-            });
+                i.IdPlanta,
+                    i.IdGrado,
+                    i.AnalisisMuestra
+                });
 
             // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
             // This can make SQL execution plans more efficient.
@@ -467,7 +546,9 @@ namespace LBW.Controllers
                 i.Location,
                 i.Customer,
                 i.Observaciones,
-                i.IdPlanta
+                i.IdPlanta,
+                i.IdGrado,
+                i.AnalisisMuestra
             });
 
             return Json(muestras);
@@ -479,115 +560,138 @@ namespace LBW.Controllers
             string usuarioInfoJson = HttpContext.Request.Cookies["UsuarioInfo"];
             LBW.Models.Usuario usuario = JsonConvert.DeserializeObject<LBW.Models.Usuario>(usuarioInfoJson);
 
-            // Validar y convertir SampleNumber
-            if (string.IsNullOrEmpty(model.SampleNumber) || !int.TryParse(model.SampleNumber, out int sampleCount))
+            Console.WriteLine(usuario.NombreCompleto);
+
+            if(usuario.Correo == null || usuario.Correo == "")
             {
-                return BadRequest("SampleNumber is invalid.");
+                Console.WriteLine("----------------------------");
+                Console.WriteLine(usuario.Correo);
+                Console.WriteLine("----------------------------");
             }
 
-            model.IdCliente = 3;
-            model.IdLocation = 8;
-
-            var description = await _context.PuntoMuestras
-                .Where(pm => pm.IdPm == model.IdPm)
-                .Select(pm => pm.Description)
-                .FirstOrDefaultAsync();
-            var namePm = await _context.PuntoMuestras
-                .Where(pm => pm.IdPm == model.IdPm)
-                .Select(pm => pm.NamePm)
-                .FirstOrDefaultAsync();
-            var location = await _context.Ubicaciones
-                .Where(ub => ub.ID_LOCATION == model.IdLocation)
-                .Select(ub => ub.Name_location)
-                .FirstOrDefaultAsync();
-            var cliente = await _context.Clientes
-                .Where(cl => cl.IdCliente == model.IdCliente)
-                .Select(cl => cl.NameCliente)
-                .FirstOrDefaultAsync();
-
-            var ultimoProyecto = await _context.Proyectos
-                .Where(cl => cl.Owner == usuario.IdUser)
-                .OrderByDescending(cl => cl.IdProyecto) // Ordenar por la clave principal (ProyectoId)
-                .FirstOrDefaultAsync();
-
-            Console.WriteLine("---------------------");
-            Console.WriteLine(ultimoProyecto.IdProyecto);
-
-            model.TextID = $"{DateTime.Now:yyyyMMdd}_{description}";
-            model.Status = 254;
-            model.ChangedOn = DateTime.Now;
-            model.LoginDate = DateTime.Now;
-            model.LoginBy = usuario.IdUser;
-            model.SamplingPoint = namePm;
-            model.IdProject = ultimoProyecto.IdProyecto;
-            model.SampleName = description;
-            model.SampleDate = null;
-            model.RecdDate = null;
-            model.ReceivedBy = 403;
-            model.DateStarted = null;
-            model.DueDate = null;
-            model.DateReviewed = null;
-            model.PreBy = null;
-            model.Reviewer = null;
-            model.Location = location;
-            model.Customer = cliente;
-
- 
-
-            if (!TryValidateModel(model))
+            if (usuario.Correo != null && usuario.Correo != "")
             {
-                return BadRequest(GetFullErrorMessage(ModelState));
-            }
-
-            // Crear y guardar múltiples instancias del modelo
-            for (int i = 0; i < sampleCount; i++)
-            {
- 
-                var newModel = new Muestra
+                try
                 {
- 
-                    IdCliente = model.IdCliente,
-                    IdLocation = model.IdLocation,
-                    IdPm = model.IdPm,
-                    TextID = model.TextID,
-                    Status = model.Status,
-                    ChangedOn = model.ChangedOn,
-                    OriginalSample = model.OriginalSample,
-                    LoginDate = model.LoginDate,
-                    LoginBy = model.LoginBy,
-                    SamplingPoint = model.SamplingPoint,
-                    IdProject = model.IdProject,
-                    SampleName = model.SampleName,
-                    SampleDate = model.SampleDate,
-                    RecdDate = model.RecdDate,
-                    ReceivedBy = model.ReceivedBy,
+                    // Validar y convertir SampleNumber
+                    if (string.IsNullOrEmpty(model.SampleNumber) || !int.TryParse(model.SampleNumber, out int sampleCount))
+                    {
+                        return BadRequest("SampleNumber is invalid.");
+                    }
 
-                    SampleType = model.SampleType,
-                    IdPlanta = model.IdPlanta,
-                    ConteoPuntos = model.ConteoPuntos,
- 
-                    DateStarted = model.DateStarted,
-                    DueDate = model.DueDate,
-                    DateReviewed = model.DateReviewed,
-                    PreBy = model.PreBy,
-                    Reviewer = model.Reviewer,
-                    Location = model.Location,
-                    Customer = model.Customer,
-                    SampleNumber = sampleCount.ToString()
-                };
-                Console.WriteLine("----------------------");
-                Console.WriteLine(newModel.IdPlanta);
-                Console.WriteLine(newModel.SampleType);
-                Console.WriteLine(newModel.ConteoPuntos);
-                Console.WriteLine("----------------------");
+                    model.IdCliente = 3;
+                    model.IdLocation = 8;
 
-                _context.Muestras.Add(newModel);
-                await _context.SaveChangesAsync();
+                    var description = await _context.PuntoMuestras
+                        .Where(pm => pm.IdPm == model.IdPm)
+                        .Select(pm => pm.Description)
+                        .FirstOrDefaultAsync();
+                    var namePm = await _context.PuntoMuestras
+                        .Where(pm => pm.IdPm == model.IdPm)
+                        .Select(pm => pm.NamePm)
+                        .FirstOrDefaultAsync();
+                    var location = await _context.Ubicaciones
+                        .Where(ub => ub.ID_LOCATION == model.IdLocation)
+                        .Select(ub => ub.Name_location)
+                        .FirstOrDefaultAsync();
+                    var cliente = await _context.Clientes
+                        .Where(cl => cl.IdCliente == model.IdCliente)
+                        .Select(cl => cl.NameCliente)
+                        .FirstOrDefaultAsync();
+
+                    var ultimoProyecto = await _context.Proyectos
+                        .Where(cl => cl.Owner == usuario.IdUser)
+                        .OrderByDescending(cl => cl.IdProyecto) // Ordenar por la clave principal (ProyectoId)
+                        .FirstOrDefaultAsync();
+
+                    Console.WriteLine("---------------------");
+                    Console.WriteLine(ultimoProyecto.IdProyecto);
+
+                    model.TextID = $"{DateTime.Now:yyyyMMdd}_{description}";
+                    model.Status = 254;
+                    model.ChangedOn = DateTime.Now;
+                    model.LoginDate = DateTime.Now;
+                    model.LoginBy = usuario.IdUser;
+                    model.SamplingPoint = namePm;
+                    model.IdProject = ultimoProyecto.IdProyecto;
+                    model.SampleName = description;
+                    model.SampleDate = null;
+                    model.RecdDate = null;
+                    model.ReceivedBy = 403;
+                    model.DateStarted = null;
+                    model.DueDate = null;
+                    model.DateReviewed = null;
+                    model.PreBy = null;
+                    model.Reviewer = null;
+                    model.Location = location;
+                    model.Customer = cliente;
+
+
+
+                    if (!TryValidateModel(model))
+                    {
+                        return BadRequest(GetFullErrorMessage(ModelState));
+                    }
+
+                    // Crear y guardar múltiples instancias del modelo
+                    for (int i = 0; i < sampleCount; i++)
+                    {
+
+                        var newModel = new Muestra
+                        {
+
+                            IdCliente = model.IdCliente,
+                            IdLocation = model.IdLocation,
+                            IdPm = model.IdPm,
+                            TextID = model.TextID,
+                            Status = model.Status,
+                            ChangedOn = model.ChangedOn,
+                            OriginalSample = model.OriginalSample,
+                            LoginDate = model.LoginDate,
+                            LoginBy = model.LoginBy,
+                            SamplingPoint = model.SamplingPoint,
+                            IdProject = model.IdProject,
+                            SampleName = model.SampleName,
+                            SampleDate = model.SampleDate,
+                            RecdDate = model.RecdDate,
+                            ReceivedBy = model.ReceivedBy,
+
+                            SampleType = model.SampleType,
+                            IdPlanta = model.IdPlanta,
+                            ConteoPuntos = model.ConteoPuntos,
+
+                            DateStarted = model.DateStarted,
+                            DueDate = model.DueDate,
+                            DateReviewed = model.DateReviewed,
+                            PreBy = model.PreBy,
+                            Reviewer = model.Reviewer,
+                            Location = model.Location,
+                            Customer = model.Customer,
+                            SampleNumber = sampleCount.ToString()
+                        };
+                        Console.WriteLine("----------------------");
+                        Console.WriteLine(newModel.IdPlanta);
+                        Console.WriteLine(newModel.SampleType);
+                        Console.WriteLine(newModel.ConteoPuntos);
+                        Console.WriteLine("----------------------");
+
+                        _context.Muestras.Add(newModel);
+                        await _context.SaveChangesAsync();
+                    }
+
+                    return Json(new { success = true, message = $"{sampleCount} muestras fueron creadas correctamente" });
+                }
+
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = $"Error al crear muestras: {ex.Message}" });
+                }
             }
-
-            
-
-            return Json(new { message = $"{sampleCount} muestras fueron creadas correctamente" });
+            else
+            {
+                return Json(new { success = false, message = "Correo no Establecido, Porfavor actualizar su información" });
+            }
+             
         }
 
         [HttpPut]
@@ -821,6 +925,19 @@ namespace LBW.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> CodigoPuntoMuestrasLookup(DataSourceLoadOptions loadOptions)
+        {
+            var lookup = from i in _context.PuntoMuestras
+                         orderby i.NamePm
+                         select new
+                         {
+                             Value = i.IdPm,
+                             Text = i.C_CodPunto
+                         };
+            return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> ProyectosLookup(DataSourceLoadOptions loadOptions) {
             var lookup = from i in _context.Proyectos
                          orderby i.Name
@@ -885,7 +1002,7 @@ namespace LBW.Controllers
                          select new
                          {
                              Value = i.IdPm,
-                             Text = i.NamePm
+                             Text = i.NamePm + " " + i.Description
                          };
  
 
@@ -964,7 +1081,20 @@ namespace LBW.Controllers
         }
 
 
+        
 
+        [HttpGet]
+        public async Task<IActionResult> GradosLookup(DataSourceLoadOptions loadOptions)
+        {
+            var lookup = from i in _context.Grados
+                         orderby i.Nombre
+                         select new
+                         {
+                             Value = i.IdGrado,
+                             Text = i.Nombre
+                         };
+            return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
+        }
 
         [HttpGet]
         public async Task<IActionResult> PlantasLookup(DataSourceLoadOptions loadOptions) {
@@ -973,6 +1103,21 @@ namespace LBW.Controllers
                          select new {
                              Value = i.IdPlanta,
                              Text = i.NamePl
+                         };
+            return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LaboratorioLookup(DataSourceLoadOptions loadOptions)
+        {
+            // Obtén todas las plantas con sus sitios asociados
+            var lookup = from planta in _context.Plantas
+                         join site in _context.Sites on planta.IdSite equals site.IdSite
+                         orderby planta.NamePl
+                         select new
+                         {
+                             Value = planta.IdPlanta,
+                             Text = site.NameSite
                          };
             return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
         }
@@ -1006,9 +1151,13 @@ namespace LBW.Controllers
             string CUSTOMER = nameof(Muestra.Customer);
             string OBSERVACIONES = nameof(Muestra.Observaciones);
             string ID_PLANTA = nameof(Muestra.IdPlanta);
+            string ID_GRADO = nameof(Muestra.IdGrado);
             string CONTEO_DE_PUNTOS = nameof(Muestra.ConteoPuntos);
+            string ANALISIS_MUESTRA = nameof(Muestra.AnalisisMuestra);
 
-            if(values.Contains(ID_SAMPLE)) {
+
+
+            if (values.Contains(ID_SAMPLE)) {
                 model.IdSample = Convert.ToInt32(values[ID_SAMPLE]);
             }
 
@@ -1032,7 +1181,12 @@ namespace LBW.Controllers
                 model.TextID = Convert.ToString(values[TEXT_ID]);
             }
 
-            if(values.Contains(STATUS)) {
+            if (values.Contains(ANALISIS_MUESTRA))
+            {
+                model.AnalisisMuestra = Convert.ToString(values[ANALISIS_MUESTRA]);
+            }
+
+            if (values.Contains(STATUS)) {
                 model.Status = Convert.ToInt32(values[STATUS]);
             }
 
@@ -1118,6 +1272,11 @@ namespace LBW.Controllers
 
             if(values.Contains(ID_PLANTA)) {
                 model.IdPlanta = Convert.ToInt32(values[ID_PLANTA]);
+            }
+
+            if (values.Contains(ID_GRADO))
+            {
+                model.IdGrado = Convert.ToInt32(values[ID_GRADO]);
             }
 
             if (values.Contains(CONTEO_DE_PUNTOS))

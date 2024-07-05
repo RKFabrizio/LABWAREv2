@@ -124,6 +124,9 @@
     .LoadParams(new { id = new JS("data.IdSample") })
     .Key("IdResult")
     )
+    .DataSourceOptions(o => o.ReshapeOnPush(true))
+    .RepaintChangesOnly(true)
+    .ColumnAutoWidth(true)
     .RemoteOperations(true)
     .Columns(columns =>
     {
