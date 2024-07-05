@@ -87,7 +87,24 @@
     .RemoteOperations(true)
     .Columns(columns => {
 
+                columns.AddFor(m => m.IdProyecto).Caption("").Width(40)
+            .CellTemplate(@<text>
+    <svg id="b85b20e3-dab5-479e-af55-9db5513a104e" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248.4 179.68" width="20px" height="20px">
+        <defs>
+            <style>
+                .b2a62799-dfac-4166-a62d-67a24fe80fc7 {
+                    fill: #f7c53d;
+                }
 
+                .a30f54ed-8086-4fe4-9d08-ffe018ddc737 {
+                    fill: #fefefe;
+                }</style>
+        </defs>
+        <path class="b2a62799-dfac-4166-a62d-67a24fe80fc7" d="M159.51,201.32q-55.63,0-111.28,0a15.33,15.33,0,0,1-7.69-1.7,8.76,8.76,0,0,1-5-8.18q0-75,0-150c0-5.51,4.23-9.5,10.5-9.76a5.49,5.49,0,0,0,4.51-2.37,19.51,19.51,0,0,1,15.72-7.66q17.69,0,35.35,0a19.22,19.22,0,0,1,15.63,7.82,5.06,5.06,0,0,0,4.61,2.14q74.39-.06,148.77,0a18.48,18.48,0,0,1,5.48.55c5.21,1.58,7.79,4.9,7.79,10.34q0,73.62,0,147.24c0,7.24-4.26,11.51-11.64,11.56-8.81.06-17.62,0-26.44,0Z" transform="translate(-35.57 -21.66)" />
+        <path class="a30f54ed-8086-4fe4-9d08-ffe018ddc737" d="M83.78,45.87c-6,0-11.89-.12-17.83.05-3,.09-4.51-1.24-5.25-4a13.8,13.8,0,0,1-.32-5.78c.65-4.24,2-5.34,6.28-5.34h34.73c3.69,0,5,1.1,5.55,4.66a16.72,16.72,0,0,1,.07,5.19c-.61,4-1.89,5.2-6,5.21Z" transform="translate(-35.57 -21.66)" />
+    </svg>
+            </text>
+            );
 
         columns.AddFor(m => m.Name).Caption("Proyecto");
         columns.AddFor(m => m.DateCreated).Caption("Fecha")
