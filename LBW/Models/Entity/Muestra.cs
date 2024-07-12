@@ -25,6 +25,7 @@ namespace LBW.Models.Entity
         public DateTime? ChangedOn { get; set; }
         public int? OriginalSample { get; set; }
         public DateTime? LoginDate { get; set; }
+        public DateTime? Fecha {  get; set; }
         public int LoginBy { get; set; }
         public DateTime? SampleDate { get; set; }
         public DateTime? RecdDate { get; set; }

@@ -7,13 +7,15 @@ using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using LBW.Models.Entity;
 using System.Xml.Linq;
 using System.Data;
 using LBW.Models;
+using SkiaSharp;
+using System.Globalization;
+using System.Data.SqlTypes;
 
 namespace LBW.Controllers
 {
@@ -127,6 +129,56 @@ namespace LBW.Controllers
             return Json(await DataSourceLoader.LoadAsync(muestras, loadOptions));
         }
 
+        [HttpGet]
+        public Task<IActionResult> GetFilteredData(string date, DataSourceLoadOptions loadOptions)
+        {
+
+            Console.WriteLine(date);
+            DateTime parsedDate = DateTime.Parse(date);
+
+
+            var muestras = _context.Muestras
+                .Where(m =>
+                    m.Status == 254 &&
+                    m.Fecha.HasValue &&
+                    m.Fecha.ToString() == date)
+                .Select(i => new
+                {
+                    i.IdSample,
+                    i.IdPm,
+                    i.IdCliente,
+                    i.IdLocation,
+                    i.SampleNumber,
+                    i.TextID,
+                    i.Status,
+                    i.ChangedOn,
+                    i.OriginalSample,
+                    i.LoginDate,
+                    i.LoginBy,
+                    i.SampleDate,
+                    i.RecdDate,
+                    i.ReceivedBy,
+                    i.DateStarted,
+                    i.DueDate,
+                    i.DateCompleted,
+                    i.DateReviewed,
+                    i.PreBy,
+                    i.Reviewer,
+                    i.SamplingPoint,
+                    i.SampleType,
+                    i.IdProject,
+                    i.SampleName,
+                    i.Location,
+                    i.Customer,
+                    i.Observaciones,
+                    i.IdPlanta,
+                    i.IdGrado,
+                    i.AnalisisMuestra
+                });
+
+            return Task.FromResult<IActionResult>(Json(DataSourceLoader.Load(muestras, loadOptions)));
+        }
+
 
 
         [HttpGet]
@@ -180,7 +232,7 @@ namespace LBW.Controllers
         public async Task<IActionResult> GetIdProjectA(int id, DataSourceLoadOptions loadOptions)
         {
             var muestras = _context.Muestras
-                .Where(m => m.IdProject == id && m.Status == 24 || m.Status == 21)
+                .Where(m => m.IdProject == id && (m.Status == 24 || m.Status == 21))
                 .Select(i => new {
                     i.IdSample,
                     i.IdPm,
@@ -213,14 +265,60 @@ namespace LBW.Controllers
                     i.IdGrado,
                     i.AnalisisMuestra
                 });
+            var muestras2 = _context.Muestras
+              .Where(m => m.IdProject == id && (m.Status == 24 || m.Status == 21))
+              .Select(i => new {
+                  i.IdSample,
+                  i.IdPm,
+                  i.IdCliente,
+                  i.IdLocation,
+                  i.SampleNumber,
+                  i.TextID,
+                  i.Status,
+                  i.ChangedOn,
+                  i.OriginalSample,
+                  i.LoginDate,
+                  i.LoginBy,
+                  i.SampleDate,
+                  i.RecdDate,
+                  i.ReceivedBy,
+                  i.DateStarted,
+                  i.DueDate,
+                  i.DateCompleted,
+                  i.DateReviewed,
+                  i.PreBy,
+                  i.Reviewer,
+                  i.SamplingPoint,
+                  i.SampleType,
+                  i.IdProject,
+                  i.SampleName,
+                  i.Location,
+                  i.Customer,
+                  i.Observaciones,
+                  i.IdPlanta,
+                  i.IdGrado,
+                  i.AnalisisMuestra
+              }).ToList();
+            if (muestras2.Count == 0)
+            {
+                // Manejar el caso cuando no se encuentran muestras
+                return NotFound(); // Devolver un resultado 404 Not Found, o cualquier otro manejo adecuado
+            }
 
+            Console.WriteLine("............................");
+            Console.Write("IdProyect:");
+            Console.WriteLine(id);
+            Console.WriteLine(muestras2[0]);
+            Console.WriteLine("............................");
             // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
             // This can make SQL execution plans more efficient.
             // For more detailed information, please refer to this discussion: https://github.com/DevExpress/DevExtreme.AspNet.Data/issues/336.
             // loadOptions.PrimaryKey = new[] { "IdSample" };
             // loadOptions.PaginateViaPrimaryKey = true;
 
-            return Json(await DataSourceLoader.LoadAsync(muestras, loadOptions));
+            var result = await DataSourceLoader.LoadAsync(muestras, loadOptions);
+
+            return Json(result);
         }
 
         [HttpGet]
@@ -404,7 +502,8 @@ namespace LBW.Controllers
                     i.Observaciones,
                     i.IdPlanta,
                     i.IdGrado,
-                    i.AnalisisMuestra
+                    i.AnalisisMuestra,
+                    i.Fecha
                 })
                 .ToList(); // Convertir a lista
 
@@ -418,7 +517,7 @@ namespace LBW.Controllers
         {
             var muestras = _context.Muestras
                 .Where(m => m.Status == 254) // Filtrar por Status 254
-                .OrderByDescending(m => m.LoginDate)
+                .OrderByDescending(m => m.Fecha)
                 .Select(i => new {
                 i.IdSample,
                 i.IdPm,
@@ -449,7 +548,8 @@ namespace LBW.Controllers
                 i.Observaciones,
                 i.IdPlanta,
                 i.IdGrado,
-                    i.AnalisisMuestra
+                    i.AnalisisMuestra,
+                    i.Fecha
                 });
 
 
@@ -776,6 +876,9 @@ namespace LBW.Controllers
         [HttpPut]
         public async Task<IActionResult> PutStatus3(List<int> muestras)
         {
+            string usuarioInfoJson = HttpContext.Request.Cookies["UsuarioInfo"];
+            LBW.Models.Usuario usuario = JsonConvert.DeserializeObject<LBW.Models.Usuario>(usuarioInfoJson);
+
             try
             {
                 if (muestras == null || !muestras.Any())
@@ -802,6 +905,7 @@ namespace LBW.Controllers
                 {
                     muestraItem.Status = 21; // Modificar el estado según lo requerido
                     muestraItem.RecdDate = DateTime.Now;
+                    muestraItem.Reviewer = usuario.IdUser.ToString();
                 }
 
                 // Actualizar el estado de cada muestra
@@ -820,8 +924,9 @@ namespace LBW.Controllers
             }
         }
 
+         
 
-        
+
 
         [HttpDelete]
         public async Task Delete(int key) {
@@ -952,6 +1057,7 @@ namespace LBW.Controllers
         public async Task<IActionResult> ClientesLookup(DataSourceLoadOptions loadOptions) {
             var lookup = from i in _context.Clientes
                          orderby i.NameCliente
+                         where (i.IdCliente == 3 || i.IdCliente == 6)
                          select new {
                              Value = i.IdCliente,
                              Text = i.NameCliente
@@ -992,6 +1098,21 @@ namespace LBW.Controllers
             return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
         }
 
+        [HttpGet]
+        public IActionResult PlantaLookUp(int Cliente)
+        {
+            var lookup = from i in _context.Plantas
+                         orderby i.NamePl
+                         where i.IdCliente == Cliente
+                         select new
+                         {
+                             Value = i.IdPlanta,
+                             Text = i.NamePl
+                         };
+
+
+            return Json(lookup);
+        }
 
         [HttpGet]
         public IActionResult PmLookUp(int Planta)
@@ -1015,9 +1136,8 @@ namespace LBW.Controllers
             string usuarioInfoJson = HttpContext.Request.Cookies["UsuarioInfo"];
             LBW.Models.Usuario usuario = JsonConvert.DeserializeObject<LBW.Models.Usuario>(usuarioInfoJson);
  
-
             var lookup = from i in _context.Plantas
-                         where i.IdCliente == usuario.CCliente
+
                          orderby i.NamePl
                          select new
                          {
@@ -1154,6 +1274,7 @@ namespace LBW.Controllers
             string ID_GRADO = nameof(Muestra.IdGrado);
             string CONTEO_DE_PUNTOS = nameof(Muestra.ConteoPuntos);
             string ANALISIS_MUESTRA = nameof(Muestra.AnalisisMuestra);
+            string FECHA = nameof(Muestra.Fecha);
 
 
 
@@ -1214,7 +1335,12 @@ namespace LBW.Controllers
                 model.RecdDate = values[RECD_DATE] != null ? Convert.ToDateTime(values[RECD_DATE]) : (DateTime?)null;
             }
 
-            if(values.Contains(RECEIVED_BY)) {
+            if (values.Contains(FECHA))
+            {
+                model.Fecha = values[FECHA] != null ? Convert.ToDateTime(values[FECHA]) : (DateTime?)null;
+            }
+
+            if (values.Contains(RECEIVED_BY)) {
                 model.ReceivedBy = Convert.ToInt32(values[RECEIVED_BY]);
             }
 

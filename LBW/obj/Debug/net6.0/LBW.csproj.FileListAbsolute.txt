@@ -5828,8 +5828,6 @@ C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\Microsoft.AspNetCor
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\Microsoft.AspNetCore.Razor.Language.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\Microsoft.Bcl.AsyncInterfaces.dll
-C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\Microsoft.Build.dll
-C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\Microsoft.Build.Framework.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\Microsoft.CodeAnalysis.AnalyzerUtilities.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\Microsoft.CodeAnalysis.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\Microsoft.CodeAnalysis.CSharp.dll
@@ -5864,7 +5862,6 @@ C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\Microsoft.IdentityM
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\Microsoft.IO.RecyclableMemoryStream.dll
-C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\Microsoft.NET.StringTools.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\Microsoft.VisualStudio.Debugger.Contracts.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\Microsoft.VisualStudio.Web.CodeGeneration.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\Microsoft.VisualStudio.Web.CodeGeneration.Core.dll
@@ -5897,7 +5894,6 @@ C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\System.Diagnostics.
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\System.Drawing.Common.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\System.Formats.Asn1.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
-C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\System.Reflection.MetadataLoadContext.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\System.Runtime.Caching.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\System.Security.Cryptography.ProtectedData.dll
@@ -6061,14 +6057,11 @@ C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\runtimes\win-x64\na
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\runtimes\win-x86\native\libSkiaSharp.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
-C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.Pkcs.dll
-C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Text.Encoding.CodePages.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
-C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\obj\Debug\net6.0\LBW.csproj.AssemblyReference.cache
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\obj\Debug\net6.0\LBW.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\obj\Debug\net6.0\LBW.AssemblyInfoInputs.cache
@@ -6168,3 +6161,5 @@ C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\System.ServiceModel
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\System.ServiceModel.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\runtimes\unix\lib\netstandard2.0\System.Private.ServiceModel.dll
 C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Private.ServiceModel.dll
+C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\fabri\OneDrive\Desktop\GITESTE\LBW\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll

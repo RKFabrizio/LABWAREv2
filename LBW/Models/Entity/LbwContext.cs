@@ -982,6 +982,10 @@ namespace LBW.Models.Entity
                      .HasColumnName("LOGIN_DATE")
                      .IsRequired(false);
 
+                    entity.Property(e => e.Fecha)
+                     .HasColumnName("Fecha")
+                     .IsRequired(false);
+
                     entity.Property(e => e.RecdDate)
                     .HasColumnName("RECD_DATE")
                     .IsRequired(false);

@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="DataSource1">
+      <rd:DataSourceID>b56ccd2f-749f-4351-9ec8-4df8fc86908f</rd:DataSourceID>
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString>Data Source=FABRIZIO\SQLEXPRESS;Initial Catalog=LIMS</ConnectString>
+        <IntegratedSecurity>true</IntegratedSecurity>
+      </ConnectionProperties>
+    </DataSource>
+  </DataSources>
+  <rd:ReportID>569e7e4f-3c41-4085-87fe-55ea3a54ffc5</rd:ReportID>
+  <Width>5in</Width>
+  <Body>
+    <Height>0.42in</Height>
+    <ColumnSpacing>0.5in</ColumnSpacing>
+    <ReportItems>
+      <Textbox Name="textbox1">
+        <Style>
+          <FontFamily>Segoe UI Light</FontFamily>
+          <FontSize>24pt</FontSize>
+          <FontWeight>Bold</FontWeight>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <rd:DefaultName>textbox1</rd:DefaultName>
+        <Value>Report2</Value>
+        <CanGrow>true</CanGrow>
+        <Height>0.42in</Height>
+      </Textbox>
+      <Table Name="table1">
+        <Top>0.42in</Top>
+        <Style />
+        <Header>
+          <RepeatOnNewPage>true</RepeatOnNewPage>
+          <TableRows>
+            <TableRow>
+              <TableCells />
+              <Height>0in</Height>
+            </TableRow>
+          </TableRows>
+        </Header>
+        <Details>
+          <TableRows>
+            <TableRow>
+              <TableCells />
+              <Height>0in</Height>
+            </TableRow>
+          </TableRows>
+        </Details>
+        <TableColumns />
+        <DataSetName>DataSet1</DataSetName>
+      </Table>
+    </ReportItems>
+  </Body>
+  <Language>es-ES</Language>
+  <LeftMargin>1in</LeftMargin>
+  <RightMargin>1in</RightMargin>
+  <TopMargin>1in</TopMargin>
+  <BottomMargin>1in</BottomMargin>
+  <PageWidth>8.5in</PageWidth>
+  <PageHeight>11in</PageHeight>
+  <DataSets>
+    <DataSet Name="DataSet1">
+      <Fields />
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandType>Text</CommandType>
+        <CommandText>DECLARE @FechaInicio DATE = @FechaInicioParam;
+DECLARE @FechaFin DATE = @FechaFinParam;
+
+DECLARE @sql NVARCHAR(MAX);
+DECLARE @pivotColumns NVARCHAR(MAX);
+DECLARE @sumColumns NVARCHAR(MAX);
+
+-- Obtener dinámicamente las columnas para el PIVOT
+SELECT 
+    @pivotColumns = STRING_AGG(QUOTENAME(NAME_PLANTA), ','),
+    @sumColumns = STRING_AGG('ISNULL(' + QUOTENAME(NAME_PLANTA) + ', 0)', ' + ')
+FROM (
+    SELECT DISTINCT PL.NAME_PLANTA
+    FROM MUESTRA M
+    INNER JOIN PLANTA PL ON M.ID_PLANTA = PL.ID_PLANTA
+    WHERE M.LOGIN_DATE BETWEEN @FechaInicio AND @FechaFin
+) AS DistinctPlantas;
+
+SET @sql = N'
+WITH DateSeries AS (
+    SELECT @FechaInicio AS Date
+    UNION ALL
+    SELECT DATEADD(day, 1, Date)
+    FROM DateSeries
+    WHERE Date &lt; @FechaFin
+),
+PlantasMuestras AS (
+    SELECT 
+        CAST(M.LOGIN_DATE AS DATE) AS Fecha,
+        PL.NAME_PLANTA AS PLANTA,
+        COUNT(*) AS CantidadMuestras
+    FROM MUESTRA M
+    INNER JOIN PLANTA PL ON M.ID_PLANTA = PL.ID_PLANTA
+    WHERE M.LOGIN_DATE BETWEEN @FechaInicio AND @FechaFin
+    GROUP BY CAST(M.LOGIN_DATE AS DATE), PL.NAME_PLANTA
+)
+SELECT 
+    D.Date AS Fecha,
+    ' + @pivotColumns + ',
+    ' + @sumColumns + ' AS Total
+FROM DateSeries D
+LEFT JOIN (
+    SELECT *
+    FROM PlantasMuestras
+    PIVOT (
+        SUM(CantidadMuestras)
+        FOR PLANTA IN (' + @pivotColumns + ')
+    ) AS PivotTable
+) AS PivotedData ON D.Date = PivotedData.Fecha
+ORDER BY D.Date;
+';
+
+EXEC sp_executesql @sql, N'@FechaInicio DATE, @FechaFin DATE', @FechaInicio, @FechaFin;</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+        <QueryParameters>
+          <QueryParameter Name="@FechaInicioParam">
+            <Value>=Parameters!FechaInicioParam.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@FechaFinParam">
+            <Value>=Parameters!FechaFinParam.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <Timeout>0</Timeout>
+      </Query>
+    </DataSet>
+  </DataSets>
+  <ReportParameters>
+    <ReportParameter Name="FechaInicioParam">
+      <DataType>String</DataType>
+      <Prompt>Fecha Inicio Param</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="FechaFinParam">
+      <DataType>String</DataType>
+      <Prompt>Fecha Fin Param</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+</Report>

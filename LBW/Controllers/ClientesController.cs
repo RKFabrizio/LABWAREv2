@@ -113,7 +113,7 @@ namespace LBW.Controllers
         public IActionResult ClienteTestList(int Cliente)
         {
             var lookup = _context.Plantillas
-                .Where(i => i.IdCliente == 3)
+                .Where(i => i.IdCliente == Cliente)
                 .OrderBy(i => i.Description)
                 .Select(i => new
                 {

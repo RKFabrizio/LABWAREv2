@@ -123,7 +123,6 @@
 @using (Html.DevExtreme().NamedTemplate("gridContainer-details1"))
 {
     @(Html.DevExtreme().DataGrid<LBW.Models.Entity.Muestra>()
-        .ID("gridContainer")
         .DataSource(ds => ds.Mvc()
             .Controller("Muestras")
                 .LoadAction("GetIdProjectA")
@@ -156,8 +155,8 @@
             
 
         })
-            .OnContentReady("onContentReady")
-        .OnCellPrepared("onCellPrepared")
+ 
+            .OnCellPrepared("onCellPrepared")
 
               .MasterDetail(m => m
                 .Enabled(true)
@@ -205,9 +204,10 @@
 
         })
             .OnCellPrepared("onCellPrepared2")
-            .OnRowUpdating("onRowUpdating") // Nuevo evento
-            .OnRowUpdated("onRowUpdated") // Nuevo evento
+@*             .OnRowUpdating("onRowUpdating") // Nuevo evento 
+            .OnRowUpdated("onRowUpdated") // Nuevo evento *@
             .ShowBorders(true)
+ 
             .AllowColumnReordering(true)
             .RowAlternationEnabled(false)
             .ShowColumnLines(true)
@@ -233,17 +233,17 @@
 
 <script>
 
-    function onRowUpdating(e) {
-        // Mostrar un indicador de carga o bloquear la interfaz de usuario
-        var grid = $("#gridContainer").dxDataGrid("instance");
-        grid.getDataSource().reload();
-    }
+    // function onRowUpdating(e) {
+    //     // Mostrar un indicador de carga o bloquear la interfaz de usuario
+    //     var grid = e.component;
+    //     grid.getDataSource().reload();
+    // }
 
-    function onRowUpdated(e) {
-        // Recargar los datos del DataGrid principal de Muestras
-        var grid = $("#gridContainer").dxDataGrid("instance");
-        grid.getDataSource().reload();
-    }
+    // function onRowUpdated(e) {
+    //     // Recargar los datos del DataGrid principal de Muestras
+    //     var grid = e.component;
+    //     grid.getDataSource().reload();
+    // }
     
     function onCellPrepared(e) {
         //console.log(e.column.dataField);
@@ -292,14 +292,6 @@
         }
     }
 
-    async function onContentReady(e) {
-        var grid = e.component;
-        if (!grid.isInitialized) {
-            grid.isInitialized = true;
-            await grid.getDataSource().reload();
-        }
-    }
-
     function onCellPrepared2(e) {
         //console.log(e.column.dataField);
 
@@ -327,8 +319,6 @@
                     svgContent = `<svg id="e079148b-6b87-439d-8740-1f3cc0a6e669" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 89 230" width="20" height="20"><defs><style>.a2204117-cd42-4ad0-9ad4-491c103bb244,.e406fb6e-4b59-444b-80a0-27d3da05e21a{stroke:#a1acb9;stroke-width:5px;}.e406fb6e-4b59-444b-80a0-27d3da05e21a{fill:url(#ed1961e3-0b45-4a30-90e3-05078b4dcf08);}.a2204117-cd42-4ad0-9ad4-491c103bb244{fill:#fff;fill-opacity:0;}</style><linearGradient id="ed1961e3-0b45-4a30-90e3-05078b4dcf08" x1="-3.26" y1="2341" x2="52.31" y2="2341" gradientTransform="translate(20.24 -2207) scale(1.01 1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9dff9d"/><stop offset="0.23" stop-color="#35ed35"/><stop offset="0.5" stop-color="#35ed35"/><stop offset="1" stop-color="#005a00"/></linearGradient></defs><g id="eb97f46e-1eed-40b5-8e3a-329e96438633" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="e406fb6e-4b59-444b-80a0-27d3da05e21a" d="M16,39V204s.8,5.92,3.3,10,3.07,4.3,6.7,7.39a34.32,34.32,0,0,0,8.38,5A25.48,25.48,0,0,0,46,229c7.13.06,6.6-.31,11.6-2.4a31.51,31.51,0,0,0,8.4-5.24A29.67,29.67,0,0,0,72.81,214,29.47,29.47,0,0,0,76,204V39" transform="translate(-1.5 -1.5)"/></g><g id="b91a1d89-4dd7-4f5f-9f70-867de14e7d00" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M16,40V14" transform="translate(-1.5 -1.5)"/></g><g id="e812cd70-46e4-49a1-a65c-cc7282c93866" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M20,14H6c-1.21,0-2-1-2-4" transform="translate(-1.5 -1.5)"/></g><g id="b6f42584-b2fd-48db-8771-02f57538a381" data-name="s8SYpRxWPAIU3cJdedely"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M88,8c0-1.26-.1-4-2-4S11.29,4,6,4C4.79,4,4,5,4,8" transform="translate(-1.5 -1.5)"/></g><g id="fcdcb636-016a-4f00-a3a7-8a61bdaada5f" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M72,14H86c1.21,0,2-1,2-4" transform="translate(-1.5 -1.5)"/></g><g id="b6be217f-7e51-44f9-8cd0-5f753f9c9fa4" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M4,7.45v3.19" transform="translate(-1.5 -1.5)"/></g><g id="e284799c-4033-4992-bfdc-62a96ce3fb03" data-name="dlFIQRIEBrFAhFefXz443"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M88,7.27v3.37" transform="translate(-1.5 -1.5)"/></g><g id="fcff838a-cb1c-4ba6-aff3-f39409937b5e" data-name="P XejN-1qaYsxss16zLwI"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M76,40V14" transform="translate(-1.5 -1.5)"/></g><g id="a9ba1b2a-6f14-45ad-9e42-3de69b1356b4" data-name="lTDpCcKC40D5A8sL1xawP"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M18,14H74" transform="translate(-1.5 -1.5)"/></g></svg>`;
 
                 }
-
-                 
 
 
                 idResultCell.innerHTML = svgContent;

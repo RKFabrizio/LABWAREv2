@@ -96,17 +96,24 @@
         @(Html.DevExtreme().Button()
             .Text("Recibir Muestras")
             .OnClick("updateStatusA")
+            .Type(ButtonType.Default)
+            .StylingMode(ButtonStylingMode.Outlined)
             )
 
         @(Html.DevExtreme().Button()
             .Text("Cancelado")
             .OnClick("updateStatusC")
+            .Type(ButtonType.Danger)
+            .StylingMode(ButtonStylingMode.Outlined)
+            
             )
 
         <div style="height:30px;">
         </div>
 
+     
 
+ 
         @(
         Html.DevExtreme().DataGrid<LBW.Models.Entity.Muestra>()
                     .ID("gridContainer")
@@ -165,8 +172,8 @@
                         );
 
                         columns.AddFor(m => m.TextID).Caption("Muestra");
-                        columns.AddFor(m => m.LoginDate).Caption("Fecha").Width(330)
-                        .Format("yyyy-MM-dd")
+                        columns.AddFor(m => m.Fecha).Caption("Fecha").Width(330)
+                            .Format("yyyy-MM-dd")
                         .SortOrder(SortOrder.Desc);
                     })
  
@@ -186,11 +193,8 @@
                     pager.AllowedPageSizes(new[] { 20, 50, 100 });
                     pager.ShowInfo(true);
                 })
-                .SearchPanel(s => s
-                .Visible(true)
-                .HighlightCaseSensitive(true)
                 )
-            )
+            
     </div> 
 }
 
@@ -237,7 +241,7 @@
         <div class="id-sample-cell"></div>
     </text>);
                 columns.AddFor(m => m.TextID).Caption("Muestra");
-                columns.AddFor(m => m.LoginDate).Caption("Fecha").Width(330)
+                columns.AddFor(m => m.Fecha).Caption("Fecha").Width(330)
                 .Format("yyyy-MM-dd")
                 .SortOrder(SortOrder.Desc);
 
@@ -272,6 +276,8 @@
 
 
 <script>
+
+   
 
     function onCellPrepared(e) {
         //console.log(e.column.dataField);

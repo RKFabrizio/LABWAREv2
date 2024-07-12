@@ -139,15 +139,18 @@
                         </text>
                                                 );
 
-                         items.AddSimple()
-                         .Label(l => l.Text("Cliente").Location(FormLabelLocation.Top))
-                         .ColSpan(1)
-                         .Template(@<text>
-                            @(Html.DevExtreme().TextBox()
-                            .ID("clienteTextBox")
-                            .ReadOnly(true))
-                        </text>
-                                    );
+
+                        items.AddSimpleFor(m => m.IdCliente)
+                        .Label(l => l.Text("Cliente").Location(FormLabelLocation.Top))
+
+                        .Editor(e => e
+                        .Lookup()
+                        .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("ClientesLookup").Key("Value"))
+                        .ValueExpr("Value")
+                        .ID("cbxPm0")
+                        .DisplayExpr("Text")
+                        .OnValueChanged("guardarSeleccionCliente")
+                        );
 
 
                         items.AddSimpleFor(m => m.SampleNumber)
@@ -174,7 +177,7 @@
                         .Editor(e => e
                         .Lookup()
                         .ID("cbxPm")
-                        .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("PlantasPersonalizadoLookup").Key("Value"))
+                        .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("PlantaLookUp").Key("Value"))
                         .ValueExpr("Value")
                         .DisplayExpr("Text")
                         .OnValueChanged("guardarSeleccion")
@@ -207,7 +210,7 @@
                                 @(Html.DevExtreme().TextBox()
                                 .ID("tlcliente1")
                                 .ReadOnly(true)
-                                .Width("200px"))
+                                .Width("300px"))
                             </div>
                         </text>);
 
@@ -228,6 +231,7 @@
     }
 }
 
+ 
 
 @using (Html.DevExtreme().NamedTemplate("TAB2"))
 {
@@ -369,45 +373,7 @@
     var productoId = 0;
 
 
-    $(function () {
-
-        $.ajax({
-            url: '@Url.Action("ClienteTestList", "Clientes")',
-            method: "GET",
-            async: false,
-            data: {
-                Cliente: 3
-            },
-            success: function (result) {
-
-                value = $("#tlcliente1").dxTextBox("instance");
-                value.option("value", result[0].Text);
-            },
-            error: function (error) {
-                console.error("Error al obtener los datos filtrados:", error);
-            }
-        });
-
-        $.ajax({
-            url: '@Url.Action("ClienteShow", "Muestras")',
-            method: "GET",
-            async: false,
-            data: {
-                Cliente: 3
-            },
-            success: function (result) {
-
-                value = $("#clienteTextBox").dxTextBox("instance");
-                value.option("value", result[0].Text);
-
-            },
-            error: function (error) {
-                console.error("Error al obtener los datos filtrados:", error);
-            }
-        });
-
-       
-
+    $(document).ready(function () {
         $.ajax({
             url: '@Url.Action("LastSample", "Muestras")',
             method: "GET",
@@ -417,17 +383,13 @@
             },
             success: function (result) {
                 console.log(result.LastIdSample);
-                value = $("#sampleTextBox").dxTextBox("instance");
+                var value = $("#sampleTextBox").dxTextBox("instance");
                 value.option("value", result.LastIdSample);
             },
             error: function (error) {
                 console.error("Error al obtener los datos filtrados:", error);
             }
         });
-
- 
-
-       
     });
 
     function guardarSeleccion(e) {
@@ -445,6 +407,69 @@
             success: function (result) {
 
                 var comboBox = $("#cbxPm1").dxLookup("instance"); // Obtener la instancia del ComboBox
+                comboBox.option("dataSource", result); // Actualizar los datos del ComboBox
+
+                // Repintar el ComboBox para mostrar los nuevos datos
+                comboBox.repaint();
+
+            },
+            error: function (error) {
+                console.error("Error al obtener los datos filtrados:", error);
+            }
+        });
+    }
+
+    function guardarSeleccionCliente(e) {
+        
+        var valorSeleccionado = e.value;
+
+        console.log(valorSeleccionado);
+
+        $.ajax({
+            url: '@Url.Action("ClienteTestList", "Clientes")',
+            method: "GET",
+            async: false,
+            data: {
+                Cliente: valorSeleccionado
+            },
+            success: function (result) {
+
+                value = $("#tlcliente1").dxTextBox("instance");
+                value.option("value", result[0].Text);
+            },
+            error: function (error) {
+                console.error("Error al obtener los datos filtrados:", error);
+            }
+        });
+
+        $.ajax({
+            url: '@Url.Action("ClienteShow", "Muestras")',
+            method: "GET",
+            async: false,
+            data: {
+                Cliente: valorSeleccionado
+            },
+            success: function (result) {
+
+                value = $("#clienteTextBox").dxTextBox("instance");
+                value.option("value", result[0].Text);
+
+            },
+            error: function (error) {
+                console.error("Error al obtener los datos filtrados:", error);
+            }
+        });
+
+        $.ajax({
+            url: '@Url.Action("PlantaLookUp", "Muestras")',
+            method: "GET",
+            async: false,
+            data: {
+                Cliente: valorSeleccionado
+            },
+            success: function (result) {
+
+                var comboBox = $("#cbxPm").dxLookup("instance"); // Obtener la instancia del ComboBox
                 comboBox.option("dataSource", result); // Actualizar los datos del ComboBox
 
                 // Repintar el ComboBox para mostrar los nuevos datos
@@ -595,7 +620,7 @@
                     },
                     success: function (result) {
                         // Procesar la respuesta si es necesario
-                        DevExpress.ui.notify('Datos enviados correctamente', 'success', 6000);
+                        DevExpress.ui.notify('Análisis asignados correctamente', 'success', 6000);
                         setTimeout(function () {
                             location.reload();
                         }, 3000);
@@ -614,39 +639,7 @@
                 });
             }
 
-    // function deleteProyect() {
-
-
-    //     // Realizar la solicitud AJAX
-    //     $.ajax({
-    //         url: '@Url.Action("Delete", "Resultadoes")',
-    //         method: "POST",
-    //         data:
-    //         {
-    //             Muestra: muestrasSeleccionadas,
-    //             Analisis: analisis
-    //         },
-    //         success: function (result) {
-    //             // Procesar la respuesta si es necesario
-    //             DevExpress.ui.notify('Datos enviados correctamente', 'success', 6000);
-    //             setTimeout(function () {
-    //                 location.reload();
-    //             }, 3000);
-    //             var tagboxAnalisis = $("#lookupAnalisis").dxTagBox("instance");
-
-    //             tagboxAnalisis.option("isRequired", false);
-
-    //             tagboxAnalisis.option("value", []);
-
-
-    //         },
-    //         error: function (error) {
-    //             DevExpress.ui.notify('Error al enviar los datos', 'error', 6000);
-    //             console.error("Error al enviar los datos:", error);
-    //         }
-    //     });
-    // }
-
+    
 
  
 </script>

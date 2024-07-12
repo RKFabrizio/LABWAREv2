@@ -1,14 +1,33 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.AspNetCore.Http.Features; // Añadir esta línea
 
 var builder = WebApplication.CreateBuilder(args);
 var connStr = builder.Configuration.GetConnectionString("CadenaSQL");
 
+// Configurar los límites de solicitud
+builder.Services.Configure<IISServerOptions>(options =>
+{
+    options.MaxRequestBodySize = int.MaxValue; // o un valor específico en bytes
+});
+
+builder.Services.Configure<KestrelServerOptions>(options =>
+{
+    options.Limits.MaxRequestBodySize = int.MaxValue; // o un valor específico en bytes
+});
+
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.ValueLengthLimit = int.MaxValue;
+    options.MultipartBodyLengthLimit = int.MaxValue;
+    options.MultipartHeadersLengthLimit = int.MaxValue;
+});
+
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
-
-// Add services to the container.
+// Resto de su configuración...
 builder.Services
     .AddDbContext<LBW.Models.Entity.LbwContext>(options =>
     { object value = options.UseSqlServer(connStr); })
@@ -19,9 +38,8 @@ builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Acceso/Login"; // Ruta a la que se redirigirán los usuarios no autenticados
-        options.LogoutPath = "/Acceso/Logout"; // Ruta para el proceso de cierre de sesión
-        // Puedes configurar más opciones según sea necesario
+        options.LoginPath = "/Acceso/Login";
+        options.LogoutPath = "/Acceso/Logout";
     });
 
 var app = builder.Build();
@@ -31,16 +49,12 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
+
 app.UseSession();
-
 app.UseStaticFiles();
-
 app.UseRouting();
-
-
 app.UseAuthentication();
 app.UseAuthorization();
- 
 
 app.MapControllerRoute(
     name: "default",

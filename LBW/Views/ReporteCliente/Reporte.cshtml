@@ -272,21 +272,25 @@
     }
 
     function exportToPdf() {
-
         if (selectedProjectId.length === 0) {
             alert("No hay AAAAA seleccionados.");
             return;
         }
-
         console.log(selectedProjectId);
-
         $.ajax({
             url: '@Url.Action("ExportPdf", "Export")',
             method: "POST",
             data: { proyecto: selectedProjectId },
-            success: function (result) {
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function (blob) {
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = "reporte_" + selectedProjectId + ".pdf";
+                link.click();
+
                 DevExpress.ui.notify('Datos enviados correctamente', 'success', 6000);
-               
             },
             error: function (error) {
                 DevExpress.ui.notify('Error al enviar los datos', 'error', 6000);

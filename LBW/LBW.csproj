@@ -20,8 +20,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.24" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.24" />
     <PackageReference Include="Microsoft.ReportingServices.ReportViewerControl.WebForms" Version="150.1652.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.17" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageReference Include="System.Security.Permissions" Version="7.0.0" />
     </ItemGroup>
 
     <ItemGroup>

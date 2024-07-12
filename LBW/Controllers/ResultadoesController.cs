@@ -300,6 +300,7 @@ namespace LBW.Controllers
             {
                 model.Status = 254; 
             }
+ 
             else
             {
                 model.Status = 26;
@@ -336,6 +337,10 @@ namespace LBW.Controllers
 
                 await _context.SaveChangesAsync();
                 await UpdateProyectoStatus(idProject);
+            }
+            else if (muestra.Status == 24)
+            {
+                muestra.Status = 24;
             }
             else
             {

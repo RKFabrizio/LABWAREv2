@@ -61,10 +61,15 @@
 
 }
 
+
 @(Html.DevExtreme().Button()
-         .Text("Cancelado")
+         .Text("Cancelar")
          .OnClick("updateStatusC")
+         .Type(ButtonType.Danger)
+         .StylingMode(ButtonStylingMode.Outlined)
          )
+
+ 
 
 <div style="height:30px;">
 </div>
@@ -179,29 +184,20 @@
             editing.SelectTextOnEditStart(true);
             editing.StartEditAction(GridStartEditAction.Click);
         })
-        .OnRowUpdating("onRowUpdating") // Nuevo evento
-        .OnRowUpdated("onRowUpdated") // Nuevo evento
+
         )
 }
 
 <script>
 
-    function onRowUpdating(e) {
-    // Mostrar un indicador de carga o bloquear la interfaz de usuario
-        var grid = $("#gridContainer").dxDataGrid("instance");
-        grid.getDataSource().reload();
-    }
-
-    function onRowUpdated(e) {
-    // Recargar los datos del DataGrid principal de Muestras
-        var grid = $("#gridContainer").dxDataGrid("instance");
-        grid.getDataSource().reload();
-    }
+   
 
     var selected2Ids = [];
+    var selected21Ids = [];
 
     function onSelectionChanged(e) {
         selected2Ids = e.selectedRowKeys;
+        selected21Ids = e.selectedRowKeys;
     }
 
      function updateStatusC() {
@@ -231,6 +227,7 @@
             }
         });
     }
+
 
 
     function onCellPrepared(e) {
