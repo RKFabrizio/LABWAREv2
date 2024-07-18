@@ -5,6 +5,26 @@
       "PackagePath": "staticwebassets\\InformePrincipal\\Report1.rdl"
     },
     {
+      "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\InformePrincipal\\Report1Excel.rdl",
+      "PackagePath": "staticwebassets\\InformePrincipal\\Report1Excel.rdl"
+    },
+    {
+      "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\InformePrincipal\\Report3.rdl",
+      "PackagePath": "staticwebassets\\InformePrincipal\\Report3.rdl"
+    },
+    {
+      "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\InformePrincipal\\ReportAnalisis2.rdl",
+      "PackagePath": "staticwebassets\\InformePrincipal\\ReportAnalisis2.rdl"
+    },
+    {
+      "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\InformePrincipal\\ReportGerencia1.rdl",
+      "PackagePath": "staticwebassets\\InformePrincipal\\ReportGerencia1.rdl"
+    },
+    {
+      "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\InformePrincipal\\ReportPlanta1.rdl",
+      "PackagePath": "staticwebassets\\InformePrincipal\\ReportPlanta1.rdl"
+    },
+    {
       "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\css\\Barrick.css",
       "PackagePath": "staticwebassets\\css\\Barrick.css"
     },

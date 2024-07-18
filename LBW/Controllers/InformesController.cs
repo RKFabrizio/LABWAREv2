@@ -13,7 +13,15 @@ namespace LBW.Controllers
 
         public IActionResult Informes4()
         {
+            ViewBag.informe = "active";
             @ViewBag.info = "active";
+            return View();
+        }
+
+        public IActionResult Informes41()
+        {
+            ViewBag.informe = "active";
+            @ViewBag.info2 = "active";
             return View();
         }
     }

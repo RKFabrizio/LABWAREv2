@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "8+P6HZYS9eTjai9CdUnVZdN4v6LOglyN7yYqxXHpDK5PFWVdK+MUHl1hXyQazCx5iSI/GMtYKYfvfjQXv2EMEA==",
+  "dgSpecHash": "Tom+4zdxrAqejkR0DBht3W4aThMTnxp80MNVNLGYhwVKmhNO5+V8nlFnRxTY4FZvlMfk1ySfkaI0OE0UgK/Gsw==",
   "success": true,
   "projectFilePath": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\LBW.csproj",
   "expectedPackageFiles": [
@@ -212,6 +212,7 @@
     "C:\\Users\\fabri\\.nuget\\packages\\skiasharp\\2.88.6\\skiasharp.2.88.6.nupkg.sha512",
     "C:\\Users\\fabri\\.nuget\\packages\\skiasharp.nativeassets.macos\\2.88.6\\skiasharp.nativeassets.macos.2.88.6.nupkg.sha512",
     "C:\\Users\\fabri\\.nuget\\packages\\skiasharp.nativeassets.win32\\2.88.6\\skiasharp.nativeassets.win32.2.88.6.nupkg.sha512",
+    "C:\\Users\\fabri\\.nuget\\packages\\spire.pdf\\10.6.25\\spire.pdf.10.6.25.nupkg.sha512",
     "C:\\Users\\fabri\\.nuget\\packages\\system.appcontext\\4.3.0\\system.appcontext.4.3.0.nupkg.sha512",
     "C:\\Users\\fabri\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
     "C:\\Users\\fabri\\.nuget\\packages\\system.codedom\\4.5.0\\system.codedom.4.5.0.nupkg.sha512",

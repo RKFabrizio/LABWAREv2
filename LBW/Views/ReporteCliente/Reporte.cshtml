@@ -63,9 +63,20 @@
 }
 
 @(Html.DevExtreme().Button()
-    .Text("Exportar Reporte")
+    .Text("Exportar Pdf")
+    .StylingMode(ButtonStylingMode.Outlined)
+    .Type(ButtonType.Danger)
     .OnClick("exportToPdf")
 )
+
+@(Html.DevExtreme().Button()
+    .Text("Exportar Excel")
+    .StylingMode(ButtonStylingMode.Outlined)
+     .Type(ButtonType.Success)
+    .OnClick("exportToExcel")
+)
+
+ 
 
 <div style="height:10px;">
 
@@ -284,21 +295,78 @@
             xhrFields: {
                 responseType: 'blob'
             },
-            success: function (blob) {
+            success: function (blob, status, xhr) {
+                var contentDisposition = xhr.getResponseHeader('Content-Disposition');
+                var fileName = 'reporte.pdf';
+                if (contentDisposition) {
+                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                    var matches = filenameRegex.exec(contentDisposition);
+                    if (matches != null && matches[1]) {
+                        fileName = matches[1].replace(/['"]/g, '');
+                    }
+                }
                 var link = document.createElement('a');
                 link.href = window.URL.createObjectURL(blob);
-                link.download = "reporte_" + selectedProjectId + ".pdf";
+                link.download = fileName;
                 link.click();
-
-                DevExpress.ui.notify('Datos enviados correctamente', 'success', 6000);
+                DevExpress.ui.notify('Reporte generado correctamente', 'success', 6000);
             },
             error: function (error) {
-                DevExpress.ui.notify('Error al enviar los datos', 'error', 6000);
+                DevExpress.ui.notify('Fallo al crear el Reporte', 'error', 6000);
                 console.error("Error al enviar los datos:", error);
             }
         });
     }
 
+    function exportToExcel() {
+        if (selectedProjectId.length === 0) {
+            alert("No hay AAAAA seleccionados.");
+            return;
+        }
+        console.log(selectedProjectId);
+        $.ajax({
+            url: '@Url.Action("ExportExcel", "Export")',
+            method: "POST",
+            data: { proyecto: selectedProjectId },
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function (blob, status, xhr) {
+                var contentDisposition = xhr.getResponseHeader('Content-Disposition');
+                var fileName = 'reporte.xlsx';
+                if (contentDisposition) {
+                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                    var matches = filenameRegex.exec(contentDisposition);
+                    if (matches != null && matches[1]) {
+                        fileName = matches[1].replace(/['"]/g, '');
+                    }
+                }
+
+                // Crear un nuevo Blob con el tipo MIME correcto
+                var newBlob = new Blob([blob], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+                if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                    // Para IE
+                    window.navigator.msSaveOrOpenBlob(newBlob, fileName);
+                } else {
+                    // Para otros navegadores
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(newBlob);
+                    link.download = fileName;
+                    link.click();
+                    setTimeout(function () {
+                        window.URL.revokeObjectURL(link.href);
+                    }, 100);
+                }
+
+                DevExpress.ui.notify('Reporte generado correctamente', 'success', 6000);
+            },
+            error: function (error) {
+                DevExpress.ui.notify('Fallo al crear el Reporte', 'error', 6000);
+                console.error("Error al enviar los datos:", error);
+            }
+        });
+    }
      
 </script>
 

@@ -50,7 +50,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Report Include="Report1.rdl" />
-    <Report Include="ReportAnalisis1.rdl" />
+    <Report Include="Report1Excel.rdl" />
+    <Report Include="Report3.rdl" />
     <Report Include="ReportAnalisis2.rdl" />
     <Report Include="ReportGerencia1.rdl" />
     <Report Include="ReportPlanta1.rdl" />

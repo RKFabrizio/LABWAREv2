@@ -48,6 +48,7 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.24",
           "Microsoft.ReportingServices.ReportViewerControl.WebForms": "150.1652.0",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "6.0.17",
+          "Spire.PDF": "10.6.25",
           "System.Data.SqlClient": "4.8.6",
           "System.Security.Permissions": "7.0.0",
           "iTextSharp": "5.5.13.4",
@@ -3039,6 +3040,21 @@
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           }
+        }
+      },
+      "Spire.PDF/10.6.25": {
+        "dependencies": {
+          "System.Drawing.Common": "7.0.0",
+          "System.Text.Encoding.CodePages": "8.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/Spire.Pdf.dll": {
+            "assemblyVersion": "10.6.25.0",
+            "fileVersion": "10.6.25.1360"
+          }
+        },
+        "compile": {
+          "lib/net6.0/Spire.Pdf.dll": {}
         }
       },
       "System.AppContext/4.3.0": {
@@ -7138,6 +7154,13 @@
       "sha512": "sha512-7TzFO0u/g2MpQsTty4fyCDdMcfcWI+aLswwfnYXr3gtNS6VLKdMXPMeKpJa3pJSLnUBN6wD0JjuCe8OoLBQ6cQ==",
       "path": "skiasharp.nativeassets.win32/2.88.6",
       "hashPath": "skiasharp.nativeassets.win32.2.88.6.nupkg.sha512"
+    },
+    "Spire.PDF/10.6.25": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-QazyDyDVZewkvTU6LQEIAK3klHoNM/uhrk6j9bfaRs+RBOLtuue6EEDUSzr8fAronJJbCtEs9cNCeYgw3hEneg==",
+      "path": "spire.pdf/10.6.25",
+      "hashPath": "spire.pdf.10.6.25.nupkg.sha512"
     },
     "System.AppContext/4.3.0": {
       "type": "package",

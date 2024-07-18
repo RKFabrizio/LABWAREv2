@@ -30,43 +30,69 @@ namespace LBW.Models.Entity
             public DbSet<Proyecto> Proyectos { get; set; }
             public DbSet<Muestra> Muestras { get; set; }
             public DbSet<Resultado> Resultados { get; set; }
+            public DbSet<AuditoriaResultado> AuditoriaResultados { get; set; }
             public DbSet<Rol> Roles { get; set; }
             public DbSet<Grado> Grados { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
             {
-                /*
-                modelBuilder.Entity<Usuario>(entity =>
-                {
-                    entity.HasKey(e => e.UsuarioID);
 
-                    entity.ToTable("Usuarios");
+            modelBuilder.Entity<AuditoriaResultado>(entity =>
+            {
+                entity.HasKey(e => e.Id);
 
-                    entity.Property(e => e.UsuarioID)
-                        .HasColumnName("UsuarioID");
+                entity.ToTable("RESULTADO_AUDITORIA");
 
-                    entity.Property(e => e.Nombre)
-                        .IsRequired()
-                        .HasColumnName("Nombre")
-                        .HasMaxLength(50);
+                entity.Property(e => e.Fecha)
+                    .HasColumnName("FECHA")
+                    .IsRequired(false);
 
-                    entity.Property(e => e.Email)
-                        .IsRequired()
-                        .HasColumnName("Email")
-                        .HasMaxLength(50);
+                entity.Property(e => e.Fecha_N)
+                    .HasColumnName("FECHA_N")
+                    .IsRequired(true);
 
-                    entity.Property(e => e.Clave)
-                       .IsRequired(false)
-                       .HasColumnName("contrasena_hash")
-                       .HasMaxLength(255);
+                entity.Property(e => e.Cliente)
+                   .IsRequired()
+                   .HasColumnName("CLIENTE")
+                   .HasMaxLength(50)
+                   .IsRequired(false);
 
-                    entity.Property(e => e.FechaCreacion)
-                        .HasColumnName("FechaCreacion")
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("GETDATE()");
-                });
-                */
+                entity.Property(e => e.Proyecto)
+                    .IsRequired()
+                    .HasColumnName("PROYECTO")
+                    .HasMaxLength(50)
+                    .IsRequired(false);
 
-                modelBuilder.Entity<Usuario>(entity =>
+                entity.Property(e => e.Analisis)
+                    .IsRequired()
+                    .HasColumnName("ANALISIS")
+                    .HasMaxLength(50)
+                    .IsRequired(false);
+
+                entity.Property(e => e.Muestra)
+                    .IsRequired()
+                    .HasColumnName("MUESTRA")
+                    .HasMaxLength(50)
+                    .IsRequired(false);
+
+                entity.Property(e => e.OldValue)
+                    .HasColumnName("OLD_VALUE")
+                    .HasMaxLength(50)
+                    .IsRequired(false);
+
+                entity.Property(e => e.NewValue)
+                    .HasColumnName("NEW_VALUE")
+                    .HasMaxLength(50)
+                    .IsRequired(false);
+
+                entity.Property(e => e.Login)
+                    .HasColumnName("LOGIN")
+                    .IsRequired(false);
+ 
+            });
+
+
+
+            modelBuilder.Entity<Usuario>(entity =>
                 {
                     entity.HasKey(e => e.IdUser);
 

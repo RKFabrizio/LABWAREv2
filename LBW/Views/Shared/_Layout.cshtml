@@ -204,7 +204,7 @@
                         </a>
                     </li>
 
-                  @*   <li class="nav-item @ViewBag.au">
+                    <li class="nav-item @ViewBag.au">
                         <a asp-controller="Auditoria" asp-action="AuditoriaV" class="nav-link">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-text-ai" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -221,22 +221,56 @@
                                 Auditoria del Cliente
                             </span>
                         </a>
-                    </li> *@
+                    </li>
 
-                    <li class="nav-item @ViewBag.info">
-                        <a asp-controller="Informes" asp-action="Informes4" class="nav-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-table-export" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M12.5 21h-7.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5" />
-                                <path d="M3 10h18" />
-                                <path d="M10 3v18" />
-                                <path d="M16 19h6" />
-                                <path d="M19 16l3 3l-3 3" />
-                            </svg>
-                            <span class="nav-link-title" style="margin-left:1rem; align-items:center;">
+                    <li class="nav-item dropdown @ViewBag.informe">
+                        <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-table-export" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M12.5 21h-7.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5" />
+                                    <path d="M3 10h18" />
+                                    <path d="M10 3v18" />
+                                    <path d="M16 19h6" />
+                                    <path d="M19 16l3 3l-3 3" />
+                                </svg>
+                            </span>
+                            <span class="nav-link-title" style="margin-left:0.4rem; align-items:center;">
                                 Exportar Informes
                             </span>
                         </a>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-menu-columns">
+                                <div class="dropdown-menu-column">
+
+                                    <a asp-controller="Informes" asp-action="Informes4" class="dropdown-item @ViewBag.info">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-import" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                            <path d="M5 13v-8a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2h-5.5m-9.5 -2h7m-3 -3l3 3l-3 3" />
+                                        </svg>
+
+                                        <span class="nav-link-title" style="margin-left:0.4rem; align-items:center;">
+                                            Informes Particulares
+                                        </span>
+                                    </a>
+
+                                    <a asp-controller="Informes" asp-action="Informes41" class="dropdown-item @ViewBag.info2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-import" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                            <path d="M5 13v-8a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2h-5.5m-9.5 -2h7m-3 -3l3 3l-3 3" />
+                                        </svg>
+
+                                        <span class="nav-link-title" style="margin-left:0.4rem;">
+                                            Informes Generales
+                                        </span>
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </li>
 
                     <li class="nav-item @ViewBag.perfil">

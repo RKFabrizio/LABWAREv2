@@ -679,7 +679,7 @@ namespace LBW.Controllers
                         return BadRequest("SampleNumber is invalid.");
                     }
 
-                    model.IdCliente = 3;
+
                     model.IdLocation = 8;
 
                     var description = await _context.PuntoMuestras

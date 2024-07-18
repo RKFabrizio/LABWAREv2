@@ -1,0 +1,229 @@
+﻿
+@{
+    ViewData["Title"] = "Informes41";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .user-icon-container {
+        display: flex;
+        align-items: center;
+        margin-left: 30px;
+    }
+
+        .user-icon-container .icon-tabler {
+            margin-right: 10px;
+            width: 50px;
+            height: 50px;
+        }
+
+        .user-icon-container .page-title {
+            margin-left: -4px;
+            color: #a79a66;
+        }
+
+        .user-icon-container .page-title-home {
+            margin-left: -4px;
+            color: #a79a66;
+        }
+
+    .page-title-home {
+        margin-top: 18px;
+    }
+
+    .button-container,
+    .button-container1 {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        width: 100%;
+    }
+
+        .button-container .dx-button,
+        .button-container1 .dx-button {
+            flex: 1;
+            min-width: 0;
+        }
+</style>
+
+@section PagePreTitle {
+
+
+    <div id="sticky-title">
+        <div class="col">
+            <!-- Page pre-title -->
+            <div class="user-icon-container">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-import" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                    <path d="M5 13v-8a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2h-5.5m-9.5 -2h7m-3 -3l3 3l-3 3" />
+                </svg>
+
+                <h2 class="page-title-home">
+                    Informes Generales
+                </h2>
+            </div>
+        </div>
+    </div>
+
+}
+
+@section PageActions {
+
+
+}
+
+<div style="margin: 10px;">
+    @(Html.DevExtreme().Form<LBW.Models.Entity.Muestra>()
+        .ID("clienteForm")
+        .Items(items =>
+        {
+            items.AddSimpleFor(m => m.IdCliente)
+            .Label(l => l.Text("Cliente").Location(FormLabelLocation.Top))
+            .Editor(e => e.Lookup()
+            .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("ClientesLookup").Key("Value"))
+            .ValueExpr("Value")
+            .DisplayExpr("Text")
+            );
+        })
+        )
+    @(Html.DevExtreme().DateBox()
+        .ID("fechaInicio1")
+        .Label("Fecha de Inicio")
+        )
+    @(Html.DevExtreme().DateBox()
+        .ID("fechaFin1")
+        .Label("Fecha de Fin")
+        )
+
+    <div class="button-container1">
+        @(Html.DevExtreme().Button()
+            .Text("Reporte por Planta/General")
+            .OnClick("exportToPdfPlantaGeneral")
+            )
+        @(Html.DevExtreme().Button()
+            .Text("Reporte por Análisis/General")
+            .OnClick("exportToPdfAnalisisGeneral")
+            )
+    </div>
+</div>
+
+<script>
+    function exportToPdfPlantaGeneral() {
+        var startDateBox = $("#fechaInicio1").dxDateBox("instance");
+        var endDateBox = $("#fechaFin1").dxDateBox("instance");
+        var clienteForm = $("#clienteForm").dxForm("instance");
+
+        if (!startDateBox || !endDateBox || !clienteForm) {
+            DevExpress.ui.notify('No se pueden encontrar los controles necesarios.', 'error', 3000);
+            return;
+        }
+
+        var startDate = startDateBox.option("value");
+        var endDate = endDateBox.option("value");
+        var clienteId = clienteForm.option("formData").IdCliente;
+
+        if (!startDate || !endDate) {
+            DevExpress.ui.notify('Por favor, seleccione ambas fechas.', 'error', 3000);
+            return;
+        }
+
+        if (!clienteId) {
+            DevExpress.ui.notify('Por favor, seleccione un cliente.', 'error', 3000);
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("ExportPdfPlantaGeneral", "Export")',
+            method: "POST",
+            data: {
+                fechaInicio: startDate.toISOString(),
+                fechaFin: endDate.toISOString(),
+                idCliente: clienteId
+            },
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function (blob, status, xhr) {
+                var contentDisposition = xhr.getResponseHeader('Content-Disposition');
+                var fileName = 'reporte_planta.pdf';
+                if (contentDisposition) {
+                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                    var matches = filenameRegex.exec(contentDisposition);
+                    if (matches != null && matches[1]) {
+                        fileName = matches[1].replace(/['"]/g, '');
+                    }
+                }
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = fileName;
+                link.click();
+                DevExpress.ui.notify('Reporte por planta general generado correctamente', 'success', 6000);
+            },
+            error: function (error) {
+                DevExpress.ui.notify('Fallo al crear el Reporte por planta', 'error', 6000);
+                console.error("Error al enviar los datos:", error);
+            }
+        });
+    }
+
+    function exportToPdfAnalisisGeneral() {
+        var startDateBox = $("#fechaInicio1").dxDateBox("instance");
+        var endDateBox = $("#fechaFin1").dxDateBox("instance");
+        var clienteForm = $("#clienteForm").dxForm("instance");
+
+        if (!startDateBox || !endDateBox || !clienteForm) {
+            DevExpress.ui.notify('No se pueden encontrar los controles necesarios.', 'error', 3000);
+            return;
+        }
+
+        var startDate = startDateBox.option("value");
+        var endDate = endDateBox.option("value");
+        var clienteId = clienteForm.option("formData").IdCliente;
+
+        if (!startDate || !endDate) {
+            DevExpress.ui.notify('Por favor, seleccione ambas fechas.', 'error', 3000);
+            return;
+        }
+
+        if (!clienteId) {
+            DevExpress.ui.notify('Por favor, seleccione un cliente.', 'error', 3000);
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("ExportPdfAnalisisGeneral", "Export")',
+            method: "POST",
+            data: {
+                fechaInicio: startDate.toISOString(),
+                fechaFin: endDate.toISOString(),
+                idCliente: clienteId
+            },
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function (blob, status, xhr) {
+                var contentDisposition = xhr.getResponseHeader('Content-Disposition');
+                var fileName = 'reporte_analisis.pdf';
+                if (contentDisposition) {
+                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                    var matches = filenameRegex.exec(contentDisposition);
+                    if (matches != null && matches[1]) {
+                        fileName = matches[1].replace(/['"]/g, '');
+                    }
+                }
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = fileName;
+                link.click();
+                DevExpress.ui.notify('Reporte por análisis generado correctamente', 'success', 6000);
+            },
+            error: function (error) {
+                DevExpress.ui.notify('Fallo al crear el Reporte por planta', 'error', 6000);
+                console.error("Error al enviar los datos:", error);
+            }
+        });
+    }
+</script>
+        

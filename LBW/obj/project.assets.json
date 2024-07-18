@@ -3618,6 +3618,23 @@
           }
         }
       },
+      "Spire.PDF/10.6.25": {
+        "type": "package",
+        "dependencies": {
+          "System.Drawing.Common": "6.0.0",
+          "System.Text.Encoding.CodePages": "6.0.0"
+        },
+        "compile": {
+          "lib/net6.0/Spire.Pdf.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Spire.Pdf.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "System.AppContext/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -9692,6 +9709,26 @@
         "skiasharp.nativeassets.win32.nuspec"
       ]
     },
+    "Spire.PDF/10.6.25": {
+      "sha512": "QazyDyDVZewkvTU6LQEIAK3klHoNM/uhrk6j9bfaRs+RBOLtuue6EEDUSzr8fAronJJbCtEs9cNCeYgw3hEneg==",
+      "type": "package",
+      "path": "spire.pdf/10.6.25",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net40/Spire.Pdf.dll",
+        "lib/net40/Spire.Pdf.xml",
+        "lib/net48/Spire.Pdf.dll",
+        "lib/net48/Spire.Pdf.xml",
+        "lib/net6.0/Spire.Pdf.dll",
+        "lib/net6.0/Spire.Pdf.xml",
+        "lib/netstandard2.0/Spire.Pdf.dll",
+        "lib/netstandard2.0/Spire.Pdf.xml",
+        "license.txt",
+        "spire.pdf.10.6.25.nupkg.sha512",
+        "spire.pdf.nuspec"
+      ]
+    },
     "System.AppContext/4.3.0": {
       "sha512": "fKC+rmaLfeIzUhagxY17Q9siv/sPrjjKcfNg1Ic8IlQkZLipo8ljcaZQu4VtI4Jqbzjc2VTjzGLF6WmsRXAEgA==",
       "type": "package",
@@ -13897,6 +13934,7 @@
       "Microsoft.EntityFrameworkCore.SqlServer >= 6.0.24",
       "Microsoft.ReportingServices.ReportViewerControl.WebForms >= 150.1652.0",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 6.0.17",
+      "Spire.PDF >= 10.6.25",
       "System.Data.SqlClient >= 4.8.6",
       "System.Security.Permissions >= 7.0.0",
       "iTextSharp >= 5.5.13.4"
@@ -14012,6 +14050,10 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "target": "Package",
             "version": "[6.0.17, )"
+          },
+          "Spire.PDF": {
+            "target": "Package",
+            "version": "[10.6.25, )"
           },
           "System.Data.SqlClient": {
             "target": "Package",

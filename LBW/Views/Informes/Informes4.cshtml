@@ -30,6 +30,22 @@
     .page-title-home {
         margin-top: 18px;
     }
+
+    .button-container,
+    .button-container1 {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        width: 100%;
+    }
+
+        .button-container .dx-button,
+        .button-container1 .dx-button {
+            flex: 1;
+            min-width: 0;
+        }
+   
 </style>
 
 @section PagePreTitle {
@@ -39,16 +55,14 @@
         <div class="col">
             <!-- Page pre-title -->
             <div class="user-icon-container">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-table-export" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-import" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M12.5 21h-7.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5" />
-                    <path d="M3 10h18" />
-                    <path d="M10 3v18" />
-                    <path d="M16 19h6" />
-                    <path d="M19 16l3 3l-3 3" />
+                    <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                    <path d="M5 13v-8a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2h-5.5m-9.5 -2h7m-3 -3l3 3l-3 3" />
                 </svg>
+
                 <h2 class="page-title-home">
-                    Exportar Informes
+                    Informes Particulares
                 </h2>
             </div>
         </div>
@@ -60,3 +74,138 @@
 
 
 }
+
+<div style="margin: 10px;">
+    @(Html.DevExtreme().DateBox()
+        .ID("fechaInicio")
+        .Label("Fecha de Inicio")
+        )
+    @(Html.DevExtreme().DateBox()
+        .ID("fechaFin")
+        .Label("Fecha de Fin")
+        )
+
+    <div class="button-container">
+        @(Html.DevExtreme().Button()
+            .Text("Reporte por Planta")
+            .OnClick("exportToPdfPlanta")
+            )
+        @(Html.DevExtreme().Button()
+            .Text("Reporte por Análisis")
+            .OnClick("exportToPdfAnalisis")
+            )
+    </div>
+</div>
+
+ 
+ 
+
+<script>
+    function exportToPdfPlanta() {
+        var startDateBox = $("#fechaInicio").dxDateBox("instance");
+        var endDateBox = $("#fechaFin").dxDateBox("instance");
+
+        if (!startDateBox || !endDateBox) {
+            DevExpress.ui.notify('No se pueden encontrar los controles de fecha.', 'error', 3000);
+            return;
+        }
+
+        var startDate = startDateBox.option("value");
+        var endDate = endDateBox.option("value");
+
+        if (!startDate || !endDate) {
+            DevExpress.ui.notify('Por favor, seleccione ambas fechas.', 'error', 3000);
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("ExportPdfPlanta", "Export")',
+            method: "POST",
+            data: {
+                fechaInicio: startDate.toISOString(),
+                fechaFin: endDate.toISOString()
+            },
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function (blob, status, xhr) {
+                var contentDisposition = xhr.getResponseHeader('Content-Disposition');
+                var fileName = 'reporte_planta.pdf';
+                if (contentDisposition) {
+                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                    var matches = filenameRegex.exec(contentDisposition);
+                    if (matches != null && matches[1]) {
+                        fileName = matches[1].replace(/['"]/g, '');
+                    }
+                }
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = fileName;
+                link.click();
+                DevExpress.ui.notify('Reporte por planta generado correctamente', 'success', 6000);
+            },
+            error: function (error) {
+                DevExpress.ui.notify('Fallo al crear el Reporte por planta', 'error', 6000);
+                console.error("Error al enviar los datos:", error);
+            }
+        });
+    }
+
+    function exportToPdfAnalisis() {
+        var startDateBox = $("#fechaInicio").dxDateBox("instance");
+        var endDateBox = $("#fechaFin").dxDateBox("instance");
+
+        if (!startDateBox || !endDateBox) {
+            DevExpress.ui.notify('No se pueden encontrar los controles de fecha.', 'error', 3000);
+            return;
+        }
+
+        var startDate = startDateBox.option("value");
+        var endDate = endDateBox.option("value");
+
+        if (!startDate || !endDate) {
+            DevExpress.ui.notify('Por favor, seleccione ambas fechas.', 'error', 3000);
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("ExportPdfAnalisis", "Export")',
+            method: "POST",
+            data: {
+                fechaInicio: startDate.toISOString(),
+                fechaFin: endDate.toISOString()
+            },
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function (blob, status, xhr) {
+                var contentDisposition = xhr.getResponseHeader('Content-Disposition');
+                var fileName = 'reporte_analisis.pdf';
+                if (contentDisposition) {
+                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                    var matches = filenameRegex.exec(contentDisposition);
+                    if (matches != null && matches[1]) {
+                        fileName = matches[1].replace(/['"]/g, '');
+                    }
+                }
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = fileName;
+                link.click();
+                DevExpress.ui.notify('Reporte por análisis generado correctamente', 'success', 6000);
+            },
+            error: function (error) {
+                DevExpress.ui.notify('Fallo al crear el Reporte por Análisis', 'error', 6000);
+                console.error("Error al enviar los datos:", error);
+            }
+        });
+    }
+
+ 
+
+     
+</script>
+
+ 
+ 
+

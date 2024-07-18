@@ -110,6 +110,10 @@
               "target": "Package",
               "version": "[6.0.17, )"
             },
+            "Spire.PDF": {
+              "target": "Package",
+              "version": "[10.6.25, )"
+            },
             "System.Data.SqlClient": {
               "target": "Package",
               "version": "[4.8.6, )"
