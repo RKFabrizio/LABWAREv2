@@ -296,7 +296,10 @@ namespace LBW.Controllers
             if (!TryValidateModel(model))
                 return BadRequest(GetFullErrorMessage(ModelState));
 
-            if(model.ResultNumber == null)
+            string usuarioInfoJson = HttpContext.Request.Cookies["UsuarioInfo"];
+            LBW.Models.Usuario usuario = JsonConvert.DeserializeObject<LBW.Models.Usuario>(usuarioInfoJson);
+
+            if (model.ResultNumber == null)
             {
                 model.Status = 254; 
             }
@@ -305,6 +308,8 @@ namespace LBW.Controllers
             {
                 model.Status = 26;
             }
+
+            model.Login = usuario.IdUser;
 
             int idResult = model.IdResult;
             int idMuestra = model.IdSample;

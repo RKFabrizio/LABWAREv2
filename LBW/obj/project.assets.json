@@ -3248,6 +3248,22 @@
           }
         }
       },
+      "Nito.Disposables/2.5.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections.Immutable": "1.5.0"
+        },
+        "compile": {
+          "lib/netstandard2.1/Nito.Disposables.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.1/Nito.Disposables.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "NuGet.Common/6.9.1": {
         "type": "package",
         "dependencies": {
@@ -9161,6 +9177,29 @@
         "newtonsoft.json.bson.nuspec"
       ]
     },
+    "Nito.Disposables/2.5.0": {
+      "sha512": "l0OuzZ2T/botMbOvPGY6yp3v+69aMrt+wzST/tFdGnHEFVXbbdOFxu3bfo9XH1N1H0LCQlA3RmFvlPO8zA+faw==",
+      "type": "package",
+      "path": "nito.disposables/2.5.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "icon.png",
+        "lib/net461/Nito.Disposables.dll",
+        "lib/net461/Nito.Disposables.xml",
+        "lib/net8.0/Nito.Disposables.dll",
+        "lib/net8.0/Nito.Disposables.xml",
+        "lib/netstandard1.0/Nito.Disposables.dll",
+        "lib/netstandard1.0/Nito.Disposables.xml",
+        "lib/netstandard2.0/Nito.Disposables.dll",
+        "lib/netstandard2.0/Nito.Disposables.xml",
+        "lib/netstandard2.1/Nito.Disposables.dll",
+        "lib/netstandard2.1/Nito.Disposables.xml",
+        "nito.disposables.2.5.0.nupkg.sha512",
+        "nito.disposables.nuspec"
+      ]
+    },
     "NuGet.Common/6.9.1": {
       "sha512": "FbuWZBjQ1NJXBDqCwSddN2yvw3Plq3sTCIh0nc66Hu8jrNr+BOaxlKZv78jvJ+pSy8BvurYOdF9sl9KoORjrtg==",
       "type": "package",
@@ -13934,8 +13973,10 @@
       "Microsoft.EntityFrameworkCore.SqlServer >= 6.0.24",
       "Microsoft.ReportingServices.ReportViewerControl.WebForms >= 150.1652.0",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 6.0.17",
+      "Nito.Disposables >= 2.5.0",
       "Spire.PDF >= 10.6.25",
       "System.Data.SqlClient >= 4.8.6",
+      "System.Runtime >= 4.3.1",
       "System.Security.Permissions >= 7.0.0",
       "iTextSharp >= 5.5.13.4"
     ]
@@ -14051,6 +14092,10 @@
             "target": "Package",
             "version": "[6.0.17, )"
           },
+          "Nito.Disposables": {
+            "target": "Package",
+            "version": "[2.5.0, )"
+          },
           "Spire.PDF": {
             "target": "Package",
             "version": "[10.6.25, )"
@@ -14058,6 +14103,10 @@
           "System.Data.SqlClient": {
             "target": "Package",
             "version": "[4.8.6, )"
+          },
+          "System.Runtime": {
+            "target": "Package",
+            "version": "[4.3.1, )"
           },
           "System.Security.Permissions": {
             "target": "Package",

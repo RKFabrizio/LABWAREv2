@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Content Remove="wwwroot\InformePrincipal\Report3.rdl~RF2b607a1.TMP" />
       <Content Remove="wwwroot\InformePrincipal\Report3.rdl~RF6d6252b.TMP" />
       <Content Remove="wwwroot\InformePrincipal\ReportAnalisis1.rdl~RF59a2ba4.TMP" />
     </ItemGroup>
@@ -33,8 +34,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.24" />
     <PackageReference Include="Microsoft.ReportingServices.ReportViewerControl.WebForms" Version="150.1652.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.17" />
+    <PackageReference Include="Nito.Disposables" Version="2.5.0" />
     <PackageReference Include="Spire.PDF" Version="10.6.25" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageReference Include="System.Runtime" Version="4.3.1" />
     <PackageReference Include="System.Security.Permissions" Version="7.0.0" />
     </ItemGroup>
 

@@ -110,6 +110,10 @@
               "target": "Package",
               "version": "[6.0.17, )"
             },
+            "Nito.Disposables": {
+              "target": "Package",
+              "version": "[2.5.0, )"
+            },
             "Spire.PDF": {
               "target": "Package",
               "version": "[10.6.25, )"
@@ -117,6 +121,10 @@
             "System.Data.SqlClient": {
               "target": "Package",
               "version": "[4.8.6, )"
+            },
+            "System.Runtime": {
+              "target": "Package",
+              "version": "[4.3.1, )"
             },
             "System.Security.Permissions": {
               "target": "Package",

@@ -36,6 +36,7 @@ namespace LBW.Models.Entity
         public bool? Reportable { get; set;}
         public DateTime? ChangedOn { get; set;}
         public int? Instrument {  get; set;}
+        public int? Login {  get; set;}
 
         public virtual Lista IdStatusNavigation { get; set; }
         public virtual Instrumento IdInstrumentNavigation { get; set; }

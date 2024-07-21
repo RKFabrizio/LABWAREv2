@@ -1,28 +1,28 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\InformeClienteFecha\\ReportAnalisis2.rdl",
+      "PackagePath": "staticwebassets\\InformeClienteFecha\\ReportAnalisis2.rdl"
+    },
+    {
+      "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\InformeClienteFecha\\Reporte_PlantaGeneral.rdl",
+      "PackagePath": "staticwebassets\\InformeClienteFecha\\Reporte_PlantaGeneral.rdl"
+    },
+    {
+      "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\InformeFechas\\Report3.rdl",
+      "PackagePath": "staticwebassets\\InformeFechas\\Report3.rdl"
+    },
+    {
+      "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\InformeFechas\\Reporte_Planta.rdl",
+      "PackagePath": "staticwebassets\\InformeFechas\\Reporte_Planta.rdl"
+    },
+    {
       "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\InformePrincipal\\Report1.rdl",
       "PackagePath": "staticwebassets\\InformePrincipal\\Report1.rdl"
     },
     {
       "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\InformePrincipal\\Report1Excel.rdl",
       "PackagePath": "staticwebassets\\InformePrincipal\\Report1Excel.rdl"
-    },
-    {
-      "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\InformePrincipal\\Report3.rdl",
-      "PackagePath": "staticwebassets\\InformePrincipal\\Report3.rdl"
-    },
-    {
-      "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\InformePrincipal\\ReportAnalisis2.rdl",
-      "PackagePath": "staticwebassets\\InformePrincipal\\ReportAnalisis2.rdl"
-    },
-    {
-      "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\InformePrincipal\\ReportGerencia1.rdl",
-      "PackagePath": "staticwebassets\\InformePrincipal\\ReportGerencia1.rdl"
-    },
-    {
-      "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\InformePrincipal\\ReportPlanta1.rdl",
-      "PackagePath": "staticwebassets\\InformePrincipal\\ReportPlanta1.rdl"
     },
     {
       "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\wwwroot\\css\\Barrick.css",

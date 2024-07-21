@@ -1008,6 +1008,19 @@ namespace LBW.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Usuarios1Lookup(DataSourceLoadOptions loadOptions)
+        {
+            var lookup = from i in _context.Usuarios
+                         orderby i.NombreCompleto
+                         select new
+                         {
+                             Value = i.IdUser,
+                             Text = i.NombreCompleto
+                         };
+            return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> UbicacionesLookup(DataSourceLoadOptions loadOptions) {
             var lookup = from i in _context.Ubicaciones
                          orderby i.Name_location

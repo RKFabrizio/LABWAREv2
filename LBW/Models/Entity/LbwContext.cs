@@ -1231,6 +1231,10 @@ namespace LBW.Models.Entity
                 .HasColumnName("CHANGED_ON")
                 .IsRequired(false);
 
+                entity.Property(e => e.Login)
+                .HasColumnName("LOGIN")
+                .IsRequired(false);
+
                 entity.HasOne(d => d.IdStatusNavigation)
                   .WithMany(p => p.Resultados)
                   .HasForeignKey(d => d.Status)

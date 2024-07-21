@@ -1,40 +1,61 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.AspNetCore.Http.Features; // Añadir esta línea
+using Microsoft.AspNetCore.Http.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 var connStr = builder.Configuration.GetConnectionString("CadenaSQL");
 
 // Configurar los límites de solicitud
+const int maxRequestSize = 209715200; // 200 MB en bytes
+
 builder.Services.Configure<IISServerOptions>(options =>
 {
-    options.MaxRequestBodySize = int.MaxValue; // o un valor específico en bytes
+    options.MaxRequestBodySize = maxRequestSize;
 });
 
 builder.Services.Configure<KestrelServerOptions>(options =>
 {
-    options.Limits.MaxRequestBodySize = int.MaxValue; // o un valor específico en bytes
+    options.Limits.MaxRequestBodySize = maxRequestSize;
 });
 
 builder.Services.Configure<FormOptions>(options =>
 {
-    options.ValueLengthLimit = int.MaxValue;
-    options.MultipartBodyLengthLimit = int.MaxValue;
-    options.MultipartHeadersLengthLimit = int.MaxValue;
+    options.ValueLengthLimit = maxRequestSize;
+    options.MultipartBodyLengthLimit = maxRequestSize;
+    options.MultipartHeadersLengthLimit = maxRequestSize;
+});
+
+// Configurar el límite de tamaño de archivo para IIS Express
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.Limits.MaxRequestBodySize = maxRequestSize;
 });
 
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
+// Configurar el límite de tamaño de archivo para Web API si lo estás usando
+builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(options =>
+{
+    options.ValueLengthLimit = maxRequestSize;
+    options.MultipartBodyLengthLimit = maxRequestSize;
+    options.MultipartHeadersLengthLimit = maxRequestSize;
+});
+
 // Resto de su configuración...
 builder.Services
     .AddDbContext<LBW.Models.Entity.LbwContext>(options =>
-    { object value = options.UseSqlServer(connStr); })
+    { options.UseSqlServer(connStr); })
     .AddControllersWithViews()
     .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 
-builder.Services.AddSession();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {

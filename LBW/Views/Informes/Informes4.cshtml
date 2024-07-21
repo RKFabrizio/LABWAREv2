@@ -119,7 +119,7 @@
         }
 
         $.ajax({
-            url: '@Url.Action("ExportPdfPlanta", "Export")',
+            url: '@Url.Action("ExportPdfPlanta", "ExportFechas")',
             method: "POST",
             data: {
                 fechaInicio: startDate.toISOString(),
@@ -169,7 +169,7 @@
         }
 
         $.ajax({
-            url: '@Url.Action("ExportPdfAnalisis", "Export")',
+            url: '@Url.Action("ExportPdfAnalisis", "ExportFechas")',
             method: "POST",
             data: {
                 fechaInicio: startDate.toISOString(),
