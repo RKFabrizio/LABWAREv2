@@ -40,7 +40,8 @@ namespace LBW.Controllers
                 i.GMT_OFFSET,
                 i.UsuarioDeshabilitado,
                 i.FechaDeshabilitado,
-                i.CCliente
+                i.CCliente,
+                i.ConCopia
             });
 
             // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
@@ -63,7 +64,8 @@ namespace LBW.Controllers
                 i.GMT_OFFSET,
                 i.UsuarioDeshabilitado,
                 i.FechaDeshabilitado,
-                i.CCliente
+                i.CCliente,
+                i.ConCopia
             });
 
             // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
@@ -121,6 +123,21 @@ namespace LBW.Controllers
                          };
             return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
         }
+      
+
+        [HttpGet]
+        public async Task<IActionResult> CCLookup(DataSourceLoadOptions loadOptions)
+        {
+            var lookup = from i in _context.Clientes
+                         orderby i.IdCliente
+                         where i.IdCliente == 3 || i.IdCliente == 6
+                         select new
+                         {
+                             Value = i.IdCliente,
+                             Text = i.NameCliente
+                         };
+            return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
+        }
 
         [HttpDelete]
         public async Task Delete(string key) {
@@ -141,6 +158,7 @@ namespace LBW.Controllers
             string USUARIO_DESHABILITADO = nameof(Usuario.UsuarioDeshabilitado);
             string FECHA_DESHABILITADO = nameof(Usuario.FechaDeshabilitado);
             string CCLIENTE = nameof(Usuario.CCliente);
+            string CC = nameof(Usuario.ConCopia);
 
             if(values.Contains(USUARIO_ID)) {
                 model.UsuarioID = Convert.ToString(values[USUARIO_ID]);
@@ -178,6 +196,10 @@ namespace LBW.Controllers
 
             if(values.Contains(CCLIENTE)) {
                 model.CCliente = values[CCLIENTE] != null ? Convert.ToInt32(values[CCLIENTE]) : (int?)null;
+            }
+            if (values.Contains(CC))
+            {
+                model.ConCopia = values[CC] != null ? Convert.ToBoolean(values[CC]) : (bool?)null;
             }
         }
 

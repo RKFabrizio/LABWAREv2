@@ -37,8 +37,15 @@ namespace LBW.Controllers
                         {
                          new Claim(ClaimTypes.Name, usuario.NombreCompleto),
                          new Claim("UsuarioID", usuario.UsuarioID),
-                         new Claim("CCliente", usuario.CCliente.ToString())
+                         new Claim("CCliente", usuario.CCliente.ToString()),
+                         new Claim("IdRol", usuario.Roles[0]),
                         };
+
+                    foreach (string pos in usuario.Roles)
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, pos));
+                    };
+
 
                     claims.Add(new Claim("UsuarioInfo", JsonConvert.SerializeObject(usuario)));
 
@@ -56,6 +63,8 @@ namespace LBW.Controllers
                     string usuarioInfoJson = JsonConvert.SerializeObject(usuario);
                     var cookieOptions = new CookieOptions() { IsEssential = true };
                     HttpContext.Response.Cookies.Append("UsuarioInfo", usuarioInfoJson, cookieOptions);
+
+                    
 
                     return RedirectToAction("Bienvenida", "Inicio");
                 }

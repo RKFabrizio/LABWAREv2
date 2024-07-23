@@ -320,7 +320,7 @@
 
     function exportToExcel() {
         if (selectedProjectId.length === 0) {
-            alert("No hay AAAAA seleccionados.");
+            alert("No hay proyecto seleccionado.");
             return;
         }
         console.log(selectedProjectId);
@@ -342,14 +342,11 @@
                     }
                 }
 
-                // Crear un nuevo Blob con el tipo MIME correcto
                 var newBlob = new Blob([blob], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
                 if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                    // Para IE
                     window.navigator.msSaveOrOpenBlob(newBlob, fileName);
                 } else {
-                    // Para otros navegadores
                     var link = document.createElement('a');
                     link.href = window.URL.createObjectURL(newBlob);
                     link.download = fileName;
@@ -367,6 +364,7 @@
             }
         });
     }
+
      
 </script>
 

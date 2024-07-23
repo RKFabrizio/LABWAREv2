@@ -1,24 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\LBW.csproj": {}
+    "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\LBW\\LBW.csproj": {}
   },
   "projects": {
-    "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\LBW.csproj": {
+    "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\LBW\\LBW.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\LBW.csproj",
+        "projectUniqueName": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\LBW\\LBW.csproj",
         "projectName": "LBW",
-        "projectPath": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\LBW.csproj",
+        "projectPath": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\LBW\\LBW.csproj",
         "packagesPath": "C:\\Users\\fabri\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\LBW\\obj\\",
+        "outputPath": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\LBW\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\DevExpress 22.1\\Components\\Offline Packages",
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\fabri\\OneDrive\\Desktop\\GITESTE\\NuGet.Config",
+          "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\NuGet.Config",
           "C:\\Users\\fabri\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 22.1.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
@@ -73,6 +73,10 @@
             "CoreHtmlToImage": {
               "target": "Package",
               "version": "[1.0.6, )"
+            },
+            "DevExpress.Reporting.Core": {
+              "target": "Package",
+              "version": "[22.1.12, )"
             },
             "DevExtreme.AspNet.Core": {
               "target": "Package",

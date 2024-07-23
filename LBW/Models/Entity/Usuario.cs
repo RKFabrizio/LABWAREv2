@@ -23,7 +23,7 @@ namespace LBW.Models.Entity
         public string? UsuarioID  { get; set; }
 
         [Required]
-        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "El nombre solo puede contener letras.")]
+        [RegularExpression(@"^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s]+$", ErrorMessage = "El nombre solo puede contener letras y espacios.")]
         public string? NombreCompleto { get; set; }
 
         [Required]
@@ -34,6 +34,7 @@ namespace LBW.Models.Entity
         public bool? UsuarioDeshabilitado { get; set; }
         public DateTime? FechaDeshabilitado { get; set; }
         public int? CCliente { get; set; }
+        public bool? ConCopia { get; set; }
 
         public virtual Cliente IdCClienteNavigation { get; set; }
         public virtual Rol IdRolNavigation { get; set; }

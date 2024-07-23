@@ -141,6 +141,10 @@ namespace LBW.Models.Entity
                         .HasColumnName("C_CLIENTE")
                         .IsRequired(false);
 
+                    entity.Property(e => e.ConCopia)
+                        .HasColumnName("CC")
+                        .IsRequired(false);
+
                     entity.HasOne(d => d.IdCClienteNavigation)
                       .WithMany(p => p.Usuarios)
                       .HasForeignKey(d => d.CCliente)

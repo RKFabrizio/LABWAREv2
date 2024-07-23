@@ -33,11 +33,13 @@ namespace LBW.Data
                                 UsuarioID = dr["UsuarioID"] != DBNull.Value ? dr["UsuarioID"].ToString() : string.Empty,
                                 NombreCompleto = dr["NombreCompleto"] != DBNull.Value ? dr["NombreCompleto"].ToString() : string.Empty,
                                 Correo = dr["Correo"] != DBNull.Value ? dr["Correo"].ToString() : string.Empty,
-                                IdRol = dr["IdRol"] != DBNull.Value ? Convert.ToInt32(dr["IdRol"]) : 0, 
+                                IdRol = dr["IdRol"] != DBNull.Value ? Convert.ToInt32(dr["IdRol"]) : 0,
+                                Roles = new string[] { dr["IdRol"].ToString() },
                                 GMT_OFFSET = dr["GMT_OFFSET"] != DBNull.Value ? Convert.ToInt32(dr["GMT_OFFSET"]) : 0,
                                 UsuarioDeshabilitado = dr["UsuarioDeshabilitado"] != DBNull.Value ? Convert.ToBoolean(dr["UsuarioDeshabilitado"]) : false,// Asumiendo valor predeterminado
                                 FechaDeshabilitado = dr["FechaDeshabilitado"] != DBNull.Value ? Convert.ToDateTime(dr["FechaDeshabilitado"]) : DateTime.MinValue, // Asumiendo valor predeterminado
-                                CCliente = dr["CCliente"] != DBNull.Value ? Convert.ToInt32(dr["CCliente"]): 0
+                                CCliente = dr["CCliente"] != DBNull.Value ? Convert.ToInt32(dr["CCliente"]): 0,
+                                ConCopia = dr["ConCopia"] != DBNull.Value ? Convert.ToBoolean(dr["ConCopia"]) : false
                             });
                         } 
                     }

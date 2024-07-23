@@ -23,6 +23,7 @@
     <PackageReference Include="Aspose.Cells" Version="24.6.0" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="CoreHtmlToImage" Version="1.0.6" />
+    <PackageReference Include="DevExpress.Reporting.Core" Version="22.1.12" />
     <PackageReference Include="DevExtreme.AspNet.Data" Version="2.8.6" />
     <PackageReference Include="DevExtreme.AspNet.Core" Version="22.1.12" />
     <PackageReference Include="BuildBundlerMinifier" Version="2.9.406" />

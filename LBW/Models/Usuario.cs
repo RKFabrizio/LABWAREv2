@@ -14,5 +14,7 @@ namespace LBW.Models
         public bool? UsuarioDeshabilitado { get; set; }
         public DateTime? FechaDeshabilitado { get; set; }
         public int? CCliente { get; set; }
+        public bool? ConCopia { get; set; }
+        public string[] Roles { get; set; }
     }
 }
