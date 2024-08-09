@@ -8,6 +8,11 @@ using Spire.Pdf.Exporting;
 using Microsoft.EntityFrameworkCore;
 using Nito.Disposables;
 using System.IO.Compression;
+using LBW.Reportes;
+using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
+using System.Net.Mail;
+using System.Net.Mime;
+using System.Net;
 
 
 namespace LBW.Controllers
@@ -25,251 +30,248 @@ namespace LBW.Controllers
         }
 
 
+
+
         [HttpPost]
-        public ActionResult ExportPdf(int proyecto)
+        public IActionResult ExportReport(int proyecto, string format)
         {
-            Console.WriteLine("Reporte por Proyecto");
-
-            using var reportCleanup = Disposable.Create(() =>
-            {
-                // Lógica de limpieza aquí
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-            });
-
             var Proyecto = _context.Proyectos
-                        .Where(p => p.IdProyecto == proyecto)
-                        .FirstOrDefault();
+                .Where(p => p.IdProyecto == proyecto)
+                .FirstOrDefault();
+
             if (Proyecto == null)
             {
                 return NotFound("Proyecto no encontrado");
             }
+
+            string fileName = Proyecto.Name;
+            fileName = Regex.Replace(fileName, @"[^A-Za-z0-9_\-]", "_");
+
+            Report1 report = new Report1();
+
+            report.Parameters["reporte_proyecto"].Value = proyecto;
+            string contentType;
+            string fileExtension;
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                switch (format.ToLower())
+                {
+
+                    case "xlsx":
+                        report.ExportToXlsx(stream);
+                        contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        fileExtension = ".xlsx";
+                        break;
+
+                    case "pdf":
+                        report.ExportToPdf(stream);
+                        contentType = "application/pdf";
+                        fileExtension = ".pdf";
+                        break;
+
+                    default:
+                        return BadRequest("Formato no soportado");
+                }
+                var fileNameWithExtension = $"{fileName}{fileExtension}";
+                Response.Headers.Add("Content-Disposition", $"attachment; filename*=UTF-8''{Uri.EscapeDataString(fileNameWithExtension)}");
+                return File(stream.ToArray(), contentType);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ExportPlantaReport(DateTime fechaInicio, DateTime fechaFin)
+        {
+            
+            Report2 report = new Report2();
+
+            report.Parameters["FechaInicio"].Value = fechaInicio;
+            report.Parameters["FechaFin"].Value = fechaFin;
+
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                report.ExportToPdf(stream);
+                return File(stream.ToArray(), "application/pdf", "Reporte_Planta.pdf");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ExportAnalisisReport(DateTime fechaInicio, DateTime fechaFin)
+        {
+
+            ReportAnalisis report = new ReportAnalisis();
+
+            report.Parameters["FechaInicio"].Value = fechaInicio;
+            report.Parameters["FechaFin"].Value = fechaFin;
+
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                report.ExportToPdf(stream);
+                return File(stream.ToArray(), "application/pdf", "Reporte_Analisis.pdf");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ExportGeneralPlantaReport(DateTime fechaInicio, DateTime fechaFin, int IdCliente)
+        {
+
+            ReportPlantaGeneral report = new ReportPlantaGeneral();
+
+            report.Parameters["FechaInicio"].Value = fechaInicio;
+            report.Parameters["FechaFin"].Value = fechaFin;
+            report.Parameters["IdCliente"].Value = IdCliente;
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                report.ExportToPdf(stream);
+                return File(stream.ToArray(), "application/pdf", "Reporte_General_Planta.pdf");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ExportGeneralAnalisisReport(DateTime fechaInicio, DateTime fechaFin, int IdCliente)
+        {
+
+            ReportGeneralAnalisis report = new ReportGeneralAnalisis();
+
+            report.Parameters["FechaInicio"].Value = fechaInicio;
+            report.Parameters["FechaFin"].Value = fechaFin;
+            report.Parameters["IdCliente"].Value = IdCliente;
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                report.ExportToPdf(stream);
+                return File(stream.ToArray(), "application/pdf", "Reporte_General_Analisis.pdf");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult EnviarCorreo(int proyecto)
+        {
             try
             {
-                string mimetype = "";
-                int extension = 1;
-                var path = $"{this._iwebHostEnvironment.WebRootPath}\\InformePrincipal\\Report1.rdl";
-                Dictionary<string, string> parameters = new Dictionary<string, string>();
-                // Limpia los parámetros existentes
-                parameters.Clear();
+                var Proyecto = _context.Proyectos
+                    .Where(p => p.IdProyecto == proyecto)
+                    .FirstOrDefault();
 
-                // Agrega el nuevo parámetro
-                parameters.Add("Reporte_proyecto", proyecto.ToString());
+                var Idusuario = _context.Proyectos
+                    .Where(p => p.IdProyecto == proyecto)
+                    .Select(p => p.Owner)
+                    .FirstOrDefault();
 
-                // Depuración: Imprimir los parámetros
-                foreach (var param in parameters)
+                var correoUsuario = _context.Usuarios
+                    .Where(p => p.IdUser == Idusuario)
+                    .Select(p => p.Correo)
+                    .FirstOrDefault();
+
+                var IdCliente = _context.Usuarios
+                    .Where(p => p.IdUser == Idusuario)
+                    .Select(p => p.CCliente)
+                    .FirstOrDefault();
+
+                var usuarioConCopia = _context.Usuarios
+                    .Where(p => p.CCliente == IdCliente && p.ConCopia == true)
+                    .Select(p => p.Correo)
+                    .ToList();
+
+                if (Proyecto == null)
                 {
-                    Console.WriteLine($"Key: {param.Key}, Value: {param.Value}");
+                    return Json(new { success = false, message = "Proyecto no encontrado" });
                 }
 
+                string fileName = Proyecto.Name;
+                fileName = Regex.Replace(fileName, @"[^A-Za-z0-9_\-]", "_");
 
-                LocalReport localReport0 = null;
-                try
-                {
-                    // Crear una nueva instancia de LocalReport cada vez para evitar parámetros retenidos
-                    localReport0 = new LocalReport(path);
 
-                    // Exportar a Excel
-                    var result = localReport0.Execute(RenderType.Pdf, extension, parameters, mimetype);
+                string Correo =  _context.Smpts.Where(p => p.ID == 1).Select(p => p.Correo).FirstOrDefault();
+                string HostDb =  _context.Smpts.Where(p => p.ID == 1).Select(p => p.Host).FirstOrDefault();
+                int Puerto = _context.Smpts.Where(p => p.ID == 1).Select(p => p.Puerto).FirstOrDefault();
+                string Usuario =  _context.Smpts.Where(p => p.ID == 1).Select(p => p.Usuario).FirstOrDefault();
+                string Contrasena = _context.Smpts.Where(p => p.ID == 1).Select(p => p.Contrasena).FirstOrDefault();
+                string BodyFromDB = _context.Smpts.Where(p => p.ID == 1).Select(p => p.Body).FirstOrDefault();
 
-                    string fileName = Proyecto.Name;
-                    fileName = Regex.Replace(fileName, @"[^A-Za-z0-9_\-]", "_"); // Reemplaza caracteres no válidos
-                   
-                    return File(result.MainStream, "application/pdf", fileName + ".pdf");
-                     
-                }
-                finally
-                {
-                     
-                }
+
+
+                //string correo_emisor = "leedryk@gmail.com";
+                //string clave_emisor = "sfkickzqjzwicuqr";
+
+                string correo_emisor = Correo;
+                string clave_emisor = Contrasena;
+                string correo_receptor = correoUsuario;
+
                  
+
+                MailAddress receptor = new(correo_receptor);
+                MailAddress emisor = new(correo_emisor);
+
+                MailMessage email = new MailMessage(emisor, receptor);
+
+                foreach (var correo in usuarioConCopia)
+                {
+                    email.CC.Add(new MailAddress(correo));
+                }
+
+                email.Subject = "Reporte Resultado " + Proyecto.Name;
+
+                string body = $@"<body>
+                <p>Estimado Cliente</p>
+                <p>{BodyFromDB}</p>
+                <p>Saludos</p>
+                <p>Barrick Pierina</p>
+                </body>";
+
+
+                AlternateView htmlView = AlternateView.CreateAlternateViewFromString(body, null, MediaTypeNames.Text.Html);
+                email.AlternateViews.Add(htmlView);
+                email.Body = body;
+                email.IsBodyHtml = true;
+
+              
+                Report1 report = new Report1();
+                report.Parameters["reporte_proyecto"].Value = proyecto;
+
+                using (MemoryStream pdfStream = new MemoryStream())
+                {
+                    report.ExportToPdf(pdfStream);
+                    pdfStream.Seek(0, SeekOrigin.Begin);
+                    Attachment pdfAttachment = new Attachment(pdfStream, $"{fileName}.pdf", "application/pdf");
+                    email.Attachments.Add(pdfAttachment);
+
+                    using (MemoryStream xlsxStream = new MemoryStream())
+                    {
+                        report.ExportToXlsx(xlsxStream);
+                        xlsxStream.Seek(0, SeekOrigin.Begin);
+                        Attachment xlsxAttachment = new Attachment(xlsxStream, $"{fileName}.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                        email.Attachments.Add(xlsxAttachment);
+
+                        SmtpClient smtp = new SmtpClient
+                        {
+                         
+                            Host = HostDb,
+                            Port = 587,
+                            Credentials = new NetworkCredential(correo_emisor, clave_emisor),
+                            DeliveryMethod = SmtpDeliveryMethod.Network,
+                            EnableSsl = true
+                        };
+                        smtp.Send(email);
+                    }
+                }
+
+                
  
+         
+ 
+
+                return Json(new { success = true, message = "Email enviado correctamente." });
             }
             catch (Exception ex)
             {
-                // Log the full exception details
-                Console.WriteLine($"Error details: {ex}");
-
-                // Check for specific inner exceptions
-                if (ex.InnerException != null)
-                {
-                    if (ex.InnerException is System.Data.SqlClient.SqlException sqlEx)
-                    {
-                        return StatusCode(500, $"Database error: {sqlEx.Message}");
-                    }
-                }
-
-                return StatusCode(500, "Error interno del servidor al generar el PDF");
+                return Json(new { success = false, message = "Error al enviar el email: " + ex.Message });
             }
         }
 
-        [HttpPost]
-        public ActionResult ExportExcel(int proyecto)
-        {
-            Console.WriteLine("Reporte por Proyecto");
-
-            using var reportCleanup = Disposable.Create(() =>
-            {
-                // Lógica de limpieza aquí
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-            });
-
-            var Proyecto = _context.Proyectos
-                         .Where(p => p.IdProyecto == proyecto)
-                         .FirstOrDefault();
-            if (Proyecto == null)
-            {
-                return NotFound("Proyecto no encontrado");
-            }
-            try
-            {
-                string mimetype = "";
-                int extension = 1;
-                var path = $"{this._iwebHostEnvironment.WebRootPath}\\InformePrincipal\\Report1Excel.rdl";
-
-                Dictionary<string, string> parameters = new Dictionary<string, string>();
-
-                // Limpia los parámetros existentes
-                parameters.Clear();
-
-                // Agrega el nuevo parámetro
-                parameters.Add("proyecto", proyecto.ToString());
-
-                // Depuración: Imprimir los parámetros
-                foreach (var param in parameters)
-                {
-                    Console.WriteLine($"Key: {param.Key}, Value: {param.Value}");
-                }
-
-
-                LocalReport localReport = null;
-                try
-                {
-                    localReport = new LocalReport(path);
-
-                    // Exportar a Excel
-                    var result = localReport.Execute(RenderType.Excel, extension, parameters, mimetype);
-
-                   
-
-                    string fileName = Proyecto.Name;
-                    fileName = Regex.Replace(fileName, @"[^A-Za-z0-9_\-]", "_"); // Reemplaza caracteres no válidos
-                    parameters.Remove("proyecto");
-                    return File(result.MainStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName + ".xlsx");
-                }
-                finally
-                {
-                    // Aquí puedes agregar cualquier lógica de limpieza adicional si es necesario
-                }
-            }
-            catch (Exception ex)
-            {
-                // Log the full exception details
-                Console.WriteLine($"Error details: {ex}");
-
-                // Check for specific inner exceptions
-                if (ex.InnerException != null)
-                {
-                    if (ex.InnerException is System.Data.SqlClient.SqlException sqlEx)
-                    {
-                        return StatusCode(500, $"Database error: {sqlEx.Message}");
-                    }
-                }
-
-                return StatusCode(500, "Error interno del servidor al generar el archivo Excel");
-            }
-        }
-
-
-
-
-        [HttpPost]
-        public ActionResult ExportPdfPlantaGeneral(DateTime fechaInicio, DateTime fechaFin, int idCliente)
-        {
-            Console.WriteLine(fechaInicio);
-            Console.WriteLine(fechaFin);
-
-            try
-            {
-                string mimetype = "";
-                int extension = 1;
-                var path = $"{this._iwebHostEnvironment.WebRootPath}\\InformeClienteFechas\\Reporte_PlantaGeneral.rdl";
-                Dictionary<string, string> parameters = new Dictionary<string, string>();
-                parameters.Add("Informe3_FechaInicioParam", fechaInicio.ToString("yyyy-MM-dd"));
-                parameters.Add("Informe3_FechaFinParam", fechaFin.ToString("yyyy-MM-dd"));
-                parameters.Add("Informe3_IDClienteParam", idCliente.ToString());
-                LocalReport localReport3 = new LocalReport(path);
-                var result = localReport3.Execute(RenderType.Pdf, extension, parameters, mimetype);
-
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-
-                // Generate a filename based on the date range
-                string fileName = $"LIMSGS_Reporte_Planta_General_{fechaInicio:yyyyMMdd}_a_{fechaFin:yyyyMMdd}";
-                fileName = Regex.Replace(fileName, @"[^A-Za-z0-9_\-]", "_"); // Replace invalid characters
-                parameters.Remove("Informe3_FechaInicioParam");
-                parameters.Remove("Informe3_FechaFinParam");
-                parameters.Remove("Informe3_IDClienteParam");
-                return File(result.MainStream, "application/pdf", fileName + ".pdf");
-            }
-            catch (Exception ex)
-            {
-                // Log the full exception details
-                Console.WriteLine($"Error details: {ex}");
-                // Check for specific inner exceptions
-                if (ex.InnerException != null)
-                {
-                    if (ex.InnerException is System.Data.SqlClient.SqlException sqlEx)
-                    {
-                        return StatusCode(500, $"Database error: {sqlEx.Message}");
-                    }
-                }
-                return StatusCode(500, "Error interno del servidor al generar el PDF por planta");
-            }
-        }
-        [HttpPost]
-        public ActionResult ExportPdfAnalisisGeneral(DateTime fechaInicio, DateTime fechaFin, int idCliente)
-        {
-            Console.WriteLine(fechaInicio);
-            Console.WriteLine(fechaFin);
-
-            try
-            {
-                string mimetype = "";
-                int extension = 1;
-                var path = $"{this._iwebHostEnvironment.WebRootPath}\\InformeClienteFechas\\ReportAnalisis2.rdl";
-                Dictionary<string, string> parameters = new Dictionary<string, string>();
-                parameters.Add("Informe4_FechaInicioParam", fechaInicio.ToString("yyyy-MM-dd"));
-                parameters.Add("Informe4_FechaFinParam", fechaFin.ToString("yyyy-MM-dd"));
-                parameters.Add("Informe4_IDClienteParam", idCliente.ToString());
-
-                LocalReport localReport4 = new LocalReport(path);
-                var result = localReport4.Execute(RenderType.Pdf, extension, parameters, mimetype);
-
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-
-                // Generate a filename based on the date range
-                string fileName = $"LIMSGS_Reporte_Analisis_General_{fechaInicio:yyyyMMdd}_a_{fechaFin:yyyyMMdd}";
-                fileName = Regex.Replace(fileName, @"[^A-Za-z0-9_\-]", "_"); // Replace invalid characters
-
-                return File(result.MainStream, "application/pdf", fileName + ".pdf");
-            }
-            catch (Exception ex)
-            {
-                // Log the full exception details
-                Console.WriteLine($"Error details: {ex}");
-                // Check for specific inner exceptions
-                if (ex.InnerException != null)
-                {
-                    if (ex.InnerException is System.Data.SqlClient.SqlException sqlEx)
-                    {
-                        return StatusCode(500, $"Database error: {sqlEx.Message}");
-                    }
-                }
-                return StatusCode(500, "Error interno del servidor al generar el PDF por planta");
-            }
-        }
     }
+
 }

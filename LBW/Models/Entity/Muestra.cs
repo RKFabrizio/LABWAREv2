@@ -54,6 +54,7 @@ namespace LBW.Models.Entity
         [Required(ErrorMessage = "Los Conteo de Puntos es requerido.")]
         [RegularExpression("^[1-9][0-9]*$", ErrorMessage = "Los conteo de puntos deben ser un número mayor a 0.")]
         public string? ConteoPuntos { get; set; }
+        public int? IdProducto { get; set; }
 
 
         public virtual Lista IdStatusNavigation { get; set; }
@@ -66,6 +67,7 @@ namespace LBW.Models.Entity
         public virtual Planta IdPlantaNavigation { get; set; }
         public virtual Lista IdListaNavigation { get; set; }
         public virtual Grado IdGradoNavigation { get; set; }
+        public virtual Producto IdProductoNavigation { get; set; }
         public virtual ICollection<Resultado> ResultadosM { get; set; }
     }
 }

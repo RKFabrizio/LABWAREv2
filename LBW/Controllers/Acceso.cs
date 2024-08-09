@@ -76,8 +76,14 @@ namespace LBW.Controllers
             }
             if (usuario == null)
             {
-                TempData["Error"] = "No hay usuario";
+                TempData["Error"] = "No existe el usuario";
             }
+
+            if (usuario.UsuarioDeshabilitado == true)
+            {
+                TempData["Error"] = "El usuario ha sido deshabilitado";
+            }
+
             return View();
         }
 

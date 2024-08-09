@@ -120,7 +120,7 @@ namespace LBW.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Proyecto model, int Planta, int Numero) {
+        public async Task<IActionResult> Post(Proyecto model, int Planta) {
 
 
             if (!TryValidateModel(model))
@@ -168,7 +168,7 @@ namespace LBW.Controllers
                 model.DateReviewed = null;
                 model.DateUpdated = null;
                 model.Owner = usuario.IdUser;
-                model.NumSamples = Numero;
+                model.NumSamples = 0;
 
             var result = _context.Proyectos.Add(model);
             await _context.SaveChangesAsync();

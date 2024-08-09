@@ -396,10 +396,95 @@
                                             </svg>
 
                                             <span class="nav-link-title" style="margin-left:0.4rem; align-items:center;">
-                                                Tabla Usuario
+                                                Gestionar Usuarios
                                             </span>
                                         </a>
 
+                                        <a asp-controller="Administracion" asp-action="TablaAnalisis" class="dropdown-item @ViewBag.adana">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chart-bubble" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M6 16m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+                                                <path d="M16 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                                <path d="M14.5 7.5m-4.5 0a4.5 4.5 0 1 0 9 0a4.5 4.5 0 1 0 -9 0" />
+                                            </svg>
+
+                                            <span class="nav-link-title" style="margin-left:0.4rem; align-items:center;">
+                                                Gestionar Análisis
+                                            </span>
+                                        </a>
+
+                                        <a asp-controller="Administracion" asp-action="TablaPuntoMuestra" class="dropdown-item @ViewBag.adpm">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-access-point" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M12 12l0 .01" />
+                                                <path d="M14.828 9.172a4 4 0 0 1 0 5.656" />
+                                                <path d="M17.657 6.343a8 8 0 0 1 0 11.314" />
+                                                <path d="M9.168 14.828a4 4 0 0 1 0 -5.656" />
+                                                <path d="M6.337 17.657a8 8 0 0 1 0 -11.314" />
+                                            </svg>
+
+                                            <span class="nav-link-title" style="margin-left:0.4rem; align-items:center;">
+                                                Gestionar PM
+                                            </span>
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="nav-item dropdown @ViewBag.lbw">
+                            <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-test-pipe-2" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M15 3v15a3 3 0 0 1 -6 0v-15" />
+                                        <path d="M9 12h6" />
+                                        <path d="M8 3h8" />
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title" style="margin-left:0.4rem; align-items:center;">
+                                    Consultas Labware
+                                </span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <div class="dropdown-menu-columns">
+                                    <div class="dropdown-menu-column">
+
+                                         
+
+                                        <a asp-controller="Labware" asp-action="TablaMuestra" class="dropdown-item @ViewBag.lbwmue">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-color-picker" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M11 7l6 6" />
+                                                <path d="M4 16l11.7 -11.7a1 1 0 0 1 1.4 0l2.6 2.6a1 1 0 0 1 0 1.4l-11.7 11.7h-4v-4z" />
+                                            </svg>
+
+                                            <span class="nav-link-title" style="margin-left:0.4rem; align-items:center;">
+                                                Historial de Muestras
+                                            </span>
+                                        </a>
+
+                                        <a asp-controller="Labware" asp-action="TablaResultado" class="dropdown-item @ViewBag.lbwres">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-deezer" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M3 16.5h2v.5h-2z" />
+                                                <path d="M8 16.5h2.5v.5h-2.5z" />
+                                                <path d="M16 17h-2.5v-.5h2.5z" />
+                                                <path d="M21.5 17h-2.5v-.5h2.5z" />
+                                                <path d="M21.5 13h-2.5v.5h2.5z" />
+                                                <path d="M21.5 9.5h-2.5v.5h2.5z" />
+                                                <path d="M21.5 6h-2.5v.5h2.5z" />
+                                                <path d="M16 13h-2.5v.5h2.5z" />
+                                                <path d="M8 13.5h2.5v-.5h-2.5z" />
+                                                <path d="M8 9.5h2.5v.5h-2.5z" />
+                                            </svg>
+
+                                            <span class="nav-link-title" style="margin-left:0.4rem; align-items:center;">
+                                                Historial de Resultados
+                                            </span>
+                                        </a>
 
                                     </div>
                                 </div>
@@ -423,6 +508,22 @@
                             </span>
                         </a>
                     </li>
+
+                    <li class="nav-item @ViewBag.SMTP">
+                        <a asp-controller="SMTP" asp-action="SMTP" class="nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail-forward" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M12 18h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5" />
+                                <path d="M3 6l9 6l9 -6" />
+                                <path d="M15 18h6" />
+                                <path d="M18 15l3 3l-3 3" />
+                            </svg>
+                            <span class="nav-link-title" style="margin-left:1rem; align-items:center;">
+                                Configuración SMTP
+                            </span>
+                        </a>
+                    </li>
+
 
                     <li class="nav-item @ViewBag.acceso">
                         <a asp-controller="Acceso" asp-action="Logout" class="nav-link">

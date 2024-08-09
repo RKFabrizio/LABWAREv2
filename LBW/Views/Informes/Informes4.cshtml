@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Informes4";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -45,7 +44,6 @@
             flex: 1;
             min-width: 0;
         }
-   
 </style>
 
 @section PagePreTitle {
@@ -79,10 +77,12 @@
     @(Html.DevExtreme().DateBox()
         .ID("fechaInicio")
         .Label("Fecha de Inicio")
+        .DisplayFormat("dd/MM/yyyy")
         )
     @(Html.DevExtreme().DateBox()
         .ID("fechaFin")
         .Label("Fecha de Fin")
+        .DisplayFormat("dd/MM/yyyy")
         )
 
     <div class="button-container">
@@ -95,44 +95,41 @@
             .OnClick("exportToPdfAnalisis")
             )
     </div>
+
+    
+
 </div>
 
- 
- 
+
+
 
 <script>
+
+
     function exportToPdfPlanta() {
+
         var startDateBox = $("#fechaInicio").dxDateBox("instance");
         var endDateBox = $("#fechaFin").dxDateBox("instance");
-
-        if (!startDateBox || !endDateBox) {
-            DevExpress.ui.notify('No se pueden encontrar los controles de fecha.', 'error', 3000);
-            return;
-        }
 
         var startDate = startDateBox.option("value");
         var endDate = endDateBox.option("value");
 
-        if (!startDate || !endDate) {
-            DevExpress.ui.notify('Por favor, seleccione ambas fechas.', 'error', 3000);
-            return;
-        }
 
         $.ajax({
-            url: '@Url.Action("ExportPdfPlanta", "ExportFechas")',
+            url: '@Url.Action("ExportPlantaReport", "Export")', // Cambia esto según tu ruta de controlador y acción
             method: "POST",
             data: {
                 fechaInicio: startDate.toISOString(),
-                fechaFin: endDate.toISOString()
+                fechaFin: endDate.toISOString() 
             },
             xhrFields: {
                 responseType: 'blob'
             },
             success: function (blob, status, xhr) {
                 var contentDisposition = xhr.getResponseHeader('Content-Disposition');
-                var fileName = 'reporte_planta.pdf';
+                var fileName = 'reporte.pdf';
                 if (contentDisposition) {
-                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                    var filenameRegex = /filename[^;=\n]=((['"]).?\2|[^;\n]*)/;
                     var matches = filenameRegex.exec(contentDisposition);
                     if (matches != null && matches[1]) {
                         fileName = matches[1].replace(/['"]/g, '');
@@ -142,34 +139,26 @@
                 link.href = window.URL.createObjectURL(blob);
                 link.download = fileName;
                 link.click();
-                DevExpress.ui.notify('Reporte por planta generado correctamente', 'success', 6000);
+                DevExpress.ui.notify('Reporte generado correctamente', 'success', 6000);
             },
             error: function (error) {
-                DevExpress.ui.notify('Fallo al crear el Reporte por planta', 'error', 6000);
+                DevExpress.ui.notify('Fallo al crear el reporte', 'error', 6000);
                 console.error("Error al enviar los datos:", error);
             }
         });
     }
 
     function exportToPdfAnalisis() {
+
         var startDateBox = $("#fechaInicio").dxDateBox("instance");
         var endDateBox = $("#fechaFin").dxDateBox("instance");
-
-        if (!startDateBox || !endDateBox) {
-            DevExpress.ui.notify('No se pueden encontrar los controles de fecha.', 'error', 3000);
-            return;
-        }
 
         var startDate = startDateBox.option("value");
         var endDate = endDateBox.option("value");
 
-        if (!startDate || !endDate) {
-            DevExpress.ui.notify('Por favor, seleccione ambas fechas.', 'error', 3000);
-            return;
-        }
 
         $.ajax({
-            url: '@Url.Action("ExportPdfAnalisis", "ExportFechas")',
+            url: '@Url.Action("ExportAnalisisReport", "Export")', // Cambia esto según tu ruta de controlador y acción
             method: "POST",
             data: {
                 fechaInicio: startDate.toISOString(),
@@ -180,9 +169,9 @@
             },
             success: function (blob, status, xhr) {
                 var contentDisposition = xhr.getResponseHeader('Content-Disposition');
-                var fileName = 'reporte_analisis.pdf';
+                var fileName = 'reporte.pdf';
                 if (contentDisposition) {
-                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                    var filenameRegex = /filename[^;=\n]=((['"]).?\2|[^;\n]*)/;
                     var matches = filenameRegex.exec(contentDisposition);
                     if (matches != null && matches[1]) {
                         fileName = matches[1].replace(/['"]/g, '');
@@ -192,14 +181,26 @@
                 link.href = window.URL.createObjectURL(blob);
                 link.download = fileName;
                 link.click();
-                DevExpress.ui.notify('Reporte por análisis generado correctamente', 'success', 6000);
+                DevExpress.ui.notify('Reporte generado correctamente', 'success', 6000);
             },
             error: function (error) {
-                DevExpress.ui.notify('Fallo al crear el Reporte por Análisis', 'error', 6000);
+                DevExpress.ui.notify('Fallo al crear el reporte', 'error', 6000);
                 console.error("Error al enviar los datos:", error);
             }
         });
     }
+
+
+     
+
+     
+
+
+
+
+</script>
+
+
 
  
 

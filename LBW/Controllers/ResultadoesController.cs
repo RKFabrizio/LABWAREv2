@@ -86,6 +86,12 @@ namespace LBW.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(Resultado model, List<int> Muestra, List<int> Analisis)
         {
+            Console.WriteLine("Lista de Análisis:");
+            foreach (var analisis in Analisis)
+            {
+                Console.WriteLine(analisis);
+            }
+
             try
             {
 
@@ -106,10 +112,7 @@ namespace LBW.Controllers
                 foreach (var idMuestra in Muestra)
                 {
                     var muestra = await _context.Muestras.FindAsync(idMuestra);
-                    if (muestra != null)
-                    {
-                        muestra.AnalisisMuestra = analisisMuestraString;
-                    }
+                   
 
                     foreach (var idAnalisis in Analisis)
                     {
@@ -141,7 +144,8 @@ namespace LBW.Controllers
                                     Reportable = detalle.Reportable,
                                     Status = 254,
                                     ChangedOn = DateTime.Now,
-                                    Instrument = 1
+                                    Instrument = 1,
+                                    Auditoria = false
                                 };
                                 nuevosResultados.Add(nuevoResultado);
                             }
@@ -161,7 +165,7 @@ namespace LBW.Controllers
 
 
         [HttpPost]
-        public IActionResult PostTest(Resultado model, int Muestra)
+        public IActionResult PostTest([FromBody] IdPmListModel model)
         {
             try
             {
@@ -170,25 +174,25 @@ namespace LBW.Controllers
 
                 var ultimoProyecto = _context.Proyectos
                    .Where(cl => cl.Owner == usuario.IdUser)
-                   .OrderByDescending(cl => cl.IdProyecto) // Suponiendo que hay un campo "FechaIngreso" que indica cuándo se ingresó el proyecto
+                   .OrderByDescending(cl => cl.IdProyecto)
                    .FirstOrDefault();
 
                 int idProyecto = ultimoProyecto.IdProyecto;
 
-                Console.WriteLine(idProyecto);
+                Console.WriteLine($"ID del proyecto: {idProyecto}");
 
+                // Obtener las muestras basadas en IdPm e IdProject
                 var muestras = _context.Muestras
-                .Where(cl => cl.IdProject == idProyecto)
-                .ToList();
-                
+                    .Where(m => m.IdProject == idProyecto && model.idPmList.Contains(m.IdPm))
+                    .ToList();
+
                 List<int> idMuestras = muestras.Select(m => m.IdSample).ToList();
- 
+
                 var plantillas = _context.Plantillas
                    .Where(cl => cl.IdCliente == usuario.CCliente)
                    .FirstOrDefault();
 
                 int idTl = plantillas.IdTL;
- 
 
                 var plantillaDetalle = _context.PlantillaDetalles
                 .Where(cl => cl.Id_TL == idTl)
@@ -201,11 +205,6 @@ namespace LBW.Controllers
 
                 foreach (int muestra in idMuestras)
                 {
-                    model.IdSample = muestra;
-
-                    if (!TryValidateModel(model))
-                        return BadRequest(GetFullErrorMessage(ModelState));
-
                     foreach (int idAnalisis in idAnalisiss)
                     {
                         var detallesAnalisis = _context.AnalisisDetalles
@@ -221,7 +220,6 @@ namespace LBW.Controllers
 
                             if (!existeResultado)
                             {
-                                
                                 var nuevoResultado = new Resultado
                                 {
                                     IdSample = muestra,
@@ -239,49 +237,38 @@ namespace LBW.Controllers
                                     ChangedOn = DateTime.Now,
                                     Instrument = 1
                                 };
-                                try
-                                {
-                                    nuevosResultados.Add(nuevoResultado);
-                                }
-                                catch(Exception e)
-                                {
-                                    Console.WriteLine("..............NO FUNCIONAAA................");
-                                    Console.WriteLine(e.ToString());
-                                    Console.WriteLine("..............................");
-                                }
-                                 
+                                nuevosResultados.Add(nuevoResultado);
                             }
                         }
                     }
                 }
-                try {
+
+                try
+                {
                     Console.WriteLine("--------SIIII----------------------");
                     _context.Resultados.AddRange(nuevosResultados);
                     _context.SaveChanges();
                     Console.WriteLine("------------------------------");
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Console.WriteLine(e.ToString());
+                    return Json(new { success = false, error = "Error al guardar los resultados: " + e.Message });
                 }
 
                 return Json(new { success = true });
             }
-            catch(Exception error)
+            catch (Exception error)
             {
-                
                 Console.WriteLine(error);
-                return Json(new { error = true });
+                return Json(new { success = false, error = "Error general: " + error.Message });
             }
-            
-    
-
- 
-     
- 
-        
         }
 
+        public class IdPmListModel
+        {
+            public List<int> idPmList { get; set; }
+        }
 
         [HttpPut]
         public async Task<IActionResult> Put(int key, string values)
@@ -412,7 +399,7 @@ namespace LBW.Controllers
                          orderby i.IdCodigo
                          select new {
                              Value = i.IdInstrumento,
-                             Text = i.IdCodigo
+                             Text = i.Nombre
                          };
             return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
         }
@@ -423,7 +410,7 @@ namespace LBW.Controllers
                          orderby i.IdSample
                          select new {
                              Value = i.IdSample,
-                             Text = i.IdSample
+                             Text = i.TextID
                          };
             return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
         }

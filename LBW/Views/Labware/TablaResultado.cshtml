@@ -1,0 +1,177 @@
+﻿
+@{
+    ViewData["Title"] = "TablaResultado";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .user-icon-container {
+        display: flex;
+        align-items: center;
+        margin-left: 30px;
+    }
+
+        .user-icon-container .icon-tabler {
+            margin-right: 10px;
+            width: 50px;
+            height: 50px;
+        }
+
+        .user-icon-container .page-title {
+            margin-left: -4px;
+            color: #a79a66;
+        }
+
+        .user-icon-container .page-title-home {
+            margin-left: -4px;
+            color: #a79a66;
+        }
+
+    .page-title-home {
+        margin-top: 18px;
+    }
+
+</style>
+
+
+@section PagePreTitle {
+
+    <div class="col">
+        <!-- Page pre-title -->
+        <div class="user-icon-container">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-deezer" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M3 16.5h2v.5h-2z" />
+                <path d="M8 16.5h2.5v.5h-2.5z" />
+                <path d="M16 17h-2.5v-.5h2.5z" />
+                <path d="M21.5 17h-2.5v-.5h2.5z" />
+                <path d="M21.5 13h-2.5v.5h2.5z" />
+                <path d="M21.5 9.5h-2.5v.5h2.5z" />
+                <path d="M21.5 6h-2.5v.5h2.5z" />
+                <path d="M16 13h-2.5v.5h2.5z" />
+                <path d="M8 13.5h2.5v-.5h-2.5z" />
+                <path d="M8 9.5h2.5v.5h-2.5z" />
+            </svg>
+
+            <h2 class="page-title-home">
+                Historial de Resultados
+            </h2>
+        </div>
+    </div>
+
+
+}
+
+@section PageActions {
+
+
+}
+
+@(Html.DevExtreme().DataGrid<LBW.Models.Entity.Muestra>()
+    .DataSource(ds => ds.Mvc()
+        .Controller("Muestras")
+        .LoadAction("Get")
+        .Key("IdSample")
+
+    )
+     .FilterRow(filterRow => filterRow
+        .Visible(true)
+        .ApplyFilter(GridApplyFilterMode.Auto)
+    )
+    .SearchPanel(searchPanel => searchPanel
+        .Visible(true)
+        .Width(240)
+        .Placeholder("Search...")
+    )
+    .HeaderFilter(headerFilter => headerFilter.Visible(true).Width(400))
+    .Scrolling(scrolling => scrolling.ColumnRenderingMode(GridColumnRenderingMode.Virtual))
+    .ColumnAutoWidth(true)
+    .RemoteOperations(true)
+    .Columns(columns =>
+    {
+
+        columns.AddFor(m => m.Fecha).Caption("Fecha");
+
+        columns.AddFor(m => m.TextID).Caption("Muestra");
+        columns.AddFor(m => m.IdProject)
+                       .Lookup(lookup => lookup
+                       .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("ProyectosLookup").Key("Value"))
+                       .ValueExpr("Value")
+                       .DisplayExpr("Text")).GroupIndex(0).Caption("Proyecto").SortOrder(SortOrder.Desc);
+
+     
+    })
+    .FilterRow(f => f.Visible(true))
+          .MasterDetail(m => m
+            .Enabled(true)
+            .AutoExpandAll(false)
+            .Template(new TemplateName("gridContainer-details1"))
+            )
+)
+
+ @using (Html.DevExtreme().NamedTemplate("gridContainer-details1"))
+{
+    @(Html.DevExtreme().DataGrid<LBW.Models.Entity.Resultado>()
+        .DataSource(ds => ds.Mvc()
+            .Controller("Resultadoes")
+            .LoadAction("GetIdSample")
+            .LoadParams(new { id = new JS("data.IdSample") })
+            .Key("IdResult")
+        )
+         .FilterRow(filterRow => filterRow
+            .Visible(true)
+            .ApplyFilter(GridApplyFilterMode.Auto)
+        )
+
+        .Scrolling(scrolling => scrolling.ColumnRenderingMode(GridColumnRenderingMode.Virtual))
+        .ColumnAutoWidth(true)
+        .HeaderFilter(headerFilter => headerFilter.Visible(true).Width(400))
+        .RemoteOperations(true)
+        .ColumnAutoWidth(true)
+        .Columns(columns =>
+        {
+
+
+            columns.AddFor(m => m.IdSample).Lookup(lookup => lookup
+                .DataSource(ds => ds.WebApi().Controller("Resultadoes").LoadAction("MuestrasLookup").Key("Value"))
+                .ValueExpr("Value")
+                .DisplayExpr("Text")
+            );
+
+            columns.AddFor(m => m.IdUnidad).Lookup(lookup => lookup
+                .DataSource(ds => ds.WebApi().Controller("Resultadoes").LoadAction("UnidadesLookup").Key("Value"))
+                .ValueExpr("Value")
+                .DisplayExpr("Text")
+            );
+
+
+
+            columns.AddFor(m => m.IdAnalysis).Lookup(lookup => lookup
+                .DataSource(ds => ds.WebApi().Controller("Resultadoes").LoadAction("AnalisissLookup").Key("Value"))
+                .ValueExpr("Value")
+                .DisplayExpr("Text")
+            ).Caption("Análisis");
+
+            columns.AddFor(m => m.ResultNumber).Caption("Valor del Resultado");
+
+            columns.AddFor(m => m.NameComponent).Caption("Componente");
+
+            columns.AddFor(m => m.Status).Lookup(lookup => lookup
+                .DataSource(ds => ds.WebApi().Controller("Resultadoes").LoadAction("ListasLookup").Key("Value"))
+                .ValueExpr("Value")
+                .DisplayExpr("Text")
+            );
+
+            columns.AddFor(m => m.Reportable);
+
+            columns.AddFor(m => m.Instrument).Lookup(lookup => lookup
+                .DataSource(ds => ds.WebApi().Controller("Resultadoes").LoadAction("InstrumentosLookup").Key("Value"))
+                .ValueExpr("Value")
+                .DisplayExpr("Text")
+            );
+
+        })
+    )
+}
+
+ 

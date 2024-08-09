@@ -82,7 +82,8 @@
         .Key("IdSample")
 
     )
-
+        .DataSourceOptions(o => o.ReshapeOnPush(true))
+    .RepaintChangesOnly(true)
     .ShowBorders(true)
     .RemoteOperations(true)
     .OnSelectionChanged("onSelectionChanged")
@@ -97,8 +98,8 @@
             );
 
         columns.AddFor(m => m.TextID).Caption("Muestra");
-        columns.AddFor(m => m.LoginDate).Caption("Fecha")
-        .Format("yyyy-MM-dd")
+        columns.AddFor(m => m.Fecha).Caption("Fecha")
+        .Format("dd/MM/yyyy")
         .SortOrder(SortOrder.Desc);
 
         columns.AddFor(m => m.IdProject)

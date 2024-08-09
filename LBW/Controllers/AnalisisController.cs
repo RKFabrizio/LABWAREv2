@@ -47,6 +47,38 @@ namespace LBW.Controllers
             return Json(await DataSourceLoader.LoadAsync(analisiss, loadOptions));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Get1(DataSourceLoadOptions loadOptions)
+        {
+            var maxVersionQuery = _context.Analisiss
+                .GroupBy(i => i.NameAnalisis)
+                .Select(g => new
+                {
+                    NameAnalisis = g.Key,
+                    MaxVersion = g.Max(i => i.Version)
+                });
+
+            var analisiss = from a in _context.Analisiss
+                            join mv in maxVersionQuery on new { a.NameAnalisis, a.Version } equals new { mv.NameAnalisis, Version = mv.MaxVersion }
+                            where a.Active == true
+                            select new
+                            {
+                                a.IdAnalisis,
+                                a.IdTipoA,
+                                a.NameAnalisis,
+                                a.Version,
+                                a.Active,
+                                a.CommonName,
+                                a.Description,
+                                a.AliasName,
+                                a.ChangedOn,
+                                a.ChangedBy
+                            };
+
+            return Json(await DataSourceLoader.LoadAsync(analisiss, loadOptions));
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> Post(string values) {
             var model = new Analisis();
@@ -87,22 +119,26 @@ namespace LBW.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> NameAnalisissLookup(DataSourceLoadOptions loadOptions)
+        public IActionResult NameAnalisissLookup(DataSourceLoadOptions loadOptions)
         {
-
+            // Obtener los análisis activos con la máxima versión para cada NAME_ANALISIS
             var lookup = (from a in _context.Analisiss
-                          where a.Active == true
-                          group a by a.NameAnalisis into g
+                          where a.Active == true &&
+                                _context.AnalisisDetalles.Select(ad => ad.IdAnalisis).Distinct().Contains(a.IdAnalisis) &&
+                                a.Version == _context.Analisiss
+                                                 .Where(b => b.NameAnalisis == a.NameAnalisis)
+                                                 .Max(b => b.Version)
                           select new
                           {
-                              Value = g.OrderByDescending(x => x.Version).First().IdAnalisis,
-                              Text = g.Key,
-                              Version = g.Max(x => x.Version)
+                              Value = a.IdAnalisis,
+                              Text = a.NameAnalisis
                           })
-                 .OrderBy(x => x.Text);
+                         .OrderBy(x => x.Text)
+                         .ToList();
 
-            return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
+            return Json(DataSourceLoader.Load(lookup, loadOptions));
         }
+
 
 
         [HttpGet]

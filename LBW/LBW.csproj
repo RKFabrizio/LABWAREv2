@@ -13,12 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Remove="wwwroot\InformePrincipal\Report3.rdl~RF2b607a1.TMP" />
-      <Content Remove="wwwroot\InformePrincipal\Report3.rdl~RF6d6252b.TMP" />
-      <Content Remove="wwwroot\InformePrincipal\ReportAnalisis1.rdl~RF59a2ba4.TMP" />
-    </ItemGroup>
-
-    <ItemGroup>
     <PackageReference Include="AspNetCore.Reporting" Version="2.1.0" />
     <PackageReference Include="Aspose.Cells" Version="24.6.0" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />

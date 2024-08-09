@@ -74,6 +74,10 @@
             .OnClick("updateStatusA")
             )
 
+@(Html.DevExtreme().Button()
+            .Text("Reprocesar")
+            .OnClick("updateStatusC")
+            )
  
 
 
@@ -83,7 +87,7 @@
 @(Html.DevExtreme().DataGrid<LBW.Models.Entity.Proyecto>()
     .DataSource(ds => ds.Mvc()
         .Controller("Proyectoes")
-        .LoadAction("Get")
+        .LoadAction("GetProyecto")
         .Key("IdProyecto")
     )
     .ShowBorders(true)
@@ -111,7 +115,7 @@
 
         columns.AddFor(m => m.Name).Caption("Proyecto");
         columns.AddFor(m => m.DateCreated).Caption("Fecha")
-        .Format("yyyy-MM-dd")
+        .Format("dd/MM/yyyy")
         .SortOrder(SortOrder.Desc);
     })
           .FilterRow(f => f.Visible(true))
@@ -153,7 +157,7 @@
 
             columns.AddFor(m => m.TextID).Caption("Muestra");
             columns.AddFor(m => m.LoginDate).Caption("Fecha")
-            .Format("yyyy-MM-dd")
+                .Format("dd/MM/yyyy")
             .SortOrder(SortOrder.Desc);
             
 
@@ -367,5 +371,35 @@
         
     }
 
- 
+    function updateStatusC() {
+
+
+        if (selectedIds.length === 0) {
+            alert("No hay elementos seleccionados.");
+            return;
+        }
+        console.log("Selected IDs:", selectedIds);
+
+        $.ajax({
+            url: '@Url.Action("PutStatus5", "Muestras")',
+            method: "PUT",
+            data: {
+                muestras: selectedIds
+            },
+            success: function (result) {
+                // Procesar la respuesta si es necesario
+                DevExpress.ui.notify('Datos enviados correctamente', 'success', 6000);
+                setTimeout(function () {
+                    location.reload();
+                }, 3000);
+            },
+            error: function (error) {
+                DevExpress.ui.notify('Error al enviar los datos', 'error', 6000);
+                console.error("Error al enviar los datos:", error);
+            }
+        });
+
+
+
+    }
 </script>

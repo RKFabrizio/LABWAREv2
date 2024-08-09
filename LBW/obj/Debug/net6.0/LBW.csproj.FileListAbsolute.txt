@@ -6826,3 +6826,7 @@ C:\Users\fabri\OneDrive\Desktop\GITA\LBW\obj\Debug\net6.0\refint\LBW.dll
 C:\Users\fabri\OneDrive\Desktop\GITA\LBW\obj\Debug\net6.0\LBW.pdb
 C:\Users\fabri\OneDrive\Desktop\GITA\LBW\obj\Debug\net6.0\LBW.genruntimeconfig.cache
 C:\Users\fabri\OneDrive\Desktop\GITA\LBW\obj\Debug\net6.0\ref\LBW.dll
+C:\Users\fabri\OneDrive\Desktop\GITA\LBW\obj\Debug\net6.0\LBW.Reportes.Report2.resources
+C:\Users\fabri\OneDrive\Desktop\GITA\LBW\obj\Debug\net6.0\LBW.Reportes.ReportAnalisis.resources
+C:\Users\fabri\OneDrive\Desktop\GITA\LBW\obj\Debug\net6.0\LBW.Reportes.ReportGeneralAnalisis.resources
+C:\Users\fabri\OneDrive\Desktop\GITA\LBW\obj\Debug\net6.0\LBW.Reportes.ReportPlantaGeneral.resources

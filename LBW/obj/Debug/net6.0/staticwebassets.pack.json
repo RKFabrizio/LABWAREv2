@@ -1,30 +1,6 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\LBW\\wwwroot\\InformeClienteFecha\\ReportAnalisis2.rdl",
-      "PackagePath": "staticwebassets\\InformeClienteFecha\\ReportAnalisis2.rdl"
-    },
-    {
-      "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\LBW\\wwwroot\\InformeClienteFecha\\Reporte_PlantaGeneral.rdl",
-      "PackagePath": "staticwebassets\\InformeClienteFecha\\Reporte_PlantaGeneral.rdl"
-    },
-    {
-      "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\LBW\\wwwroot\\InformeFechas\\Report3.rdl",
-      "PackagePath": "staticwebassets\\InformeFechas\\Report3.rdl"
-    },
-    {
-      "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\LBW\\wwwroot\\InformeFechas\\Reporte_Planta.rdl",
-      "PackagePath": "staticwebassets\\InformeFechas\\Reporte_Planta.rdl"
-    },
-    {
-      "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\LBW\\wwwroot\\InformePrincipal\\Report1.rdl",
-      "PackagePath": "staticwebassets\\InformePrincipal\\Report1.rdl"
-    },
-    {
-      "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\LBW\\wwwroot\\InformePrincipal\\Report1Excel.rdl",
-      "PackagePath": "staticwebassets\\InformePrincipal\\Report1Excel.rdl"
-    },
-    {
       "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\LBW\\wwwroot\\css\\Barrick.css",
       "PackagePath": "staticwebassets\\css\\Barrick.css"
     },
@@ -3335,6 +3311,10 @@
     {
       "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\LBW\\wwwroot\\img\\Tubo Blanco.svg",
       "PackagePath": "staticwebassets\\img\\Tubo Blanco.svg"
+    },
+    {
+      "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\LBW\\wwwroot\\img\\barrick_back.webp",
+      "PackagePath": "staticwebassets\\img\\barrick_back.webp"
     },
     {
       "Id": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\LBW\\wwwroot\\img\\fondo_iniciov2.webp",

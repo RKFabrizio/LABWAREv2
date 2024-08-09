@@ -18,5 +18,27 @@ namespace LBW.Controllers
             @ViewBag.adusr = "active";
             return View();
         }
+
+        public IActionResult TablaPuntoMuestra()
+        {
+            @ViewBag.admin = "active";
+            @ViewBag.adpm = "active";
+            return View();
+        }
+
+        public IActionResult TablaAnalisis()
+        {
+            @ViewBag.admin = "active";
+            @ViewBag.adana = "active";
+            return View();
+        }
+
+        public IActionResult TablaComponente()
+        {
+            @ViewBag.admin = "active";
+            @ViewBag.adcom = "active";
+            return View();
+        }
+
     }
 }

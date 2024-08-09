@@ -7,6 +7,7 @@ using Spire.Pdf;
 using Spire.Pdf.Exporting;
 using Microsoft.EntityFrameworkCore;
 using Nito.Disposables;
+using LBW.Reportes;
 
 
 namespace LBW.Controllers
@@ -24,7 +25,33 @@ namespace LBW.Controllers
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         }
 
-        
+        [HttpPost]
+        public IActionResult ExportReport(DateTime fechaInicio, DateTime fechaFin, string format)
+        {
+
+            Report1 report = new Report1();
+
+            report.Parameters["reporte_proyecto"].Value = 1007;
+            using (MemoryStream stream = new MemoryStream())
+            {
+                switch (format.ToLower())
+                {
+                    case "xlsx":
+                        report.ExportToXlsx(stream);
+                        return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "reporte.xlsx");
+
+                    case "pdf":
+                        report.ExportToPdf(stream);
+                        return File(stream.ToArray(), "application/pdf", "reporte.pdf");
+
+                    default:
+                        return BadRequest("Formato no soportado");
+                }
+            }
+        }
+
+
+
         [HttpPost]
         public ActionResult ExportPdfPlanta(DateTime fechaInicio, DateTime fechaFin)
         {

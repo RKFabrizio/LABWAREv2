@@ -1,0 +1,158 @@
+﻿ @{
+    ViewData["Title"] = "SMTP";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .user-icon-container {
+        display: flex;
+        align-items: center;
+        margin-left: 30px;
+    }
+
+        .user-icon-container .icon-tabler {
+            margin-right: 10px;
+            width: 50px;
+            height: 50px;
+        }
+
+        .user-icon-container .page-title {
+            margin-left: -4px;
+            color: #a79a66;
+        }
+
+        .user-icon-container .page-title-home {
+            margin-left: -4px;
+            color: #a79a66;
+        }
+
+    .page-title-home {
+        margin-top: 18px;
+    }
+
+    .custom-icon-color .dx-icon {
+        color: black; /* Cambia el color del ícono a negro */
+    }
+   
+</style>
+
+@section PagePreTitle {
+
+
+    <div class="col">
+        <!-- Page pre-title -->
+        <div class="user-icon-container">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail-forward" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M12 18h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5" />
+                <path d="M3 6l9 6l9 -6" />
+                <path d="M15 18h6" />
+                <path d="M18 15l3 3l-3 3" />
+            </svg>
+            <h2 class="page-title-home">
+                Configuración SMTP
+            </h2>
+        </div>
+    </div>
+
+}
+
+
+
+
+@section PageActions {
+
+
+}
+
+@(Html.DevExtreme().DataGrid<LBW.Models.Entity.Smtp>()
+    .DataSource(ds => ds.Mvc()
+        .Controller("Smtps")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .Key("ID")
+    )
+    .ShowBorders(true)
+    .Paging(paging => paging.PageSize(10))
+    .Pager(pager =>
+    {
+        pager.Visible(true);
+        pager.DisplayMode(GridPagerDisplayMode.Full);
+        pager.ShowPageSizeSelector(true);
+        pager.AllowedPageSizes(new JS("[5, 10, 'all']"));
+        pager.ShowInfo(true);
+        pager.ShowNavigationButtons(true);
+    })
+    .FilterRow(f => f.Visible(true))
+    .RemoteOperations(true)
+    .Columns(columns => {
+
+        columns.AddFor(m => m.Correo).Caption("Correo");
+
+        columns.AddFor(m => m.Host).Caption("Servidor");
+
+        columns.AddFor(m => m.Usuario).Visible(false);
+
+        columns.AddFor(m => m.Contrasena).Caption("Contraseña");
+        columns.AddFor(m => m.Puerto);
+
+        columns.AddFor(m => m.Body).Caption("Cuerpo").Visible(false);
+    })
+    .Editing(e => e.Mode(GridEditMode.Popup)
+            .AllowUpdating(true)
+ 
+            .UseIcons(true)
+            .Popup(p => p
+                .Title("Configuración SMTP")
+                .ShowTitle(true)
+                .Width(800)
+                .Height(350)
+            )
+            .Form(f => f.Items(items =>
+            {
+                items.AddGroup()
+                    .ColCount(2)
+                    .ColSpan(2)
+                    .Items(groupItems =>
+                    {
+                        groupItems.AddSimpleFor(m => m.Correo);
+                        groupItems.AddSimpleFor(m => m.Host);
+                        groupItems.AddSimpleFor(m => m.Puerto);
+                        groupItems.AddSimple()
+    .Editor(editor => editor.TextBox()
+        .Mode(TextBoxMode.Password)
+        .ID("password")
+        .InputAttr("aria-label", "Password")
+        .Placeholder("password")
+        .StylingMode(EditorStylingMode.Filled)
+        .Buttons(buttons =>
+        {
+            buttons.Add()
+                .Name("password")
+                .Location(TextEditorButtonLocation.After)
+                .Widget(w => w.Button()
+                    .StylingMode(ButtonStylingMode.Text)
+                    .Icon("eyeopen")
+                    .ElementAttr("custom-icon-color") // Clase CSS personalizada
+                    .OnClick("changePasswordMode"));
+        })
+    )
+    .DataField("Contrasena");
+
+                        groupItems.AddSimpleFor(m => m.Body)
+                            .ColSpan(2)
+                            .Editor(editor => editor.TextArea());
+
+                        
+                    });
+
+            }))
+        )
+)
+
+<script>
+    function changePasswordMode() {
+        var passwordEditor = $("#password").dxTextBox("instance");
+        passwordEditor.option("mode", passwordEditor.option("mode") === "text" ? "password" : "text");
+    }
+</script>

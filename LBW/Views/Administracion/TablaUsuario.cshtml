@@ -52,7 +52,7 @@
             </svg>
 
             <h2 class="page-title-home">
-                Tabla Usuario
+                Gestionar Usuarios
             </h2>
         </div>
     </div>
@@ -101,7 +101,7 @@
             .ValueExpr("Value")
             .DisplayExpr("Text")
             ).Caption("Rol");
-        columns.AddFor(m => m.UsuarioDeshabilitado).Caption("Habilitado");
+        columns.AddFor(m => m.UsuarioDeshabilitado).Caption("Inactivo");
         columns.AddFor(m => m.CCliente).Lookup(lookup => lookup
             .DataSource(ds => ds.WebApi().Controller("Usuarios").LoadAction("CCLookup").Key("Value"))
             .ValueExpr("Value")

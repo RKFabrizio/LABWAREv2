@@ -91,10 +91,12 @@
     @(Html.DevExtreme().DateBox()
         .ID("fechaInicio1")
         .Label("Fecha de Inicio")
+        .DisplayFormat("dd/MM/yyyy")
         )
     @(Html.DevExtreme().DateBox()
         .ID("fechaFin1")
         .Label("Fecha de Fin")
+        .DisplayFormat("dd/MM/yyyy")
         )
 
     <div class="button-container1">
@@ -110,13 +112,16 @@
 </div>
 
 <script>
+
     function exportToPdfPlantaGeneral() {
+
         var startDateBox = $("#fechaInicio1").dxDateBox("instance");
         var endDateBox = $("#fechaFin1").dxDateBox("instance");
         var clienteForm = $("#clienteForm").dxForm("instance");
 
         if (!startDateBox || !endDateBox || !clienteForm) {
-            DevExpress.ui.notify('No se pueden encontrar los controles necesarios.', 'error', 3000);
+            console.error("One or more form elements not found");
+            DevExpress.ui.notify('Error: Form elements not found', 'error', 6000);
             return;
         }
 
@@ -124,32 +129,22 @@
         var endDate = endDateBox.option("value");
         var clienteId = clienteForm.option("formData").IdCliente;
 
-        if (!startDate || !endDate) {
-            DevExpress.ui.notify('Por favor, seleccione ambas fechas.', 'error', 3000);
-            return;
-        }
-
-        if (!clienteId) {
-            DevExpress.ui.notify('Por favor, seleccione un cliente.', 'error', 3000);
-            return;
-        }
-
         $.ajax({
-            url: '@Url.Action("ExportPdfPlantaGeneral", "Export")',
+            url: '@Url.Action("ExportGeneralPlantaReport", "Export")', // Cambia esto según tu ruta de controlador y acción
             method: "POST",
             data: {
                 fechaInicio: startDate.toISOString(),
                 fechaFin: endDate.toISOString(),
-                idCliente: clienteId
+                IdCliente: clienteId
             },
             xhrFields: {
                 responseType: 'blob'
             },
             success: function (blob, status, xhr) {
                 var contentDisposition = xhr.getResponseHeader('Content-Disposition');
-                var fileName = 'reporte_planta.pdf';
+                var fileName = 'reporte.pdf';
                 if (contentDisposition) {
-                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                    var filenameRegex = /filename[^;=\n]=((['"]).?\2|[^;\n]*)/;
                     var matches = filenameRegex.exec(contentDisposition);
                     if (matches != null && matches[1]) {
                         fileName = matches[1].replace(/['"]/g, '');
@@ -159,22 +154,24 @@
                 link.href = window.URL.createObjectURL(blob);
                 link.download = fileName;
                 link.click();
-                DevExpress.ui.notify('Reporte por planta general generado correctamente', 'success', 6000);
+                DevExpress.ui.notify('Reporte generado correctamente', 'success', 6000);
             },
             error: function (error) {
-                DevExpress.ui.notify('Fallo al crear el Reporte por planta', 'error', 6000);
+                DevExpress.ui.notify('Fallo al crear el reporte', 'error', 6000);
                 console.error("Error al enviar los datos:", error);
             }
         });
     }
 
     function exportToPdfAnalisisGeneral() {
+
         var startDateBox = $("#fechaInicio1").dxDateBox("instance");
         var endDateBox = $("#fechaFin1").dxDateBox("instance");
         var clienteForm = $("#clienteForm").dxForm("instance");
 
         if (!startDateBox || !endDateBox || !clienteForm) {
-            DevExpress.ui.notify('No se pueden encontrar los controles necesarios.', 'error', 3000);
+            console.error("One or more form elements not found");
+            DevExpress.ui.notify('Error: Form elements not found', 'error', 6000);
             return;
         }
 
@@ -182,32 +179,22 @@
         var endDate = endDateBox.option("value");
         var clienteId = clienteForm.option("formData").IdCliente;
 
-        if (!startDate || !endDate) {
-            DevExpress.ui.notify('Por favor, seleccione ambas fechas.', 'error', 3000);
-            return;
-        }
-
-        if (!clienteId) {
-            DevExpress.ui.notify('Por favor, seleccione un cliente.', 'error', 3000);
-            return;
-        }
-
         $.ajax({
-            url: '@Url.Action("ExportPdfAnalisisGeneral", "Export")',
+            url: '@Url.Action("ExportGeneralAnalisisReport", "Export")', // Cambia esto según tu ruta de controlador y acción
             method: "POST",
             data: {
                 fechaInicio: startDate.toISOString(),
                 fechaFin: endDate.toISOString(),
-                idCliente: clienteId
+                IdCliente: clienteId
             },
             xhrFields: {
                 responseType: 'blob'
             },
             success: function (blob, status, xhr) {
                 var contentDisposition = xhr.getResponseHeader('Content-Disposition');
-                var fileName = 'reporte_analisis.pdf';
+                var fileName = 'reporte.pdf';
                 if (contentDisposition) {
-                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                    var filenameRegex = /filename[^;=\n]=((['"]).?\2|[^;\n]*)/;
                     var matches = filenameRegex.exec(contentDisposition);
                     if (matches != null && matches[1]) {
                         fileName = matches[1].replace(/['"]/g, '');
@@ -217,13 +204,15 @@
                 link.href = window.URL.createObjectURL(blob);
                 link.download = fileName;
                 link.click();
-                DevExpress.ui.notify('Reporte por análisis generado correctamente', 'success', 6000);
+                DevExpress.ui.notify('Reporte generado correctamente', 'success', 6000);
             },
             error: function (error) {
-                DevExpress.ui.notify('Fallo al crear el Reporte por planta', 'error', 6000);
+                DevExpress.ui.notify('Fallo al crear el reporte', 'error', 6000);
                 console.error("Error al enviar los datos:", error);
             }
         });
     }
+
+     
 </script>
         

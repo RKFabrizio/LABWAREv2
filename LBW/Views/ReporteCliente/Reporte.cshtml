@@ -66,17 +66,22 @@
     .Text("Exportar Pdf")
     .StylingMode(ButtonStylingMode.Outlined)
     .Type(ButtonType.Danger)
-    .OnClick("exportToPdf")
+    .OnClick("exportReport")
 )
 
 @(Html.DevExtreme().Button()
     .Text("Exportar Excel")
     .StylingMode(ButtonStylingMode.Outlined)
      .Type(ButtonType.Success)
-    .OnClick("exportToExcel")
+    .OnClick("exportReport2")
 )
 
- 
+@(Html.DevExtreme().Button()
+    .Text("Enviar por Correo")
+    .StylingMode(ButtonStylingMode.Outlined)
+     .Type(ButtonType.Default)
+        .OnClick("SendMail")
+)
 
 <div style="height:10px;">
 
@@ -118,7 +123,7 @@
 
         columns.AddFor(m => m.Name).Caption("Proyecto");
         columns.AddFor(m => m.DateCreated).Caption("Fecha")
-        .Format("yyyy-MM-dd")
+        .Format("dd/MM/yyyy")
         .SortOrder(SortOrder.Desc);
 
          
@@ -282,27 +287,25 @@
         selectedProjectId = e.selectedRowsData[0].IdProyecto;
     }
 
-    function exportToPdf() {
-        if (selectedProjectId.length === 0) {
-            alert("No hay AAAAA seleccionados.");
-            return;
-        }
-        console.log(selectedProjectId);
+    function exportReport() {
         $.ajax({
-            url: '@Url.Action("ExportPdf", "Export")',
+            url: '@Url.Action("ExportReport", "Export")',
             method: "POST",
-            data: { proyecto: selectedProjectId },
+            data: {
+                proyecto: selectedProjectId,
+                format: 'PDF' // O 'xlsx' según el formato que desees exportar
+            },
             xhrFields: {
                 responseType: 'blob'
             },
             success: function (blob, status, xhr) {
                 var contentDisposition = xhr.getResponseHeader('Content-Disposition');
-                var fileName = 'reporte.pdf';
+                var fileName = 'Reporte.pdf'; // Nombre por defecto
                 if (contentDisposition) {
-                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                    var filenameRegex = /filename\*?=['"]?(?:UTF-\d['"]*)?(([^;\r\n"']*)['"]?);?/i;
                     var matches = filenameRegex.exec(contentDisposition);
                     if (matches != null && matches[1]) {
-                        fileName = matches[1].replace(/['"]/g, '');
+                        fileName = decodeURIComponent(matches[1].replace(/['"]/g, ''));
                     }
                 }
                 var link = document.createElement('a');
@@ -312,58 +315,68 @@
                 DevExpress.ui.notify('Reporte generado correctamente', 'success', 6000);
             },
             error: function (error) {
-                DevExpress.ui.notify('Fallo al crear el Reporte', 'error', 6000);
+                DevExpress.ui.notify('Fallo al crear el reporte', 'error', 6000);
                 console.error("Error al enviar los datos:", error);
             }
         });
     }
 
-    function exportToExcel() {
-        if (selectedProjectId.length === 0) {
-            alert("No hay proyecto seleccionado.");
-            return;
-        }
-        console.log(selectedProjectId);
+    function SendMail() {
+        
         $.ajax({
-            url: '@Url.Action("ExportExcel", "Export")',
+            url: '@Url.Action("EnviarCorreo", "Export")', // Change this according to your controller and action route
             method: "POST",
-            data: { proyecto: selectedProjectId },
+            data: {
+                proyecto: selectedProjectId
+            },
+            success: function (e) {
+
+                DevExpress.ui.notify('Correo enviado correctamente', 'success', 6000);
+            },
+            error: function (error) {
+                DevExpress.ui.notify('Fallo al crear el reporte', 'error', 6000);
+                console.error("Error al enviar los datos:", error);
+            }
+        });
+    }
+
+    function exportReport2() {
+        $.ajax({
+            url: '@Url.Action("ExportReport", "Export")',
+            method: "POST",
+            data: {
+                proyecto: selectedProjectId,
+                format: 'xlsx'
+            },
             xhrFields: {
                 responseType: 'blob'
             },
             success: function (blob, status, xhr) {
                 var contentDisposition = xhr.getResponseHeader('Content-Disposition');
-                var fileName = 'reporte.xlsx';
+                var fileName = 'reporte.xlsx'; // Nombre por defecto
                 if (contentDisposition) {
-                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                    var filenameRegex = /filename\*?=['"]?(?:UTF-\d['"]*)?(([^;\r\n"']*)['"]?);?/i;
                     var matches = filenameRegex.exec(contentDisposition);
                     if (matches != null && matches[1]) {
-                        fileName = matches[1].replace(/['"]/g, '');
+                        fileName = decodeURIComponent(matches[1].replace(/['"]/g, ''));
                     }
                 }
-
-                var newBlob = new Blob([blob], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-
-                if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                    window.navigator.msSaveOrOpenBlob(newBlob, fileName);
-                } else {
-                    var link = document.createElement('a');
-                    link.href = window.URL.createObjectURL(newBlob);
-                    link.download = fileName;
-                    link.click();
-                    setTimeout(function () {
-                        window.URL.revokeObjectURL(link.href);
-                    }, 100);
-                }
-
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = fileName;
+                link.click();
                 DevExpress.ui.notify('Reporte generado correctamente', 'success', 6000);
             },
             error: function (error) {
-                DevExpress.ui.notify('Fallo al crear el Reporte', 'error', 6000);
+                DevExpress.ui.notify('Fallo al crear el reporte', 'error', 6000);
                 console.error("Error al enviar los datos:", error);
             }
         });
     }
+
+    
+
+     
 
      
 </script>

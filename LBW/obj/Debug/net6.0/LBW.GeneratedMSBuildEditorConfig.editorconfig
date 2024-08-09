@@ -22,6 +22,18 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjZXNvXExvZ2luLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/fabri/OneDrive/Desktop/GITA/LBW/Views/Administracion/TablaAnalisis.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYWNpb25cVGFibGFBbmFsaXNpcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fabri/OneDrive/Desktop/GITA/LBW/Views/Administracion/TablaComponente.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYWNpb25cVGFibGFDb21wb25lbnRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fabri/OneDrive/Desktop/GITA/LBW/Views/Administracion/TablaPuntoMuestra.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYWNpb25cVGFibGFQdW50b011ZXN0cmEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/fabri/OneDrive/Desktop/GITA/LBW/Views/Administracion/TablaUsuario.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYWNpb25cVGFibGFVc3VhcmlvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -58,6 +70,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5pY2lvXEJpZW52ZW5pZGEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/fabri/OneDrive/Desktop/GITA/LBW/Views/Labware/TablaMuestra.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFid2FyZVxUYWJsYU11ZXN0cmEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fabri/OneDrive/Desktop/GITA/LBW/Views/Labware/TablaResultado.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFid2FyZVxUYWJsYVJlc3VsdGFkby5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/fabri/OneDrive/Desktop/GITA/LBW/Views/PerfilUsuario/Perfil.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVyZmlsVXN1YXJpb1xQZXJmaWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -76,6 +96,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/fabri/OneDrive/Desktop/GITA/LBW/Views/Shared/_LayoutLogin.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fabri/OneDrive/Desktop/GITA/LBW/Views/SMTP/SMTP.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU01UUFxTTVRQLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/fabri/OneDrive/Desktop/GITA/LBW/Views/Usuarios/Usuarios.cshtml]

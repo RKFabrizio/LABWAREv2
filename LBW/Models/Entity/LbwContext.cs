@@ -33,6 +33,8 @@ namespace LBW.Models.Entity
             public DbSet<AuditoriaResultado> AuditoriaResultados { get; set; }
             public DbSet<Rol> Roles { get; set; }
             public DbSet<Grado> Grados { get; set; }
+            public DbSet<Producto> Productos { get; set; }
+            public DbSet<Smtp> Smpts { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
             {
 
@@ -213,7 +215,27 @@ namespace LBW.Models.Entity
                         .IsRequired(false);
                 });
 
-                modelBuilder.Entity<Unidad>(entity =>
+            modelBuilder.Entity<Producto>(entity =>
+            {
+                entity.HasKey(e => e.IdProducto);
+                
+                entity.ToTable("PRODUCTO");
+
+                entity.Property(e => e.IdProducto)
+                    .HasColumnName("ID_PRODUCTO");
+
+                entity.Property(e => e.Nombre)
+                    .HasColumnName("NOMBRE")
+                    .HasMaxLength(50)
+                    .IsRequired(false);
+
+                entity.Property(e => e.Descripcion)
+                    .HasColumnName("DESCRIPCION")
+                    .HasMaxLength(200)
+                    .IsRequired(false);
+            });
+
+            modelBuilder.Entity<Unidad>(entity =>
                 {
                     entity.HasKey(e => e.IdUnidad);
 
@@ -936,6 +958,10 @@ namespace LBW.Models.Entity
                         .HasColumnName("ID_PM")
                         .IsFixedLength();
 
+                    entity.Property(e => e.IdProducto)
+                        .IsRequired(false)
+                        .HasColumnName("ID_PRODUCTO");
+
                     entity.Property(e => e.IdCliente)
                        .IsRequired()
                        .IsUnicode(false)
@@ -1079,8 +1105,7 @@ namespace LBW.Models.Entity
                   .HasColumnName("CUSTOMER")
                   .IsRequired(false);
 
-                    entity.Property(e => e.ConteoPuntos)
-                  .HasMaxLength(100)
+                  entity.Property(e => e.ConteoPuntos)
                   .HasColumnName("CONTEO_DE_PUNTOS")
                   .IsRequired(false);
 
@@ -1104,6 +1129,13 @@ namespace LBW.Models.Entity
                       .HasForeignKey(d => d.IdGrado)
                       .OnDelete(DeleteBehavior.ClientSetNull)
                       .HasConstraintName("FK_Muestra_Grado");
+
+                    entity.HasOne(d => d.IdProductoNavigation)
+                         .WithMany(p => p.Muestras)
+                         .HasForeignKey(d => d.IdProducto)
+                         .OnDelete(DeleteBehavior.ClientSetNull)
+                         .HasConstraintName("FK_MUESTRA_PRODUCTO");
+
 
                     entity.HasOne(d => d.IdClienteNavigation)
                       .WithMany(p => p.MuestraC)
@@ -1146,6 +1178,9 @@ namespace LBW.Models.Entity
                      .HasForeignKey(d => d.IdLocation)
                      .OnDelete(DeleteBehavior.ClientSetNull)
                      .HasConstraintName("FK__MUESTRA__ID_LOCA__59FA5E80");
+
+ 
+   
 
 
 
@@ -1226,6 +1261,10 @@ namespace LBW.Models.Entity
                  .IsRequired(false);
 
                  
+                entity.Property(e => e.Auditoria)
+                 .HasColumnName("AUDITORIA")
+                 .IsRequired(false);
+
                 entity.Property(e => e.Reportable)
                 .HasMaxLength(100)
                  .HasColumnName("REPORTABLE")
@@ -1293,6 +1332,36 @@ namespace LBW.Models.Entity
                     .HasColumnName("Nombre");
 
             });
+
+            modelBuilder.Entity<Smtp>(entity =>
+            {
+                entity.HasKey(e => e.ID);
+
+                entity.ToTable("SMTP_CONF");
+
+                entity.Property(e => e.ID)
+                    .HasColumnName("ID");
+
+                entity.Property(e => e.Correo)
+                    .HasColumnName("CORREO_EMISOR");
+
+                entity.Property(e => e.Host)
+                    .HasColumnName("HOST");
+
+                entity.Property(e => e.Puerto)
+                    .HasColumnName("PUERTO");
+
+                entity.Property(e => e.Usuario)
+                    .HasColumnName("USUARIO");
+
+                entity.Property(e => e.Contrasena)
+                    .HasColumnName("CONTRASENA");
+
+                entity.Property(e => e.Body)
+                    .HasColumnName("BODY");
+
+            });
+
 
             OnModelCreatingPartial(modelBuilder);
  

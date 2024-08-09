@@ -137,7 +137,7 @@
                             .ID("sampleTextBox")
                             .ReadOnly(true))
                         </text>
-                                                );
+                        );
 
 
                         items.AddSimpleFor(m => m.IdCliente)
@@ -153,9 +153,15 @@
                         );
 
 
-                        items.AddSimpleFor(m => m.SampleNumber)
-                           .Label(l => l.Text("Nro de Muestras").Location(FormLabelLocation.Top))
-                           .Editor(e => e.TextBox().ID("sampleNumberTextBox"));
+                        items.AddSimple()
+                            .Label(l => l.Text("Nro de Muestras").Location(FormLabelLocation.Top))
+                                        .ColSpan(1)
+                                        .Template(@<text>
+                            @(Html.DevExtreme().TextBox()
+                            .ID("sampleNumber")
+                            .ReadOnly(true))
+                        </text>
+                        );
 
 
                         items.AddSimpleFor(m => m.SampleType)
@@ -184,18 +190,27 @@
                         );
 
                         items.AddSimpleFor(m => m.IdPm)
-                           .Label(l => l.Text("Punto de Muestra").Location(FormLabelLocation.Top))
+                        .Label(l => l.Text("Punto de Muestra").Location(FormLabelLocation.Top))
+                        .Editor(e => e
+                        .TagBox()
+                        .ID("cbxPm1")
+                        .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("PmLookUp").Key("Value"))
+                        .ValueExpr("Value")
+                        .DisplayExpr("Text")
+                        .SearchEnabled(true)
+                        .ShowSelectionControls(true)
+                        .ApplyValueMode(EditorApplyValueMode.UseButtons)
+                        );
 
-                           .Editor(e => e
-                           .Lookup()
-                           .ID("cbxPm1")
-                           .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("PmLookUp").Key("Value"))
-                           .ValueExpr("Value")
-                           .DisplayExpr("Text")
-                           );
-
-                        items.AddSimpleFor(m => m.ConteoPuntos)
-                        .Label(l => l.Text("Conteo de Puntos").Location(FormLabelLocation.Top));
+                        items.AddSimple()
+                            .Label(l => l.Text("Conteo de Puntos").Location(FormLabelLocation.Top))
+                                        .ColSpan(1)
+                                        .Template(@<text>
+                            @(Html.DevExtreme().TextBox()
+                            .ID("countNumber")
+                            .ReadOnly(true))
+                        </text>
+                        );
 
                         items.AddSimple()
                                     .Label(l => l.Text("Test List").Location(FormLabelLocation.Top))
@@ -221,6 +236,7 @@
                        .ButtonOptions(b => b.Text("Enviar")
                        .Type(ButtonType.Default)
                        .UseSubmitBehavior(true)
+         
                        )
                        .CssClass("margen")
                        .ColSpan(2);
@@ -247,6 +263,7 @@
                 @(Html.DevExtreme().Form<LBW.Models.Entity.Analisis>()
                     .LabelLocation(FormLabelLocation.Top)
                     .ID("formAnalisis")
+
                     .Items(items =>
                     {
 
@@ -254,14 +271,18 @@
                         .Editor(e => e
                         .TagBox()
                         .ID("lookupAnalisis")
+                        
+                        .ShowSelectionControls(true)
+                        .ApplyValueMode(EditorApplyValueMode.UseButtons)
                         .DataSource(ds => ds.Mvc().Controller("Analisis").LoadAction("NameAnalisissLookup"))
                         .ValueExpr("Value")
                         .DisplayExpr("Text")
                         .SearchEnabled(true))
                         .Label(label => label.Text("Selecciona tus análisis").Location(FormLabelLocation.Top)
                         .Visible(true)
+
                         );
-                        ;
+                        
 
                     })
 
@@ -307,12 +328,7 @@
                 pager.ShowInfo(true);
                 pager.ShowNavigationButtons(true);
             })
-            .CustomizeColumns(@<text>
-                function(columns) {
-                columns[0].width = 70;
-                columns[4].dataType = "date";
-                }
-            </text>)
+            
             .ColumnHidingEnabled(true)
             .Columns(columns =>
             {
@@ -349,7 +365,7 @@
                 .DisplayExpr("Text")
                 ).Caption("Grado");
 
-                columns.AddFor(m => m.AnalisisMuestra).Caption("Análisis Asignados").AllowEditing(false);
+                 
 
                 columns.AddFor(m => m.IdProject)
                 .Lookup(lookup => lookup
@@ -362,6 +378,10 @@
             <div style="text-align:center; justify-content:center; display:flex; align-content:center;">
                 <button id="btnEnviarDatos" onclick="EnviarDatos()" class="btn" style="margin-top:15px; background-color:#337AB7; color:white; width:200px;">Asignar Análisis</button>
             </div>
+
+            <div style="height:10px;">
+
+            </div>
     </div>  
 
    
@@ -370,9 +390,11 @@
 
 <script>
 
+     
+
     var productoId = 0;
 
-
+    //Mostrar la Ultima Muestra
     $(document).ready(function () {
         $.ajax({
             url: '@Url.Action("LastSample", "Muestras")',
@@ -392,7 +414,9 @@
         });
     });
 
+    //Obtenemos la Planta, y buscamos los Puntos de Muestras
     function guardarSeleccion(e) {
+        
         var valorSeleccionado = e.value;
 
         console.log(valorSeleccionado);
@@ -406,7 +430,7 @@
             },
             success: function (result) {
 
-                var comboBox = $("#cbxPm1").dxLookup("instance"); // Obtener la instancia del ComboBox
+                var comboBox = $("#cbxPm1").dxTagBox("instance"); // Obtener la instancia del ComboBox
                 comboBox.option("dataSource", result); // Actualizar los datos del ComboBox
 
                 // Repintar el ComboBox para mostrar los nuevos datos
@@ -418,7 +442,7 @@
             }
         });
     }
-
+    //Usamos el Cliente para Obtener el TestList
     function guardarSeleccionCliente(e) {
         
         var valorSeleccionado = e.value;
@@ -482,6 +506,7 @@
         });
     }
 
+    //El segundo Tab Analisis
     function guardarMuestra(e) {
         var idMuestra = e.value; // Obtener el valor seleccionado del lookup
         console.log(idMuestra);
@@ -508,93 +533,143 @@
         });
     }
 
-    $(document).on('submit', '.myForm', function (e) {
-        e.preventDefault();
+    //Nro de Muestras en Funcion al Pm
+    $(function () {
+        var tagBox = $("#cbxPm1").dxTagBox("instance");
+        var textBox = $("#sampleNumber").dxTextBox("instance");
+        var textBox1 = $("#countNumber").dxTextBox("instance");
 
-        var form = $(this);
-        var url = form.attr('action');
-
-        form.find(':submit').prop('disabled', true);
-
-        var formData = new FormData(form[0]);
-
-        var valorSeleccionado = $("#cbxPm").dxLookup("instance").option("value");
-        var sample = $("#sampleNumberTextBox").dxTextBox("instance").option("value");
-
-        var checkBox = $("#checkbox1").dxCheckBox("instance");
-
-        // Obtener el valor del checkbox
-        var isChecked = checkBox.option("value");
-
- 
-        $.ajax({
-                        url: '@Url.Action("Post", "Proyectoes")',
-                        method: "POST",
-                        async: false,
-                        data: {
-                            Planta: valorSeleccionado,
-                            Numero: sample
-                        },
-                        success: function (result) {
-                            // Procesar la respuesta si es necesario
-                        },
-                        error: function (error) {
-                            console.error("Error al enviar el dato de planta:", error);
-                        }
-                    });
-
-        console.log("Contenido del FormData:");
-        for (const [key, value] of formData.entries()) {
-            console.log(`${key}: ${value}`);
+        function updateSampleNumber() {
+            var selectedItems = tagBox.option("selectedItems");
+            textBox.option("value", selectedItems.length.toString());
         }
 
-        
+        function updateCountNumber() {
+            var selectedItems1 = tagBox.option("selectedItems");
+            textBox1.option("value", selectedItems1.length.toString());
+        }
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                if (response.success) {
-                    DevExpress.ui.notify(response.message, 'success', 6000);
-                    form.find(':submit').prop('disabled', false);
-                    form[0].reset();
+        tagBox.on("valueChanged", updateSampleNumber);
+        tagBox.on("valueChanged", updateCountNumber);
 
-                    console.log(isChecked)
-                    if (isChecked == true) {
-                        $.ajax({
-                            url: '@Url.Action("PostTest", "Resultadoes")',
-                            method: "POST",
-                            async: false,
-                            data: {
-                                Muestra: 3
-                            },
-                            success: function (result) {
-                                // Procesar la respuesta si es necesario
-                            },
-                            error: function (error) {
-                                console.error("Error al crear TestList:", error);
-                            }
-                        });
-                    }
-                    setTimeout(function () {
-                        location.reload();
-                    }, 3000);
-                }
-                else {
-                    DevExpress.ui.notify(response.message, 'error', 6000);
-                    form.find(':submit').prop('disabled', false);
-                }
-            },
-            error: function () {
-                DevExpress.ui.notify('Hubo un error al enviar la solicitud.', 'error', 6000);
-                form.find(':submit').prop('disabled', false);
+        // Actualiza el número de muestras inicialmente
+        updateSampleNumber();
+    });
+
+     
+
+    $(document).ready(function () {
+        $(document).on('submit', '.myForm', function (e) {
+            e.preventDefault();
+            var form = $(this);
+            var url = form.attr('action');
+            form.find(':submit').prop('disabled', true);
+            var formData = new FormData(form[0]);
+
+            var tagBoxInstance = $("#cbxPm1").dxTagBox("instance");
+            if (tagBoxInstance) {
+                var tagBoxValues = tagBoxInstance.option("value");
+                formData.delete("IdPm");
+                tagBoxValues.forEach(function (value) {
+                    formData.append("IdPm", value);
+                });
+            } else {
+                console.error("dxTagBox instance not found for #cbxPm1");
             }
+
+            var lookupInstance = $("#cbxPm").dxLookup("instance");
+            var valorSeleccionado;
+            if (lookupInstance) {
+                valorSeleccionado = lookupInstance.option("value");
+            } else {
+                console.error("dxLookup instance not found for #cbxPm");
+            }
+
+            var checkBoxInstance = $("#checkbox1").dxCheckBox("instance");
+            var isChecked;
+            if (checkBoxInstance) {
+                isChecked = checkBoxInstance.option("value");
+            } else {
+                console.error("dxCheckBox instance not found for #checkbox1");
+            }
+
+            $.ajax({
+                url: '@Url.Action("Post", "Proyectoes")',
+                method: "POST",
+                async: false,
+                data: {
+                    Planta: valorSeleccionado
+                },
+                success: function (result) {
+                    // Procesar la respuesta si es necesario
+                },
+                error: function (error) {
+                    console.error("Error al enviar el dato de planta:", error);
+                }
+            });
+
+            console.log("Valores de IdPm:", tagBoxValues);
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        DevExpress.ui.notify(response.message, 'success', 6000);
+                        form.find(':submit').prop('disabled', false);
+                        form[0].reset();
+
+                        console.log(isChecked) //Verificamos el TestList
+                        if (isChecked == true) {
+                            var idPmValues;
+                            if (tagBoxInstance) {
+                                idPmValues = tagBoxInstance.option("value");
+                            } else {
+                                console.error("dxTagBox instance not found for #cbxPm1 during second access");
+                            }
+
+                            $.ajax({
+                                url: '@Url.Action("PostTest", "Resultadoes")',
+                                method: "POST",
+                                async: false,
+                                data: JSON.stringify({ idPmList: idPmValues }),
+                                contentType: "application/json",
+                                success: function (result) {
+                                    if (result.success) {
+                                        console.log("TestList creado exitosamente");
+                                    } else {
+                                        console.error("Error al crear TestList:", result.error);
+                                    }
+                                },
+                                error: function (error) {
+                                    console.error("Error al crear TestList:", error);
+                                }
+                            });
+                        }
+
+                        setTimeout(function () {
+                            location.reload();
+                        }, 3000);
+                    }
+                    else {
+                        DevExpress.ui.notify(response.message, 'error', 6000);
+                        form.find(':submit').prop('disabled', false);
+                    }
+                },
+                error: function () {
+                    DevExpress.ui.notify('Hubo un error al enviar la solicitud.', 'error', 6000);
+                    form.find(':submit').prop('disabled', false);
+                }
+
+            });
         });
     });
 
+
+    //Asignar Analisis
     function EnviarDatos(){
 
                 var dataGrid = $("#muestrasGrid").dxDataGrid("instance");
