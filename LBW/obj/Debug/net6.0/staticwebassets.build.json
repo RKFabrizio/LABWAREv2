@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "ez6MtS6nGpES6eOU6S76G6t6zQwIQPDD54MwJUgGhVM=",
+  "Hash": "+A+iiGTgofYxknXUrVKbLRrgfbQNNEVitf53w8vDcMI=",
   "Source": "LBW",
   "BasePath": "_content/LBW",
   "Mode": "Default",
@@ -15673,6 +15673,25 @@
       "OriginalItemSpec": "wwwroot\\dist\\libs\\tom-select\\dist\\js\\tom-select.popular.min.js.map"
     },
     {
+      "Identity": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\LBW\\wwwroot\\img\\Barrick - Logo.png",
+      "SourceId": "LBW",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\LBW\\wwwroot\\",
+      "BasePath": "_content/LBW",
+      "RelativePath": "img/Barrick - Logo.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\Barrick - Logo.png"
+    },
+    {
       "Identity": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\LBW\\wwwroot\\img\\BARRICK LOGO.webp",
       "SourceId": "LBW",
       "SourceType": "Discovered",
@@ -15728,6 +15747,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\img\\fondo_iniciov2.webp"
+    },
+    {
+      "Identity": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\LBW\\wwwroot\\img\\GIG Img03.webp",
+      "SourceId": "LBW",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\LBW\\wwwroot\\",
+      "BasePath": "_content/LBW",
+      "RelativePath": "img/GIG Img03.webp",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\GIG Img03.webp"
     },
     {
       "Identity": "C:\\Users\\fabri\\OneDrive\\Desktop\\GITA\\LBW\\wwwroot\\img\\GoIntegreat.webp",

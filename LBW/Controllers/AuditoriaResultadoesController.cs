@@ -24,23 +24,26 @@ namespace LBW.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(DataSourceLoadOptions loadOptions) {
-            var auditoriaresultados = _context.AuditoriaResultados.Select(i => new {
-                i.Id,
-                i.Fecha,
-                i.Fecha_N,
-                i.Analisis,
-                i.Muestra,
-                i.OldValue,
-                i.NewValue,
-                i.Login,
-                i.Cliente,
-                i.Proyecto
-            });
+        public async Task<IActionResult> Get(DataSourceLoadOptions loadOptions)
+        {
+            var auditoriaresultados = _context.AuditoriaResultados
+                .Select(i => new {
+                    i.Id,
+                    i.Fecha,
+                    i.Fecha_N,
+                    i.Analisis,
+                    i.Muestra,
+                    i.OldValue,
+                    i.NewValue,
+                    i.Login,
+                    i.Cliente,
+                    i.Proyecto,
+                    i.IdLista
+                })
+                .OrderByDescending(i => i.Fecha); // Ordenar por Fecha_N descendente
 
-            // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
-            // This can make SQL execution plans more efficient.
-            // For more detailed information, please refer to this discussion: https://github.com/DevExpress/DevExtreme.AspNet.Data/issues/336.
+            // Si los datos subyacentes son una tabla SQL grande, especifique PrimaryKey y PaginateViaPrimaryKey.
+            // Esto puede hacer que los planes de ejecución de SQL sean más eficientes.
             // loadOptions.PrimaryKey = new[] { "Id" };
             // loadOptions.PaginateViaPrimaryKey = true;
 
@@ -86,7 +89,7 @@ namespace LBW.Controllers
             await _context.SaveChangesAsync();
         }
 
-
+         
         private void PopulateModel(AuditoriaResultado model, IDictionary values) {
             string ID = nameof(AuditoriaResultado.Id);
             string FECHA = nameof(AuditoriaResultado.Fecha);
@@ -98,8 +101,9 @@ namespace LBW.Controllers
             string LOGIN = nameof(AuditoriaResultado.Login);
             string CLIENTE = nameof(AuditoriaResultado.Cliente);
             string PROYECTO = nameof(AuditoriaResultado.Proyecto);
+            string ID_LISTA = nameof(Resultado.IdLista);
 
-            if(values.Contains(ID)) {
+            if (values.Contains(ID)) {
                 model.Id = Convert.ToInt32(values[ID]);
             }
 
@@ -137,6 +141,10 @@ namespace LBW.Controllers
 
             if(values.Contains(PROYECTO)) {
                 model.Proyecto = Convert.ToString(values[PROYECTO]);
+            }
+            if (values.Contains(ID_LISTA))
+            {
+                model.IdLista = Convert.ToInt32(values[ID_LISTA]);
             }
         }
 

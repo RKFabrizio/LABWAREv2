@@ -15,6 +15,9 @@ namespace LBW.Models.Entity
         public int? Login { get; set; }
         public string? Cliente { get; set; }
         public string? Proyecto { get; set; }
+        public int? IdLista { get; set; }
+
+        public virtual Lista IdListaNavigation { get; set; }
 
     }
 }

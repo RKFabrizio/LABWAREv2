@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DevExpress.DataAccess.EntityFramework;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+ 
 
 namespace LBW.Controllers
 {
@@ -10,6 +12,8 @@ namespace LBW.Controllers
             @ViewBag.SMTP = "active";
             return View();
         }
+
+        
 
 
     }

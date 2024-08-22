@@ -129,7 +129,10 @@
                     .Items(groupItems =>
                     {
                         groupItems.AddSimpleFor(m => m.NombreCompleto);
-                        groupItems.AddSimpleFor(m => m.UsuarioID);
+                        groupItems.AddSimpleFor(m => m.UsuarioID)
+                            .Editor(editor => editor.TextBox()
+                                .OnValueChanged("function(e) { e.component.option('value', e.value.toUpperCase()); }")
+                            );
                         groupItems.AddSimple()
 
                         .Editor(editor => editor.TextBox()

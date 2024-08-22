@@ -134,6 +134,10 @@
               "target": "Package",
               "version": "[7.0.0, )"
             },
+            "Zebra.Printer.SDK": {
+              "target": "Package",
+              "version": "[2.16.2905, )"
+            },
             "iTextSharp": {
               "target": "Package",
               "version": "[5.5.13.4, )"

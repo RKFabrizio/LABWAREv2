@@ -6830,3 +6830,9 @@ C:\Users\fabri\OneDrive\Desktop\GITA\LBW\obj\Debug\net6.0\LBW.Reportes.Report2.r
 C:\Users\fabri\OneDrive\Desktop\GITA\LBW\obj\Debug\net6.0\LBW.Reportes.ReportAnalisis.resources
 C:\Users\fabri\OneDrive\Desktop\GITA\LBW\obj\Debug\net6.0\LBW.Reportes.ReportGeneralAnalisis.resources
 C:\Users\fabri\OneDrive\Desktop\GITA\LBW\obj\Debug\net6.0\LBW.Reportes.ReportPlantaGeneral.resources
+C:\Users\fabri\OneDrive\Desktop\GITA\LBW\bin\Debug\net6.0\Csv.dll
+C:\Users\fabri\OneDrive\Desktop\GITA\LBW\bin\Debug\net6.0\FluentFTP.dll
+C:\Users\fabri\OneDrive\Desktop\GITA\LBW\bin\Debug\net6.0\SharpSnmpLib.dll
+C:\Users\fabri\OneDrive\Desktop\GITA\LBW\bin\Debug\net6.0\BouncyCastle.Crypto.dll
+C:\Users\fabri\OneDrive\Desktop\GITA\LBW\bin\Debug\net6.0\SdkApi.Core.dll
+C:\Users\fabri\OneDrive\Desktop\GITA\LBW\bin\Debug\net6.0\ZebraPrinterSdk.dll

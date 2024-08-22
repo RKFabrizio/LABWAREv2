@@ -13,6 +13,7 @@ using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Net;
+using DevExpress.DataAccess.EntityFramework;
 
 
 namespace LBW.Controllers
@@ -172,7 +173,7 @@ namespace LBW.Controllers
                     .FirstOrDefault();
 
                 var usuarioConCopia = _context.Usuarios
-                    .Where(p => p.CCliente == IdCliente && p.ConCopia == true)
+                    .Where(p => p.CCliente == IdCliente && p.ConCopia == true && p.UsuarioDeshabilitado == false)
                     .Select(p => p.Correo)
                     .ToList();
 
@@ -271,6 +272,9 @@ namespace LBW.Controllers
                 return Json(new { success = false, message = "Error al enviar el email: " + ex.Message });
             }
         }
+
+
+       
 
     }
 

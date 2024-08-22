@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "Autorizar";
+    ViewData["Title"] = "Reprocesar";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -31,8 +31,6 @@
     .page-title-home {
         margin-top: 18px;
     }
- 
-
 </style>
 
 @section PagePreTitle {
@@ -42,15 +40,13 @@
         <div class="col">
             <!-- Page pre-title -->
             <div class="user-icon-container">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-like" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#A79A66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-loader-3" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M3 16m0 1a1 1 0 0 1 1 -1h1a1 1 0 0 1 1 1v3a1 1 0 0 1 -1 1h-1a1 1 0 0 1 -1 -1z" />
-                    <path d="M6 20a1 1 0 0 0 1 1h3.756a1 1 0 0 0 .958 -.713l1.2 -3c.09 -.303 .133 -.63 -.056 -.884c-.188 -.254 -.542 -.403 -.858 -.403h-2v-2.467a1.1 1.1 0 0 0 -2.015 -.61l-1.985 3.077v4z" />
-                    <path d="M14 3v4a1 1 0 0 0 1 1h4" />
-                    <path d="M5 12.1v-7.1a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2h-2.3" />
+                    <path d="M3 12a9 9 0 0 0 9 9a9 9 0 0 0 9 -9a9 9 0 0 0 -9 -9" />
+                    <path d="M17 12a5 5 0 1 0 -5 5" />
                 </svg>
                 <h2 class="page-title-home">
-                    Autorizar/Resultados
+                    Reprocesar/Resultados
                 </h2>
             </div>
         </div>
@@ -66,120 +62,73 @@
 }
 
 <div style="height:20px">
-
 </div>
 
 @(Html.DevExtreme().Button()
             .Text("Autorizado")
-            .OnClick("updateStatusA")
+            .Type(ButtonType.Default)
+            .StylingMode(ButtonStylingMode.Outlined)
+           .OnClick("updateStatusA")
             )
 
-@(Html.DevExtreme().Button()
-            .Text("Reprocesar")
-            .OnClick("updateStatusC")
-            )
  
 
-
-<div style="height:30px">
+  <div style="height:20px">
 </div>
 
-@(Html.DevExtreme().DataGrid<LBW.Models.Entity.Proyecto>()
+@(Html.DevExtreme().DataGrid<LBW.Models.Entity.Muestra>()
+    .ID("gridContainer")
     .DataSource(ds => ds.Mvc()
-        .Controller("Proyectoes")
-        .LoadAction("GetProyecto")
-        .Key("IdProyecto")
+        .Controller("Muestras")
+        .LoadAction("GetMuestrasPre")
+        .Key("IdSample")
+
     )
+        .DataSourceOptions(o => o.ReshapeOnPush(true))
+    .RepaintChangesOnly(true)
     .ShowBorders(true)
     .RemoteOperations(true)
-    .Columns(columns => {
+    .OnSelectionChanged("onSelectionChanged")
+    .Selection(s => s.Mode(SelectionMode.Multiple))
+    .Columns(columns =>
+    {
 
-        columns.AddFor(m => m.IdProyecto).Caption("").Width(40)
+        columns.AddFor(m => m.IdSample).Caption("").Width(40)
             .CellTemplate(@<text>
-    <svg id="b85b20e3-dab5-479e-af55-9db5513a104e" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248.4 179.68" width="20px" height="20px">
-        <defs>
-            <style>
-                .b2a62799-dfac-4166-a62d-67a24fe80fc7 {
-                    fill: #f7c53d;
-                }
-
-                .a30f54ed-8086-4fe4-9d08-ffe018ddc737 {
-                    fill: #fefefe;
-                }</style>
-        </defs>
-        <path class="b2a62799-dfac-4166-a62d-67a24fe80fc7" d="M159.51,201.32q-55.63,0-111.28,0a15.33,15.33,0,0,1-7.69-1.7,8.76,8.76,0,0,1-5-8.18q0-75,0-150c0-5.51,4.23-9.5,10.5-9.76a5.49,5.49,0,0,0,4.51-2.37,19.51,19.51,0,0,1,15.72-7.66q17.69,0,35.35,0a19.22,19.22,0,0,1,15.63,7.82,5.06,5.06,0,0,0,4.61,2.14q74.39-.06,148.77,0a18.48,18.48,0,0,1,5.48.55c5.21,1.58,7.79,4.9,7.79,10.34q0,73.62,0,147.24c0,7.24-4.26,11.51-11.64,11.56-8.81.06-17.62,0-26.44,0Z" transform="translate(-35.57 -21.66)" />
-        <path class="a30f54ed-8086-4fe4-9d08-ffe018ddc737" d="M83.78,45.87c-6,0-11.89-.12-17.83.05-3,.09-4.51-1.24-5.25-4a13.8,13.8,0,0,1-.32-5.78c.65-4.24,2-5.34,6.28-5.34h34.73c3.69,0,5,1.1,5.55,4.66a16.72,16.72,0,0,1,.07,5.19c-.61,4-1.89,5.2-6,5.21Z" transform="translate(-35.57 -21.66)" />
-    </svg>
-            </text>
+    <div class="id-sample-cell"></div>
+</text>
             );
 
-        columns.AddFor(m => m.Name).Caption("Proyecto");
-        columns.AddFor(m => m.DateCreated).Caption("Fecha")
+        columns.AddFor(m => m.TextID).Caption("Muestra");
+        columns.AddFor(m => m.Fecha).Caption("Fecha")
         .Format("dd/MM/yyyy")
         .SortOrder(SortOrder.Desc);
+
+        columns.AddFor(m => m.IdProject)
+                       .Lookup(lookup => lookup
+                       .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("ProyectosLookup").Key("Value"))
+                       .ValueExpr("Value")
+                       .DisplayExpr("Text")).GroupIndex(0).Caption("Proyecto").SortOrder(SortOrder.Desc);
+
     })
-          .FilterRow(f => f.Visible(true))
-           .MasterDetail(m => m
-                .Enabled(true)
-                .AutoExpandAll(false)
-                .Template(new TemplateName("gridContainer-details1"))
-                )
+    .OnCellPrepared("onCellPrepared")
+    .FilterRow(f => f.Visible(true))
+          .MasterDetail(m => m
+            .Enabled(true)
+            .AutoExpandAll(false)
+            .Template(new TemplateName("gridContainer-details1"))
+            )
 )
 
 
+
 @using (Html.DevExtreme().NamedTemplate("gridContainer-details1"))
-{
-    @(Html.DevExtreme().DataGrid<LBW.Models.Entity.Muestra>()
-        .DataSource(ds => ds.Mvc()
-            .Controller("Muestras")
-            .LoadAction("GetIdProjectA")
-            .LoadParams(new { id = new JS("data.IdProyecto") })
-            .Key("IdSample")
-        )
-        .Selection(s => s.Mode(SelectionMode.Multiple))
-        .OnSelectionChanged("onSelectionChanged")
-        .ShowBorders(true)
-        .RemoteOperations(true)
-                .Selection(s => s.Mode(SelectionMode.Multiple))
-                .RemoteOperations(true)
-                                .DataSourceOptions(o => o.ReshapeOnPush(true))
-                .RepaintChangesOnly(true)
-                .ColumnAutoWidth(true)
-
-        .Columns(columns =>
-        {
-
-            columns.AddFor(m => m.IdSample).Caption("").Width(40)
-                .CellTemplate(@<text>
-                    <div class="id-sample-cell"></div>
-                </text>
-                );
-
-            columns.AddFor(m => m.TextID).Caption("Muestra");
-            columns.AddFor(m => m.LoginDate).Caption("Fecha")
-                .Format("dd/MM/yyyy")
-            .SortOrder(SortOrder.Desc);
-            
-
-        })
- 
-            .OnCellPrepared("onCellPrepared")
-
-              .MasterDetail(m => m
-                .Enabled(true)
-                .AutoExpandAll(false)
-                .Template(new TemplateName("gridContainer-details2"))
-                )
-    )
-}
-
-@using (Html.DevExtreme().NamedTemplate("gridContainer-details2"))
 {
     @(Html.DevExtreme().DataGrid<LBW.Models.Entity.Resultado>()
         .DataSource(ds => ds.Mvc()
         .Controller("Resultadoes")
         .LoadAction("GetIdSample")
-        .UpdateAction("Put")
+        .UpdateAction("Put0")
         .LoadParams(new { id = new JS("data.IdSample") })
         .Key("IdResult")
         )
@@ -191,9 +140,11 @@
         {
 
             columns.AddFor(m => m.IdResult).Caption("").Width(40)
-            .CellTemplate(@<text>
-            <div class="id-result-cell"></div>
-            </text>);
+                .CellTemplate(@<text>
+
+                            <div class="id-result-cell"></div>
+                        </text>
+                                            );
 
             columns.AddFor(m => m.IdAnalysis)
                 .Lookup(lookup => lookup
@@ -203,22 +154,30 @@
 
             columns.AddFor(m => m.NameComponent).Caption("Componente").AllowEditing(false);
             columns.AddFor(m => m.ResultNumber).Caption("Valor");
+
+            columns.AddFor(m => m.IdLista)
+            .Lookup(lookup => lookup
+                .DataSource(ds => ds.Mvc().Controller("Resultadoes").LoadAction("ListasLookup1").Key("Value"))
+                .ValueExpr("Value")
+                .DisplayExpr("Text")
+            )
+            .Caption("Razón")
+            .AllowEditing(true);
+
             columns.AddFor(m => m.IdUnidad).Lookup(lookup => lookup
                 .DataSource(ds => ds.WebApi().Controller("Resultadoes").LoadAction("UnidadesStringLookup").Key("Value"))
                 .ValueExpr("Value")
                 .DisplayExpr("Text")
                 ).Caption("Unidad").AllowEditing(false);
+           
 
         })
             .OnCellPrepared("onCellPrepared2")
-@*             .OnRowUpdating("onRowUpdating") // Nuevo evento 
-            .OnRowUpdated("onRowUpdated") // Nuevo evento *@
             .ShowBorders(true)
- 
             .AllowColumnReordering(true)
             .RowAlternationEnabled(false)
             .ShowColumnLines(true)
-            .Grouping(g => g.AutoExpandAll(true))
+            .Grouping(g => g.AutoExpandAll(false))
             .ShowRowLines(true)
             .Paging(paging => paging.PageSize(20))
             .FilterRow(f => f.Visible(true))
@@ -232,113 +191,32 @@
             .Visible(true)
             .HighlightCaseSensitive(true)
             )
-          
+            .Editing(editing =>
+            {
+                editing.Mode(GridEditMode.Batch);
+                editing.AllowUpdating(true);
+                editing.SelectTextOnEditStart(true);
+                editing.StartEditAction(GridStartEditAction.Click);
+            })
+
             )
-} 
+}
 
 
 
 <script>
 
-    // function onRowUpdating(e) {
-    //     // Mostrar un indicador de carga o bloquear la interfaz de usuario
-    //     var grid = e.component;
-    //     grid.getDataSource().reload();
-    // }
 
-    // function onRowUpdated(e) {
-    //     // Recargar los datos del DataGrid principal de Muestras
-    //     var grid = e.component;
-    //     grid.getDataSource().reload();
-    // }
-    
-    function onCellPrepared(e) {
-        //console.log(e.column.dataField);
-
-        if (e.rowType === "data" && e.column.dataField === "IdSample") {
-            var cellElement = e.cellElement.get(0);
-            var idSampleCell = cellElement.querySelector('.id-sample-cell');
-
-            if (idSampleCell) {
-
-                var status = e.data.Status;
-
-                var svgContent;
-
-
-                switch (status) {
-                    case 254: //Unreceived
-                        svgContent = `<svg id="a8bd3f3e-e4d3-4cb6-b4a6-0521cecb4314" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170.9 222.41" width="20" height="20"><defs><style>.a82d5a20-5f9d-4ffe-ac05-a019c104fee3{fill:none;}.a82d5a20-5f9d-4ffe-ac05-a019c104fee3,.b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74{stroke:#a1acb9;stroke-width:5px;}.b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74{fill:#fff;fill-opacity:0;}</style></defs><g id="b711dba7-03c1-4581-9364-60d874a391ef" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="a82d5a20-5f9d-4ffe-ac05-a019c104fee3" d="M55.5,64.81S8.2,169.43,5.5,174.94s-5,18.74,0,30,20,15,20,15h120s15-3.74,20-15,2.7-24.47,0-30-50-110.13-50-110.13" transform="translate(-0.05 0)"/></g><g id="be506e12-4a59-457e-8de6-171f2f546891" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M55.47,66.21V29.47" transform="translate(-0.05 0)"/></g><g id="f69cc52d-30a5-4d78-ab73-159e52b1d4f0" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M59.47,12.5h-14c-1.21,0-2-1-2-4" transform="translate(-0.05 0)"/></g><g id="adf9e822-838e-487b-bc8f-ffddf112e309" data-name="s8SYpRxWPAIU3cJdedely"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M127.47,6.5c0-1.26-.1-4-2-4s-74.71,0-80,0c-1.21,0-2,1-2,4" transform="translate(-0.05 0)"/></g><g id="bbe1d235-3584-40db-b526-aeb3b31b7efe" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M111.47,12.5h14c1.21,0,2-1,2-4" transform="translate(-0.05 0)"/></g><g id="e5400afb-b42e-45d3-a9fe-c57991e9b8b8" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M43.47,6V9.14" transform="translate(-0.05 0)"/></g><g id="b67055bb-fbac-4692-b2b6-f6e3ee11dc0f" data-name="dlFIQRIEBrFAhFefXz443"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M127.47,5.77V9.14" transform="translate(-0.05 0)"/></g><g id="be0e26d6-5d85-4a2f-b941-01b365dfa799" data-name="P XejN-1qaYsxss16zLwI"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M115.47,66.17V30.5" transform="translate(-0.05 0)"/></g><g id="b20d341a-819f-4002-9fd6-ca9afb669d4f" data-name="lTDpCcKC40D5A8sL1xawP"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M57.47,12.5h56" transform="translate(-0.05 0)"/></g><g id="a52c483a-caa6-49f4-86d6-5a95e2bdb541" data-name="T608tfJHVr4WVAKU9iJc1"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M59,28.93H45c-1.21,0-2-1-2-4" transform="translate(-0.05 0)"/></g><g id="a68a761c-7456-4f57-99d4-a588d1ed9c89" data-name="i2taEIgYasyF9QUqWHkoE"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M127,22.93c0-1.25-.1-4-2-4s-74.71,0-80,0c-1.21,0-2,1-2,4" transform="translate(-0.05 0)"/></g><g id="ac3f0549-cfa7-48b6-a585-2b3d634ea683" data-name="NmFf8K6tpBGHJF2c Ciq "><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M111,28.93h14c1.21,0,2-1,2-4" transform="translate(-0.05 0)"/></g><g id="a905a8ab-ec8d-4f17-b275-43556464b925" data-name="uddyYndm51nNd3PysMtf1"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M43,22.39v3.18" transform="translate(-0.05 0)"/></g><g id="abc1f69f-6c18-4a6e-83ce-401cbd956b13" data-name="neZDGihypJmerEl uYifO"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M48,12.32v5.27" transform="translate(-0.05 0)"/></g><g id="a53b7efb-6ff8-458f-8ab6-d8ac1223566f" data-name="s 8OH4jhcNKJd47vSWA8A"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M121.47,13.5v5.27" transform="translate(-0.05 0)"/></g><g id="afa9a1a1-8f89-48ee-b84b-5bec9c4a6c7d" data-name="DCAivGtc0hmVc-qZseLuG"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M127,22.2v3.37" transform="translate(-0.05 0)"/></g><g id="ff37ffb4-5dae-45a0-8838-aca8331a1099" data-name="QSyN0JoNGEdJp41vkXrTn"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M57,28.93h56" transform="translate(-0.05 0)"/></g></svg>`;
-                        break;
-                    case 25: //Recibido
-                        svgContent = `<svg id="bd70971a-ae80-4d49-8b91-0401ec82ebdc" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 170.9 224.43" width="20" height="20"><defs><style>.b7de0b35-fe40-4a13-8c05-690fd45e1e87,.e07358b6-7db8-4e91-918d-39e7784a3f5c{stroke:#a1acb9;stroke-width:5px;}.b7de0b35-fe40-4a13-8c05-690fd45e1e87{fill:url(#b405c9be-e03e-4a00-9aa9-5fac82aa203e);}.e07358b6-7db8-4e91-918d-39e7784a3f5c{fill:#fff;fill-opacity:0;}</style><linearGradient id="b405c9be-e03e-4a00-9aa9-5fac82aa203e" x1="23.87" y1="2360.34" x2="132.51" y2="2360.34" gradientTransform="translate(6.44 -2216) scale(1.01 1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#94d4ff"/><stop offset="0.13" stop-color="#31a8f7"/><stop offset="0.59" stop-color="#31a8f7"/><stop offset="1" stop-color="#003253"/></linearGradient></defs><g id="b0e66656-040d-4c4a-9ca3-8b7cba9cd0d2" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="b7de0b35-fe40-4a13-8c05-690fd45e1e87" d="M55.5,66.74S8.2,171.42,5.5,176.93s-5,18.75,0,30,20,15,20,15h120s15-3.75,20-15,2.7-24.48,0-30-50-110.19-50-110.19" transform="translate(-0.05 0)"/></g><g id="a1c8ddd9-dcb2-410f-afee-055790c570a2" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M55.47,66.21V29.47" transform="translate(-0.05 0)"/></g><g id="eacf7e5a-0006-4171-b5a9-024225bb7081" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M59.47,12.5h-14c-1.21,0-2-1-2-4" transform="translate(-0.05 0)"/></g><g id="f13b5e68-deb5-4396-9f65-0dca073e5dcf" data-name="s8SYpRxWPAIU3cJdedely"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M127.47,6.5c0-1.26-.1-4-2-4s-74.71,0-80,0c-1.21,0-2,1-2,4" transform="translate(-0.05 0)"/></g><g id="b05f87e6-b18e-4772-8024-f5f72c8ad9ee" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M111.47,12.5h14c1.21,0,2-1,2-4" transform="translate(-0.05 0)"/></g><g id="a3b0d44c-7c41-4e4b-8eda-79be372c11a4" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M43.47,6V9.14" transform="translate(-0.05 0)"/></g><g id="e413dbf6-98d6-48a3-89b4-224ae7a66212" data-name="dlFIQRIEBrFAhFefXz443"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M127.47,5.77V9.14" transform="translate(-0.05 0)"/></g><g id="acaddd23-e3cf-4542-9c99-3800eea91e2e" data-name="P XejN-1qaYsxss16zLwI"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M115.47,66.17V30.5" transform="translate(-0.05 0)"/></g><g id="ff075227-8252-4c8f-9e61-bfeaeaccea57" data-name="lTDpCcKC40D5A8sL1xawP"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M57.47,12.5h56" transform="translate(-0.05 0)"/></g><g id="ad5d71c7-1783-47c7-b972-22c665b2682d" data-name="T608tfJHVr4WVAKU9iJc1"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M59,28.93H45c-1.21,0-2-1-2-4" transform="translate(-0.05 0)"/></g><g id="a7fed6cf-f44b-463e-a27b-b96068df4f76" data-name="i2taEIgYasyF9QUqWHkoE"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M127,22.93c0-1.25-.1-4-2-4s-74.71,0-80,0c-1.21,0-2,1-2,4" transform="translate(-0.05 0)"/></g><g id="e727eab5-8879-4ec7-a361-469629a0df66" data-name="NmFf8K6tpBGHJF2c Ciq "><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M111,28.93h14c1.21,0,2-1,2-4" transform="translate(-0.05 0)"/></g><g id="a17bb6bb-3e94-4563-9f11-c0fec6d82d38" data-name="uddyYndm51nNd3PysMtf1"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M43,22.39v3.18" transform="translate(-0.05 0)"/></g><g id="f698b1e7-ab30-4038-b139-d44cc078ec77" data-name="neZDGihypJmerEl uYifO"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M48,12.32v5.27" transform="translate(-0.05 0)"/></g><g id="b2bd5444-4138-4bca-9d5c-06d3a6ed6f58" data-name="s 8OH4jhcNKJd47vSWA8A"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M121.47,13.5v5.27" transform="translate(-0.05 0)"/></g><g id="acdb8f6d-4b05-4ada-9e39-1b50da77d671" data-name="DCAivGtc0hmVc-qZseLuG"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M127,22.2v3.37" transform="translate(-0.05 0)"/></g><g id="a8bab5d8-7755-4f57-8df6-31ae80c8b2d3" data-name="QSyN0JoNGEdJp41vkXrTn"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M57,28.93h56" transform="translate(-0.05 0)"/></g></svg> `;
-                        break;
-                    case 26: //In Progress
-                        svgContent = `<svg id="e5ca3679-067f-41c6-b015-cf59b5b03eb4" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 96.16 124.88" width="20" height="20"><defs><style>.ae87bdd1-1cb3-4198-8711-edbda1170bec{fill:#fff;fill-opacity:0;}.ae87bdd1-1cb3-4198-8711-edbda1170bec,.e95babaf-486c-4294-a57d-8ff9939f7b6c{stroke:#a1acb9;stroke-width:5px;}.f90fdfe8-76a5-4cfd-9392-8286d10f4545{fill:url(#a3e12160-d2bb-4315-be04-1d09b2da9df2);}.e95babaf-486c-4294-a57d-8ff9939f7b6c{fill:none;}</style><linearGradient id="a3e12160-d2bb-4315-be04-1d09b2da9df2" x1="3.44" y1="91.31" x2="94.37" y2="91.31" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9fff9f"/><stop offset="0.09" stop-color="#35ed35"/><stop offset="0.5" stop-color="#35ed35"/><stop offset="1" stop-color="#005a00"/></linearGradient></defs><g id="af11017a-aa53-4707-9568-7b480fc3d98f" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M32,37.91V17.49" transform="translate(-0.71 0)"/></g><g id="a73781a2-46d1-4e8a-bbb5-9e7556e52b15" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M34.17,8.06H26.39c-.67,0-1.13-.56-1.11-2.23" transform="translate(-0.71 0)"/></g><g id="a674063f-3f6f-4427-9d3c-24fada1fb900" data-name="s8SYpRxWPAIU3cJdedely"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M72,4.72c0-.69-.06-2.23-1.12-2.22H26.39c-.67,0-1.13.56-1.11,2.22" transform="translate(-0.71 0)"/></g><g id="a44a575e-1f76-4f96-89b7-4b47fb0e4645" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M63.07,8.06h7.78c.68,0,1.14-.56,1.12-2.23" transform="translate(-0.71 0)"/></g><g id="b996e954-0428-45a7-8f64-72dec116ea2c" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M25.28,4.42V6.19" transform="translate(-0.71 0)"/></g><g id="b692f885-5359-4428-83a0-1b1f6cc3294f" data-name="dlFIQRIEBrFAhFefXz443"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M72,4.32V6.19" transform="translate(-0.71 0)"/></g><g id="e242e076-031a-4b6f-b97c-dba45d0a6a1d" data-name="P XejN-1qaYsxss16zLwI"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M65.3,37.89V18.06" transform="translate(-0.71 0)"/></g><g id="e98ed4e9-372b-4e78-929a-73d940165006" data-name="lTDpCcKC40D5A8sL1xawP"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M33.06,8.06H64.18" transform="translate(-0.71 0)"/></g><g id="e09b634e-b991-4d4c-8297-9dc59455a48f" data-name="T608tfJHVr4WVAKU9iJc1"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M33.89,17.19H26.11c-.67,0-1.13-.56-1.11-2.22" transform="translate(-0.71 0)"/></g><g id="ed0369ac-71c4-4fa1-8abf-e2418cf155c4" data-name="i2taEIgYasyF9QUqWHkoE"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M71.69,13.86c0-.7,0-2.24-1.11-2.23s-41.53,0-44.47,0c-.67,0-1.13.56-1.11,2.23" transform="translate(-0.71 0)"/></g><g id="b483eac6-5e15-47c2-8822-eaf9c8a4bb2b" data-name="NmFf8K6tpBGHJF2c Ciq "><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M62.8,17.19h7.78c.67,0,1.13-.56,1.11-2.22" transform="translate(-0.71 0)"/></g><g id="b1fddc8a-ef5b-47e9-93da-3233c7ced1a3" data-name="uddyYndm51nNd3PysMtf1"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M25,13.55v1.77" transform="translate(-0.71 0)"/></g><g id="b923d689-bc30-4098-833d-611c9a2c1c95" data-name="neZDGihypJmerEl uYifO"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M27.78,8v2.93" transform="translate(-0.71 0)"/></g><g id="ac7aea83-6691-4543-a880-9eca4426f3bd" data-name="s 8OH4jhcNKJd47vSWA8A"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M68.63,8.61v2.93" transform="translate(-0.71 0)"/></g><g id="b042037e-ba62-48f2-8581-352b8c5a631f" data-name="DCAivGtc0hmVc-qZseLuG"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M71.69,13.45v1.87" transform="translate(-0.71 0)"/></g><g id="b2e5561b-9a9e-4e4f-9132-af8504111365" data-name="QSyN0JoNGEdJp41vkXrTn"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M32.78,17.19H63.91" transform="translate(-0.71 0)"/></g><path class="f90fdfe8-76a5-4cfd-9392-8286d10f4545" d="M21.69,60.57l-14,30.89L3.44,102.67l.2,7.73,4.19,7.75,8.89,4.23L82.9,122l8.78-6,2.69-9.94V98.2l-19.1-38Z" transform="translate(-0.71 0)"/><g id="ad9f4e6d-f4c6-4a24-8ba7-762ca9d69795" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="e95babaf-486c-4294-a57d-8ff9939f7b6c" d="M32.3,36.43s-26,58-27.47,61a22.12,22.12,0,0,0,0,16.61c2.74,6.24,11,8.31,11,8.31H81.76s8.24-2.07,11-8.31a22.17,22.17,0,0,0,0-16.61c-1.48-3.06-27.48-61-27.48-61" transform="translate(-0.71 0)"/></g></svg>`;
-                        break;
-                    case 24: //Complete
-                        svgContent = `<svg id="be964dee-d6a6-4589-ac4a-4c84d8983e84" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 97.2 125.88" width="20" height="20"><defs><style>.e1ff1ab4-809f-48b4-be56-276a81e86a8d,.fe4150e4-7c5d-4312-940a-273f9602dce7{stroke:#a1acb9;stroke-width:5px;}.e1ff1ab4-809f-48b4-be56-276a81e86a8d{fill:url(#b033bac9-9a5e-446d-bd14-d0aee6f7c109);}.fe4150e4-7c5d-4312-940a-273f9602dce7{fill:#fff;fill-opacity:0;}</style><linearGradient id="b033bac9-9a5e-446d-bd14-d0aee6f7c109" x1="11.26" y1="2296.26" x2="71.9" y2="2296.26" gradientTransform="translate(6.44 -2216) scale(1.01 1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9fff9f"/><stop offset="0.09" stop-color="#35ed35"/><stop offset="0.5" stop-color="#35ed35"/><stop offset="1" stop-color="#005a00"/></linearGradient></defs><g id="e8357d20-03c2-40fa-bd6f-f926e9488e46" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="e1ff1ab4-809f-48b4-be56-276a81e86a8d" d="M32,37.13S5.66,95.31,4.16,98.37a22.06,22.06,0,0,0,0,16.68c2.78,6.25,11.11,8.33,11.11,8.33H82s8.34-2.08,11.12-8.33a22.15,22.15,0,0,0,0-16.68C91.59,95.31,65.3,37.13,65.3,37.13" transform="translate(-0.02 0)"/></g><g id="a274f60b-8b17-4424-86a4-823505e31f7e" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M32,37.91V17.49" transform="translate(-0.02 0)"/></g><g id="a2eba8bb-3146-4198-ad5b-0477d7effd97" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M34.17,8.06H26.39c-.67,0-1.13-.56-1.11-2.23" transform="translate(-0.02 0)"/></g><g id="e6249f80-4af0-455e-b198-5b948f355c22" data-name="s8SYpRxWPAIU3cJdedely"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M72,4.72c0-.69-.06-2.23-1.12-2.22H26.39c-.67,0-1.13.56-1.11,2.22" transform="translate(-0.02 0)"/></g><g id="a7380da5-a7f4-4e23-a407-0fe6c80a5541" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M63.07,8.06h7.78c.68,0,1.14-.56,1.12-2.23" transform="translate(-0.02 0)"/></g><g id="bdb2b070-3521-4fdc-92eb-310bbc44c428" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M25.28,4.42V6.19" transform="translate(-0.02 0)"/></g><g id="a44662f3-d602-45ec-b5a2-bc3c3c305f93" data-name="dlFIQRIEBrFAhFefXz443"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M72,4.32V6.19" transform="translate(-0.02 0)"/></g><g id="b577ea71-c9bb-485f-8253-7ffafb256da7" data-name="P XejN-1qaYsxss16zLwI"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M65.3,37.89V18.06" transform="translate(-0.02 0)"/></g><g id="ae57b783-b627-4f89-bb8c-a3a276bef7e8" data-name="lTDpCcKC40D5A8sL1xawP"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M33.06,8.06H64.18" transform="translate(-0.02 0)"/></g><g id="b5e6c69f-e937-4139-a70f-15a2fb56f7c1" data-name="T608tfJHVr4WVAKU9iJc1"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M33.89,17.19H26.11c-.67,0-1.13-.56-1.11-2.22" transform="translate(-0.02 0)"/></g><g id="ab9a5818-8521-4ec7-a47d-30dcf9337c46" data-name="i2taEIgYasyF9QUqWHkoE"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M71.69,13.86c0-.7,0-2.24-1.11-2.23s-41.53,0-44.47,0c-.67,0-1.13.56-1.11,2.23" transform="translate(-0.02 0)"/></g><g id="ad2d7a39-0e4d-48ea-9198-26905482d2b2" data-name="NmFf8K6tpBGHJF2c Ciq "><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M62.8,17.19h7.78c.67,0,1.13-.56,1.11-2.22" transform="translate(-0.02 0)"/></g><g id="fccc20eb-e5c0-4640-83b7-2a3002ca455f" data-name="uddyYndm51nNd3PysMtf1"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M25,13.55v1.77" transform="translate(-0.02 0)"/></g><g id="b2bbc367-ca5d-4de1-b4d4-44f05cdfbe3e" data-name="neZDGihypJmerEl uYifO"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M27.78,8v2.93" transform="translate(-0.02 0)"/></g><g id="bd381b52-b6f4-4144-b595-af60c25edb90" data-name="s 8OH4jhcNKJd47vSWA8A"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M68.63,8.61v2.93" transform="translate(-0.02 0)"/></g><g id="f767bbc7-ba49-46ef-978d-0594cbc599ee" data-name="DCAivGtc0hmVc-qZseLuG"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M71.69,13.45v1.87" transform="translate(-0.02 0)"/></g><g id="e62ecb8c-fb59-4ea1-adbd-fea0d0eb3e55" data-name="QSyN0JoNGEdJp41vkXrTn"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M32.78,17.19H63.91" transform="translate(-0.02 0)"/></g></svg>`;
-                        break;
-                    case 27: //Canceled
-                        svgContent = `<svg id="a9621e4f-f4f2-4789-883a-70329cdde605" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 151.39 124.88"><defs><style>.ee45fef3-4226-4d12-a905-8d4a7acada5f{fill:#fff;fill-opacity:0;}.b1f83759-33f0-4935-9102-3a3db49db191,.ee45fef3-4226-4d12-a905-8d4a7acada5f{stroke:#a1acb9;stroke-width:5px;}.abb1ef51-fb15-433b-9b62-56b6a66459fc{fill:url(#aec1b0de-cda9-4794-b54e-0646b39a8254);}.b1f83759-33f0-4935-9102-3a3db49db191{fill:none;}.a5d9aed6-3747-4d99-a32d-1e63a18d5783{fill:#ff0303;}</style><linearGradient id="aec1b0de-cda9-4794-b54e-0646b39a8254" x1="3.44" y1="91.31" x2="94.37" y2="91.31" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9fff9f"/><stop offset="0.09" stop-color="#35ed35"/><stop offset="0.5" stop-color="#35ed35"/><stop offset="1" stop-color="#005a00"/></linearGradient></defs><g id="a4398f5a-07ca-4446-b981-c35692c98d83" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M32,37.91V17.49" transform="translate(-0.71 0)"/></g><g id="eaf74622-baaa-483c-9ed2-63cdc397a995" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M34.17,8.06H26.39c-.67,0-1.13-.56-1.11-2.23" transform="translate(-0.71 0)"/></g><g id="a271b15f-48ee-4b73-bb62-9df86d4135d6" data-name="s8SYpRxWPAIU3cJdedely"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M72,4.72c0-.69-.06-2.23-1.12-2.22H26.39c-.67,0-1.13.56-1.11,2.22" transform="translate(-0.71 0)"/></g><g id="bf8c07bb-b55d-4e1e-b989-03470372f2dd" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M63.07,8.06h7.78c.68,0,1.14-.56,1.12-2.23" transform="translate(-0.71 0)"/></g><g id="e5f9eb54-a98f-48a2-bb0a-144b389e998c" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M25.28,4.42V6.19" transform="translate(-0.71 0)"/></g><g id="bb061e6e-2921-454b-a5ac-c8c6ea1db79d" data-name="dlFIQRIEBrFAhFefXz443"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M72,4.32V6.19" transform="translate(-0.71 0)"/></g><g id="b8d3bc7d-679c-4279-ac2e-1cbba681c238" data-name="P XejN-1qaYsxss16zLwI"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M65.3,37.89V18.06" transform="translate(-0.71 0)"/></g><g id="a8195ab4-14f2-4ae2-aad2-dfd666ebd88a" data-name="lTDpCcKC40D5A8sL1xawP"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M33.06,8.06H64.18" transform="translate(-0.71 0)"/></g><g id="b7392cc2-2188-4099-81e6-3bd9e9d439c5" data-name="T608tfJHVr4WVAKU9iJc1"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M33.89,17.19H26.11c-.67,0-1.13-.56-1.11-2.22" transform="translate(-0.71 0)"/></g><g id="edb5248d-b39b-45c1-a6cb-6b182e87952f" data-name="i2taEIgYasyF9QUqWHkoE"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M71.69,13.86c0-.7,0-2.24-1.11-2.23s-41.53,0-44.47,0c-.67,0-1.13.56-1.11,2.23" transform="translate(-0.71 0)"/></g><g id="b8138fce-191f-4ffc-b78e-8b8b910ca7ec" data-name="NmFf8K6tpBGHJF2c Ciq "><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M62.8,17.19h7.78c.67,0,1.13-.56,1.11-2.22" transform="translate(-0.71 0)"/></g><g id="e590c8df-df24-40d7-9d41-7c1c2de95433" data-name="uddyYndm51nNd3PysMtf1"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M25,13.55v1.77" transform="translate(-0.71 0)"/></g><g id="a6a8e158-2dce-40e7-bef8-64d06c7ab417" data-name="neZDGihypJmerEl uYifO"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M27.78,8v2.93" transform="translate(-0.71 0)"/></g><g id="b0aa136a-1f68-40b2-bab1-9ceff193b246" data-name="s 8OH4jhcNKJd47vSWA8A"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M68.63,8.61v2.93" transform="translate(-0.71 0)"/></g><g id="eb864431-56c0-4203-a047-9c0075d4b561" data-name="DCAivGtc0hmVc-qZseLuG"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M71.69,13.45v1.87" transform="translate(-0.71 0)"/></g><g id="e02e3948-0808-40c5-9507-a6b858f6f4f4" data-name="QSyN0JoNGEdJp41vkXrTn"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M32.78,17.19H63.91" transform="translate(-0.71 0)"/></g><path class="abb1ef51-fb15-433b-9b62-56b6a66459fc" d="M21.69,60.57l-14,30.89L3.44,102.67l.2,7.73,4.19,7.75,8.89,4.23L82.9,122l8.78-6,2.69-9.94V98.2l-19.1-38Z" transform="translate(-0.71 0)"/><g id="b2accf0b-5ebd-4ecc-aadf-c733db042338" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="b1f83759-33f0-4935-9102-3a3db49db191" d="M32.3,36.43s-26,58-27.47,61a22.12,22.12,0,0,0,0,16.61c2.74,6.24,11,8.31,11,8.31H81.76s8.24-2.07,11-8.31a22.17,22.17,0,0,0,0-16.61c-1.48-3.06-27.48-61-27.48-61" transform="translate(-0.71 0)"/></g><path class="a5d9aed6-3747-4d99-a32d-1e63a18d5783" d="M100.56,87.52v-3c.08-.67.15-1.33.24-2a25.79,25.79,0,0,1,21.09-21.89c1-.18,2-.22,2.94-.39h3a3.86,3.86,0,0,0,.49.09,20.82,20.82,0,0,1,2.84.37A25.76,25.76,0,0,1,152,88.55a24.45,24.45,0,0,1-6.21,14.39,25.21,25.21,0,0,1-21.95,8.7,24.52,24.52,0,0,1-14.36-6.17A25.33,25.33,0,0,1,101,90.4C100.77,89.44,100.74,88.47,100.56,87.52Zm8.5,8.69.33-.31q13.41-13.43,26.84-26.84c.3-.29.26-.38-.09-.57a20,20,0,0,0-8-2.45,19.08,19.08,0,0,0-13.35,3.59C108.24,74.44,105.52,81,106.52,89A18.7,18.7,0,0,0,109.06,96.21Zm7.32,7.19a20,20,0,0,0,27.34-27.33Z" transform="translate(-0.71 0)"/></svg>`;
-                        break;
-                    case 21: //Autorizado
-                        svgContent = `<svg id="a0a2b48f-e47a-49fa-b3e6-0d3004a2d0c7" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 151.08 124.88"><defs><style>.af8541c2-5850-4ad3-98ad-5209b50fb99f{fill:#fff;fill-opacity:0;}.a67f898c-1fc2-4159-9666-967319be3713,.af8541c2-5850-4ad3-98ad-5209b50fb99f{stroke:#a1acb9;stroke-width:5px;}.b8fdeff4-9a22-4002-a1f3-f4f7edaa233d{fill:url(#bf18ff92-cb46-434c-b152-c095a564daf2);}.a67f898c-1fc2-4159-9666-967319be3713{fill:none;}.a343e160-cff3-40b6-b17b-da906757b428{fill:url(#b759bccb-9cc4-4b0f-8396-f03925915a32);}</style><linearGradient id="bf18ff92-cb46-434c-b152-c095a564daf2" x1="3.44" y1="80.13" x2="94.37" y2="80.13" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9fff9f"/><stop offset="0.09" stop-color="#35ed35"/><stop offset="0.5" stop-color="#35ed35"/><stop offset="1" stop-color="#005a00"/></linearGradient><linearGradient id="b759bccb-9cc4-4b0f-8396-f03925915a32" x1="102.03" y1="82.14" x2="151.79" y2="82.14" xlink:href="#bf18ff92-cb46-434c-b152-c095a564daf2"/></defs><g id="addafb2f-eda9-49d8-8c7b-4ae93b58ca71" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M32,37.91V17.49" transform="translate(-0.71 0)"/></g><g id="a73ee0b8-796c-4bef-8863-6846acaa5c17" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M34.17,8.06H26.39c-.67,0-1.13-.56-1.11-2.23" transform="translate(-0.71 0)"/></g><g id="a2a5008f-1da8-42da-a1f1-700959bf1fb5" data-name="s8SYpRxWPAIU3cJdedely"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M72,4.72c0-.69-.06-2.23-1.12-2.22H26.39c-.67,0-1.13.56-1.11,2.22" transform="translate(-0.71 0)"/></g><g id="bfb3edfc-638d-4fbb-a33a-022fb9a770a5" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M63.07,8.06h7.78c.68,0,1.14-.56,1.12-2.23" transform="translate(-0.71 0)"/></g><g id="b1ec8138-5bbc-4f0c-834d-32394eaea3c9" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M25.28,4.42V6.19" transform="translate(-0.71 0)"/></g><g id="a5a924cc-d800-4128-83fd-8c26029ec6a5" data-name="dlFIQRIEBrFAhFefXz443"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M72,4.32V6.19" transform="translate(-0.71 0)"/></g><g id="b60e9d92-255a-49a1-90ad-51b19bbb7e5d" data-name="P XejN-1qaYsxss16zLwI"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M65.3,37.89V18.06" transform="translate(-0.71 0)"/></g><g id="b66925dd-64b4-4905-ad99-34fddf725bb1" data-name="lTDpCcKC40D5A8sL1xawP"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M33.06,8.06H64.18" transform="translate(-0.71 0)"/></g><g id="a3305c91-5ba7-434c-a8c1-b398a313bc9e" data-name="T608tfJHVr4WVAKU9iJc1"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M33.89,17.19H26.11c-.67,0-1.13-.56-1.11-2.22" transform="translate(-0.71 0)"/></g><g id="e19d0a55-d1ff-474d-9114-2b1d8865a761" data-name="i2taEIgYasyF9QUqWHkoE"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M71.69,13.86c0-.7,0-2.24-1.11-2.23s-41.53,0-44.47,0c-.67,0-1.13.56-1.11,2.23" transform="translate(-0.71 0)"/></g><g id="b26735c7-b1e9-42fc-8759-31502fa4225f" data-name="NmFf8K6tpBGHJF2c Ciq "><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M62.8,17.19h7.78c.67,0,1.13-.56,1.11-2.22" transform="translate(-0.71 0)"/></g><g id="f513672b-2f0d-41e9-9ab9-c1961b9b52e2" data-name="uddyYndm51nNd3PysMtf1"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M25,13.55v1.77" transform="translate(-0.71 0)"/></g><g id="a6e3db7e-142f-48eb-a38a-5040459b94e4" data-name="neZDGihypJmerEl uYifO"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M27.78,8v2.93" transform="translate(-0.71 0)"/></g><g id="f05c36c3-3a40-4347-ba60-56430a378105" data-name="s 8OH4jhcNKJd47vSWA8A"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M68.63,8.61v2.93" transform="translate(-0.71 0)"/></g><g id="be213aad-1d12-459a-beb7-63c6eb0fb459" data-name="DCAivGtc0hmVc-qZseLuG"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M71.69,13.45v1.87" transform="translate(-0.71 0)"/></g><g id="b912d4d3-c15a-49a0-8245-6a205f04bfca" data-name="QSyN0JoNGEdJp41vkXrTn"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M32.78,17.19H63.91" transform="translate(-0.71 0)"/></g><path class="b8fdeff4-9a22-4002-a1f3-f4f7edaa233d" d="M32,37.91,7.68,91.46,3.44,102.67l.2,7.73,4.19,7.75,8.89,4.23L82.9,122l8.78-6,2.69-9.94V98.2L65.3,37.89Z" transform="translate(-0.71 0)"/><g id="abb46fb2-f7d1-46fe-802b-1d61b310ac46" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="a67f898c-1fc2-4159-9666-967319be3713" d="M32.3,36.43s-26,58-27.47,61a22.12,22.12,0,0,0,0,16.61c2.74,6.24,11,8.31,11,8.31H81.76s8.24-2.07,11-8.31a22.17,22.17,0,0,0,0-16.61c-1.48-3.06-27.48-61-27.48-61" transform="translate(-0.71 0)"/></g><path class="a343e160-cff3-40b6-b17b-da906757b428" d="M107.32,81.26a2.77,2.77,0,0,1,1.71.8c1.71,1.4,3.41,2.82,5.12,4.24s3.56,2.94,5.32,4.44c.39.33.59.27.91-.12q11.43-14.15,22.9-28.28c.15-.18.31-.36.48-.53a2,2,0,0,1,2.93-.28c1.05.76,2.05,1.6,3.07,2.41.36.29.72.57,1.06.88a2.05,2.05,0,0,1,.34,3.22c-.72.94-1.51,1.84-2.27,2.75L131,92.12l-8.17,9.72c-1.54,1.82-2.32,1.9-4.17.37L103.36,89.6l-.16-.15c-1.45-1.29-1.54-2.12-.35-3.67.91-1.2,1.82-2.39,2.76-3.56A2.12,2.12,0,0,1,107.32,81.26Z" transform="translate(-0.71 0)"/></svg>`;
-                        break;
-                    case 23: //Rejected
-                        svgContent = `<svg id="a22833e4-ac73-441c-80a7-74ed71416248" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 146.15 124.88"><defs><style>.b5165154-0edd-4224-be22-cf55f4910dbd{fill:#fff;fill-opacity:0;}.a54f92ce-8460-4739-8c58-421b4a98902d,.b5165154-0edd-4224-be22-cf55f4910dbd{stroke:#a1acb9;stroke-width:5px;}.fc9604e2-2962-4768-89f9-9a9c55f1e15c{fill:url(#a9400144-8518-4f44-ac24-faa9c3a46f75);}.a54f92ce-8460-4739-8c58-421b4a98902d{fill:none;}.af6e874f-f167-48cb-982d-3770b4b67cd8{fill:#f90000;}</style><linearGradient id="a9400144-8518-4f44-ac24-faa9c3a46f75" x1="3.44" y1="80.13" x2="94.37" y2="80.13" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9fff9f"/><stop offset="0.09" stop-color="#35ed35"/><stop offset="0.5" stop-color="#35ed35"/><stop offset="1" stop-color="#005a00"/></linearGradient></defs><g id="ba1db980-e864-4fd1-9e6f-264b360b574f" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M32,37.91V17.49" transform="translate(-0.71 0)"/></g><g id="a4dff37c-ffa4-4278-978c-a85c7e692467" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M34.17,8.06H26.39c-.67,0-1.13-.56-1.11-2.23" transform="translate(-0.71 0)"/></g><g id="fb09c9a3-d2c2-4756-983b-2b3a24aa1d79" data-name="s8SYpRxWPAIU3cJdedely"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M72,4.72c0-.69-.06-2.23-1.12-2.22H26.39c-.67,0-1.13.56-1.11,2.22" transform="translate(-0.71 0)"/></g><g id="b1fd9d0e-2fd6-4ab3-845a-1446159b42dd" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M63.07,8.06h7.78c.68,0,1.14-.56,1.12-2.23" transform="translate(-0.71 0)"/></g><g id="ad437235-48da-47de-aa4a-0c9f0194077a" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M25.28,4.42V6.19" transform="translate(-0.71 0)"/></g><g id="fae0a3b8-64dd-4074-a168-813a972407c8" data-name="dlFIQRIEBrFAhFefXz443"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M72,4.32V6.19" transform="translate(-0.71 0)"/></g><g id="f7e8bac8-5b8e-40d2-a858-a93250e3d2b2" data-name="P XejN-1qaYsxss16zLwI"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M65.3,37.89V18.06" transform="translate(-0.71 0)"/></g><g id="a03d1378-206a-4bf5-9808-b0187ab6efdd" data-name="lTDpCcKC40D5A8sL1xawP"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M33.06,8.06H64.18" transform="translate(-0.71 0)"/></g><g id="b909c32f-c5ee-4c12-af35-60366e54de5b" data-name="T608tfJHVr4WVAKU9iJc1"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M33.89,17.19H26.11c-.67,0-1.13-.56-1.11-2.22" transform="translate(-0.71 0)"/></g><g id="a957205b-4792-42e0-b165-63dcecc04fee" data-name="i2taEIgYasyF9QUqWHkoE"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M71.69,13.86c0-.7,0-2.24-1.11-2.23s-41.53,0-44.47,0c-.67,0-1.13.56-1.11,2.23" transform="translate(-0.71 0)"/></g><g id="fddcbcaf-6ecf-492c-9eaa-aa2f734abccf" data-name="NmFf8K6tpBGHJF2c Ciq "><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M62.8,17.19h7.78c.67,0,1.13-.56,1.11-2.22" transform="translate(-0.71 0)"/></g><g id="f17b5f6c-a2f7-4172-a199-29c633ba57ec" data-name="uddyYndm51nNd3PysMtf1"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M25,13.55v1.77" transform="translate(-0.71 0)"/></g><g id="b6a819b9-3e82-4813-90cf-8b33eb79024b" data-name="neZDGihypJmerEl uYifO"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M27.78,8v2.93" transform="translate(-0.71 0)"/></g><g id="bfcde899-e18a-415a-b88a-f8f2952b424e" data-name="s 8OH4jhcNKJd47vSWA8A"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M68.63,8.61v2.93" transform="translate(-0.71 0)"/></g><g id="b1236029-ee4f-43e9-afb8-50e561e7780a" data-name="DCAivGtc0hmVc-qZseLuG"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M71.69,13.45v1.87" transform="translate(-0.71 0)"/></g><g id="ff98d8b6-abb4-4886-8c08-8f7d72c5075c" data-name="QSyN0JoNGEdJp41vkXrTn"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M32.78,17.19H63.91" transform="translate(-0.71 0)"/></g><path class="fc9604e2-2962-4768-89f9-9a9c55f1e15c" d="M32,37.91,7.68,91.46,3.44,102.67l.2,7.73,4.19,7.75,8.89,4.23L82.9,122l8.78-6,2.69-9.94V98.2L65.3,37.89Z" transform="translate(-0.71 0)"/><g id="a497ae3d-9c50-4bc7-a6f0-d17f6a35a398" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="a54f92ce-8460-4739-8c58-421b4a98902d" d="M32.3,36.43s-26,58-27.47,61a22.12,22.12,0,0,0,0,16.61c2.74,6.24,11,8.31,11,8.31H81.76s8.24-2.07,11-8.31a22.17,22.17,0,0,0,0-16.61c-1.48-3.06-27.48-61-27.48-61" transform="translate(-0.71 0)"/></g><path class="af6e874f-f167-48cb-982d-3770b4b67cd8" d="M103.59,98.64a3.59,3.59,0,0,1,1.15-2.48q7.7-7.66,15.36-15.35c.68-.68.68-.68,0-1.37L104.73,64.08a3.15,3.15,0,1,1,4.09-4.79c.24.2.45.43.67.65q7.59,7.57,15.15,15.16c.46.47.71.48,1.18,0q7.71-7.76,15.45-15.47a3.18,3.18,0,0,1,3-1.06,3.14,3.14,0,0,1,1.77,5.13c-.19.22-.4.42-.6.62l-15.1,15.1c-.7.7-.7.7,0,1.43l15.31,15.3a3.2,3.2,0,0,1,1.05,3.12,3.14,3.14,0,0,1-5.05,1.77c-.24-.2-.46-.43-.68-.65q-7.59-7.61-15.19-15.21c-.48-.49-.75-.5-1.24,0-5.11,5.15-10.26,10.28-15.39,15.42a3.18,3.18,0,0,1-5.63-2Z" transform="translate(-0.71 0)"/></svg>`;
-                        break;
-                    default:
-                        svgContent = "N/A"; // Default content for undefined status
-                        break;
-                }
-
-
-                idSampleCell.innerHTML = svgContent;
-            }
-        }
-    }
-
-    function onCellPrepared2(e) {
-        //console.log(e.column.dataField);
-
-        if (e.rowType === "data" && e.column.dataField === "IdResult") {
-            var cellElement = e.cellElement.get(0);
-            var idResultCell = cellElement.querySelector('.id-result-cell');
-
-            if (idResultCell) {
-                
-                var ResultNumber = e.data.ResultNumber;
-                var StatusResult = e.data.Status;
-
-                var svgContent;
-
-            
-
-                if (StatusResult == 254) {
-                    svgContent = `<svg id="b411fe2c-e2ee-438a-bf94-dfc405888c9e" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 89 230.01" width="20" height="20" ><defs><style>.ff4e38b9-592c-4e5e-bf82-83b33dbda194,.ffe4b7c7-aa8a-4913-81cc-3f84f262c946{fill:#fff;stroke:#a1acb9;stroke-width:5px;}.ff4e38b9-592c-4e5e-bf82-83b33dbda194{fill-opacity:0;}</style></defs><g id="b6b64c8c-aa32-4ce0-8a8e-2869566c725b" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="ffe4b7c7-aa8a-4913-81cc-3f84f262c946" d="M16,39V204s.8,5.9,3.32,10,3,4.3,6.66,7.4a34.66,34.66,0,0,0,8.36,5A27,27,0,0,0,46,229c7.16.1,6.55-.3,11.59-2.4A30.76,30.76,0,0,0,66,221.4a29.66,29.66,0,0,0,6.86-7.4A29.53,29.53,0,0,0,76,204V39" transform="translate(-1.5 -1.5)"/></g><g id="b0722508-783b-4248-9bb6-d86a669b123b" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M16,40V14" transform="translate(-1.5 -1.5)"/></g><g id="ffc1decb-4c92-4f1f-95eb-9ed566477cbb" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M20,14H6c-1.2,0-2-1-2-4" transform="translate(-1.5 -1.5)"/></g><g id="ad3720b1-01ac-4d50-af9d-c7d618f742df" data-name="s8SYpRxWPAIU3cJdedely"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M88,8c0-1.3-.1-4-2-4H6C4.8,4,4,5,4,8" transform="translate(-1.5 -1.5)"/></g><g id="b17dc103-b6e0-4ec2-adf0-08bcbb99902f" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M72,14H86c1.2,0,2-1,2-4" transform="translate(-1.5 -1.5)"/></g><g id="fa60f703-75a6-48d4-8bfa-dae4103871ff" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M4,7.45v3.2" transform="translate(-1.5 -1.5)"/></g><g id="bed67355-cd20-456c-8540-0880e8ac5a97" data-name="dlFIQRIEBrFAhFefXz443"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M88,7.25v3.4" transform="translate(-1.5 -1.5)"/></g><g id="b08f8eb8-f05c-42b2-aea9-cef15351ebbc" data-name="P XejN-1qaYsxss16zLwI"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M76,40V14" transform="translate(-1.5 -1.5)"/></g><g id="b9ff1b84-aea2-4b4f-917b-959de109d52b" data-name="lTDpCcKC40D5A8sL1xawP"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M18,14H74" transform="translate(-1.5 -1.5)"/></g></svg>`;
-
-                }
-                else if (StatusResult == 21) {
-                    svgContent = `<svg id="b8e62f41-4d98-4b98-8255-a42a05ac2fa6" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 189.42 230" width="20" height="20"><defs><style>.ad3e1ec2-3026-4535-9dde-fb0d15b34f44,.fadf7617-5db9-4447-868c-c9055fc46885{stroke:#a1acb9;stroke-width:5px;}.ad3e1ec2-3026-4535-9dde-fb0d15b34f44{fill:url(#aa30982e-6b5b-49df-b356-3266247ad9c2);}.fadf7617-5db9-4447-868c-c9055fc46885{fill:#fff;fill-opacity:0;}.bae6e0ea-e026-4670-893c-2d97a945fe5d{fill:url(#a8a7b597-6413-4873-88d4-aefe9d8a7a66);}</style><linearGradient id="aa30982e-6b5b-49df-b356-3266247ad9c2" x1="-3.26" y1="2341" x2="52.31" y2="2341" gradientTransform="translate(20.24 -2207) scale(1.01 1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9dff9d"/><stop offset="0.23" stop-color="#35ed35"/><stop offset="0.5" stop-color="#35ed35"/><stop offset="1" stop-color="#005a00"/></linearGradient><linearGradient id="a8a7b597-6413-4873-88d4-aefe9d8a7a66" x1="105.82" y1="90.48" x2="191.62" y2="90.48" gradientTransform="matrix(1, 0, 0, -1, -0.71, 234)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9fff9f"/><stop offset="0.09" stop-color="#35ed35"/><stop offset="0.5" stop-color="#35ed35"/><stop offset="1" stop-color="#005a00"/></linearGradient></defs><g id="f45d4171-8fee-49cf-bd52-b9229cb7cea5" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="ad3e1ec2-3026-4535-9dde-fb0d15b34f44" d="M16,39V204s.8,5.92,3.3,10,3.07,4.3,6.7,7.39a34.32,34.32,0,0,0,8.38,5A25.48,25.48,0,0,0,46,229c7.13.06,6.6-.31,11.6-2.4a31.51,31.51,0,0,0,8.4-5.24A29.67,29.67,0,0,0,72.81,214,29.47,29.47,0,0,0,76,204V39" transform="translate(-1.5 -1.5)"/></g><g id="a4ab2532-2787-4ec3-b30d-e3c758ba04e4" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="fadf7617-5db9-4447-868c-c9055fc46885" d="M16,40V14" transform="translate(-1.5 -1.5)"/></g><g id="b683a21a-1894-433e-bf4d-bdf7c8454e6c" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="fadf7617-5db9-4447-868c-c9055fc46885" d="M20,14H6c-1.21,0-2-1-2-4" transform="translate(-1.5 -1.5)"/></g><g id="b9ad909a-1d91-4633-87b9-da68ae8438de" data-name="s8SYpRxWPAIU3cJdedely"><path class="fadf7617-5db9-4447-868c-c9055fc46885" d="M88,8c0-1.26-.1-4-2-4S11.29,4,6,4C4.79,4,4,5,4,8" transform="translate(-1.5 -1.5)"/></g><g id="a2e3e2d2-7ddf-4163-8251-49313c612938" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="fadf7617-5db9-4447-868c-c9055fc46885" d="M72,14H86c1.21,0,2-1,2-4" transform="translate(-1.5 -1.5)"/></g><g id="be6e0c33-fcd5-43eb-a804-4e349fc66ad7" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="fadf7617-5db9-4447-868c-c9055fc46885" d="M4,7.45v3.19" transform="translate(-1.5 -1.5)"/></g><g id="bc21b653-1cca-4569-950e-cb20fbaa1368" data-name="dlFIQRIEBrFAhFefXz443"><path class="fadf7617-5db9-4447-868c-c9055fc46885" d="M88,7.27v3.37" transform="translate(-1.5 -1.5)"/></g><g id="b31946c8-1086-48dd-8f63-330665dcda84" data-name="P XejN-1qaYsxss16zLwI"><path class="fadf7617-5db9-4447-868c-c9055fc46885" d="M76,40V14" transform="translate(-1.5 -1.5)"/></g><g id="b9a6001c-9b6c-40f0-b1f2-ab111faaf001" data-name="lTDpCcKC40D5A8sL1xawP"><path class="fadf7617-5db9-4447-868c-c9055fc46885" d="M18,14H74" transform="translate(-1.5 -1.5)"/></g><path class="bae6e0ea-e026-4670-893c-2d97a945fe5d" d="M114.24,142a4.85,4.85,0,0,1,3,1.36q4.41,3.55,8.82,7.18c3,2.4,6.14,5,9.18,7.52.67.56,1,.46,1.57-.2q19.69-24,39.48-47.9c.26-.3.54-.61.83-.9a3.49,3.49,0,0,1,4.83-.65l.22.18c1.81,1.29,3.54,2.71,5.3,4.08.62.49,1.24,1,1.82,1.49a3.43,3.43,0,0,1,1.14,4.78,3.56,3.56,0,0,1-.55.68c-1.24,1.59-2.6,3.11-3.91,4.65L155.07,160.4,141,176.86c-2.65,3.08-4,3.21-7.19.62l-26.38-21.35-.28-.26c-2.5-2.18-2.65-3.59-.6-6.21,1.57-2,3.14-4,4.76-6A3.68,3.68,0,0,1,114.24,142Z" transform="translate(-1.5 -1.5)"/></svg> `;
-                }
-                else {
-                    svgContent = `<svg id="e079148b-6b87-439d-8740-1f3cc0a6e669" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 89 230" width="20" height="20"><defs><style>.a2204117-cd42-4ad0-9ad4-491c103bb244,.e406fb6e-4b59-444b-80a0-27d3da05e21a{stroke:#a1acb9;stroke-width:5px;}.e406fb6e-4b59-444b-80a0-27d3da05e21a{fill:url(#ed1961e3-0b45-4a30-90e3-05078b4dcf08);}.a2204117-cd42-4ad0-9ad4-491c103bb244{fill:#fff;fill-opacity:0;}</style><linearGradient id="ed1961e3-0b45-4a30-90e3-05078b4dcf08" x1="-3.26" y1="2341" x2="52.31" y2="2341" gradientTransform="translate(20.24 -2207) scale(1.01 1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9dff9d"/><stop offset="0.23" stop-color="#35ed35"/><stop offset="0.5" stop-color="#35ed35"/><stop offset="1" stop-color="#005a00"/></linearGradient></defs><g id="eb97f46e-1eed-40b5-8e3a-329e96438633" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="e406fb6e-4b59-444b-80a0-27d3da05e21a" d="M16,39V204s.8,5.92,3.3,10,3.07,4.3,6.7,7.39a34.32,34.32,0,0,0,8.38,5A25.48,25.48,0,0,0,46,229c7.13.06,6.6-.31,11.6-2.4a31.51,31.51,0,0,0,8.4-5.24A29.67,29.67,0,0,0,72.81,214,29.47,29.47,0,0,0,76,204V39" transform="translate(-1.5 -1.5)"/></g><g id="b91a1d89-4dd7-4f5f-9f70-867de14e7d00" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M16,40V14" transform="translate(-1.5 -1.5)"/></g><g id="e812cd70-46e4-49a1-a65c-cc7282c93866" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M20,14H6c-1.21,0-2-1-2-4" transform="translate(-1.5 -1.5)"/></g><g id="b6f42584-b2fd-48db-8771-02f57538a381" data-name="s8SYpRxWPAIU3cJdedely"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M88,8c0-1.26-.1-4-2-4S11.29,4,6,4C4.79,4,4,5,4,8" transform="translate(-1.5 -1.5)"/></g><g id="fcdcb636-016a-4f00-a3a7-8a61bdaada5f" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M72,14H86c1.21,0,2-1,2-4" transform="translate(-1.5 -1.5)"/></g><g id="b6be217f-7e51-44f9-8cd0-5f753f9c9fa4" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M4,7.45v3.19" transform="translate(-1.5 -1.5)"/></g><g id="e284799c-4033-4992-bfdc-62a96ce3fb03" data-name="dlFIQRIEBrFAhFefXz443"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M88,7.27v3.37" transform="translate(-1.5 -1.5)"/></g><g id="fcff838a-cb1c-4ba6-aff3-f39409937b5e" data-name="P XejN-1qaYsxss16zLwI"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M76,40V14" transform="translate(-1.5 -1.5)"/></g><g id="a9ba1b2a-6f14-45ad-9e42-3de69b1356b4" data-name="lTDpCcKC40D5A8sL1xawP"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M18,14H74" transform="translate(-1.5 -1.5)"/></g></svg>`;
-
-                }
-
-
-                idResultCell.innerHTML = svgContent;
-            }
-        }
-    }
 
     var selectedIds = [];
 
+
     function onSelectionChanged(e) {
         selectedIds = e.selectedRowKeys;
+ 
     }
 
+     
     function updateStatusA() {
 
 
@@ -368,38 +246,115 @@
         });
 
 
-        
+
     }
 
-    function updateStatusC() {
+
+    function onCellPrepared(e) {
+        //console.log(e.column.dataField);
+
+        if (e.rowType === "data" && e.column.dataField === "IdSample") {
+            var cellElement = e.cellElement.get(0);
+            var idSampleCell = cellElement.querySelector('.id-sample-cell');
+
+            if (idSampleCell) {
+                var status;
+                if (e.rowType === "data" && e.data.IdSample) {
+                    for (var key in e.data) {
+                        if (e.data.hasOwnProperty(key) && key == "Status") {
+                            //console.log(key + ": " + e.data[key]);
+                            status = e.data[key]
+                        }
+                    }
+                }
+                if (e.rowType === "data" && e.data.IdSample) {
+                    for (var key in e.data) {
+                        if (e.data.hasOwnProperty(key)) {
+                            //console.log(key + ": " + e.data[key]);
+
+                        }
+                    }
+                }
+
+                //console.log("---------------------");
+                var svgContent;
+
+                switch (status) {
+                    case 254: //Unreceived
+                        svgContent = `<svg id="a8bd3f3e-e4d3-4cb6-b4a6-0521cecb4314" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170.9 222.41" width="20" height="20"><defs><style>.a82d5a20-5f9d-4ffe-ac05-a019c104fee3{fill:none;}.a82d5a20-5f9d-4ffe-ac05-a019c104fee3,.b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74{stroke:#a1acb9;stroke-width:5px;}.b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74{fill:#fff;fill-opacity:0;}</style></defs><g id="b711dba7-03c1-4581-9364-60d874a391ef" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="a82d5a20-5f9d-4ffe-ac05-a019c104fee3" d="M55.5,64.81S8.2,169.43,5.5,174.94s-5,18.74,0,30,20,15,20,15h120s15-3.74,20-15,2.7-24.47,0-30-50-110.13-50-110.13" transform="translate(-0.05 0)"/></g><g id="be506e12-4a59-457e-8de6-171f2f546891" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M55.47,66.21V29.47" transform="translate(-0.05 0)"/></g><g id="f69cc52d-30a5-4d78-ab73-159e52b1d4f0" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M59.47,12.5h-14c-1.21,0-2-1-2-4" transform="translate(-0.05 0)"/></g><g id="adf9e822-838e-487b-bc8f-ffddf112e309" data-name="s8SYpRxWPAIU3cJdedely"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M127.47,6.5c0-1.26-.1-4-2-4s-74.71,0-80,0c-1.21,0-2,1-2,4" transform="translate(-0.05 0)"/></g><g id="bbe1d235-3584-40db-b526-aeb3b31b7efe" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M111.47,12.5h14c1.21,0,2-1,2-4" transform="translate(-0.05 0)"/></g><g id="e5400afb-b42e-45d3-a9fe-c57991e9b8b8" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M43.47,6V9.14" transform="translate(-0.05 0)"/></g><g id="b67055bb-fbac-4692-b2b6-f6e3ee11dc0f" data-name="dlFIQRIEBrFAhFefXz443"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M127.47,5.77V9.14" transform="translate(-0.05 0)"/></g><g id="be0e26d6-5d85-4a2f-b941-01b365dfa799" data-name="P XejN-1qaYsxss16zLwI"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M115.47,66.17V30.5" transform="translate(-0.05 0)"/></g><g id="b20d341a-819f-4002-9fd6-ca9afb669d4f" data-name="lTDpCcKC40D5A8sL1xawP"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M57.47,12.5h56" transform="translate(-0.05 0)"/></g><g id="a52c483a-caa6-49f4-86d6-5a95e2bdb541" data-name="T608tfJHVr4WVAKU9iJc1"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M59,28.93H45c-1.21,0-2-1-2-4" transform="translate(-0.05 0)"/></g><g id="a68a761c-7456-4f57-99d4-a588d1ed9c89" data-name="i2taEIgYasyF9QUqWHkoE"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M127,22.93c0-1.25-.1-4-2-4s-74.71,0-80,0c-1.21,0-2,1-2,4" transform="translate(-0.05 0)"/></g><g id="ac3f0549-cfa7-48b6-a585-2b3d634ea683" data-name="NmFf8K6tpBGHJF2c Ciq "><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M111,28.93h14c1.21,0,2-1,2-4" transform="translate(-0.05 0)"/></g><g id="a905a8ab-ec8d-4f17-b275-43556464b925" data-name="uddyYndm51nNd3PysMtf1"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M43,22.39v3.18" transform="translate(-0.05 0)"/></g><g id="abc1f69f-6c18-4a6e-83ce-401cbd956b13" data-name="neZDGihypJmerEl uYifO"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M48,12.32v5.27" transform="translate(-0.05 0)"/></g><g id="a53b7efb-6ff8-458f-8ab6-d8ac1223566f" data-name="s 8OH4jhcNKJd47vSWA8A"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M121.47,13.5v5.27" transform="translate(-0.05 0)"/></g><g id="afa9a1a1-8f89-48ee-b84b-5bec9c4a6c7d" data-name="DCAivGtc0hmVc-qZseLuG"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M127,22.2v3.37" transform="translate(-0.05 0)"/></g><g id="ff37ffb4-5dae-45a0-8838-aca8331a1099" data-name="QSyN0JoNGEdJp41vkXrTn"><path class="b0a907ca-9e0e-4ce2-a34d-1ad7e41c8c74" d="M57,28.93h56" transform="translate(-0.05 0)"/></g></svg>`;
+                        break;
+                    case 25: //Recibido
+                        svgContent = `<svg id="bd70971a-ae80-4d49-8b91-0401ec82ebdc" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 170.9 224.43" width="20" height="20"><defs><style>.b7de0b35-fe40-4a13-8c05-690fd45e1e87,.e07358b6-7db8-4e91-918d-39e7784a3f5c{stroke:#a1acb9;stroke-width:5px;}.b7de0b35-fe40-4a13-8c05-690fd45e1e87{fill:url(#b405c9be-e03e-4a00-9aa9-5fac82aa203e);}.e07358b6-7db8-4e91-918d-39e7784a3f5c{fill:#fff;fill-opacity:0;}</style><linearGradient id="b405c9be-e03e-4a00-9aa9-5fac82aa203e" x1="23.87" y1="2360.34" x2="132.51" y2="2360.34" gradientTransform="translate(6.44 -2216) scale(1.01 1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#94d4ff"/><stop offset="0.13" stop-color="#31a8f7"/><stop offset="0.59" stop-color="#31a8f7"/><stop offset="1" stop-color="#003253"/></linearGradient></defs><g id="b0e66656-040d-4c4a-9ca3-8b7cba9cd0d2" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="b7de0b35-fe40-4a13-8c05-690fd45e1e87" d="M55.5,66.74S8.2,171.42,5.5,176.93s-5,18.75,0,30,20,15,20,15h120s15-3.75,20-15,2.7-24.48,0-30-50-110.19-50-110.19" transform="translate(-0.05 0)"/></g><g id="a1c8ddd9-dcb2-410f-afee-055790c570a2" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M55.47,66.21V29.47" transform="translate(-0.05 0)"/></g><g id="eacf7e5a-0006-4171-b5a9-024225bb7081" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M59.47,12.5h-14c-1.21,0-2-1-2-4" transform="translate(-0.05 0)"/></g><g id="f13b5e68-deb5-4396-9f65-0dca073e5dcf" data-name="s8SYpRxWPAIU3cJdedely"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M127.47,6.5c0-1.26-.1-4-2-4s-74.71,0-80,0c-1.21,0-2,1-2,4" transform="translate(-0.05 0)"/></g><g id="b05f87e6-b18e-4772-8024-f5f72c8ad9ee" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M111.47,12.5h14c1.21,0,2-1,2-4" transform="translate(-0.05 0)"/></g><g id="a3b0d44c-7c41-4e4b-8eda-79be372c11a4" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M43.47,6V9.14" transform="translate(-0.05 0)"/></g><g id="e413dbf6-98d6-48a3-89b4-224ae7a66212" data-name="dlFIQRIEBrFAhFefXz443"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M127.47,5.77V9.14" transform="translate(-0.05 0)"/></g><g id="acaddd23-e3cf-4542-9c99-3800eea91e2e" data-name="P XejN-1qaYsxss16zLwI"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M115.47,66.17V30.5" transform="translate(-0.05 0)"/></g><g id="ff075227-8252-4c8f-9e61-bfeaeaccea57" data-name="lTDpCcKC40D5A8sL1xawP"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M57.47,12.5h56" transform="translate(-0.05 0)"/></g><g id="ad5d71c7-1783-47c7-b972-22c665b2682d" data-name="T608tfJHVr4WVAKU9iJc1"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M59,28.93H45c-1.21,0-2-1-2-4" transform="translate(-0.05 0)"/></g><g id="a7fed6cf-f44b-463e-a27b-b96068df4f76" data-name="i2taEIgYasyF9QUqWHkoE"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M127,22.93c0-1.25-.1-4-2-4s-74.71,0-80,0c-1.21,0-2,1-2,4" transform="translate(-0.05 0)"/></g><g id="e727eab5-8879-4ec7-a361-469629a0df66" data-name="NmFf8K6tpBGHJF2c Ciq "><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M111,28.93h14c1.21,0,2-1,2-4" transform="translate(-0.05 0)"/></g><g id="a17bb6bb-3e94-4563-9f11-c0fec6d82d38" data-name="uddyYndm51nNd3PysMtf1"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M43,22.39v3.18" transform="translate(-0.05 0)"/></g><g id="f698b1e7-ab30-4038-b139-d44cc078ec77" data-name="neZDGihypJmerEl uYifO"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M48,12.32v5.27" transform="translate(-0.05 0)"/></g><g id="b2bd5444-4138-4bca-9d5c-06d3a6ed6f58" data-name="s 8OH4jhcNKJd47vSWA8A"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M121.47,13.5v5.27" transform="translate(-0.05 0)"/></g><g id="acdb8f6d-4b05-4ada-9e39-1b50da77d671" data-name="DCAivGtc0hmVc-qZseLuG"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M127,22.2v3.37" transform="translate(-0.05 0)"/></g><g id="a8bab5d8-7755-4f57-8df6-31ae80c8b2d3" data-name="QSyN0JoNGEdJp41vkXrTn"><path class="e07358b6-7db8-4e91-918d-39e7784a3f5c" d="M57,28.93h56" transform="translate(-0.05 0)"/></g></svg> `;
+                        break;
+                    case 26: //In Progress
+                        svgContent = `<svg id="e5ca3679-067f-41c6-b015-cf59b5b03eb4" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 96.16 124.88" width="20" height="20"><defs><style>.ae87bdd1-1cb3-4198-8711-edbda1170bec{fill:#fff;fill-opacity:0;}.ae87bdd1-1cb3-4198-8711-edbda1170bec,.e95babaf-486c-4294-a57d-8ff9939f7b6c{stroke:#a1acb9;stroke-width:5px;}.f90fdfe8-76a5-4cfd-9392-8286d10f4545{fill:url(#a3e12160-d2bb-4315-be04-1d09b2da9df2);}.e95babaf-486c-4294-a57d-8ff9939f7b6c{fill:none;}</style><linearGradient id="a3e12160-d2bb-4315-be04-1d09b2da9df2" x1="3.44" y1="91.31" x2="94.37" y2="91.31" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9fff9f"/><stop offset="0.09" stop-color="#35ed35"/><stop offset="0.5" stop-color="#35ed35"/><stop offset="1" stop-color="#005a00"/></linearGradient></defs><g id="af11017a-aa53-4707-9568-7b480fc3d98f" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M32,37.91V17.49" transform="translate(-0.71 0)"/></g><g id="a73781a2-46d1-4e8a-bbb5-9e7556e52b15" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M34.17,8.06H26.39c-.67,0-1.13-.56-1.11-2.23" transform="translate(-0.71 0)"/></g><g id="a674063f-3f6f-4427-9d3c-24fada1fb900" data-name="s8SYpRxWPAIU3cJdedely"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M72,4.72c0-.69-.06-2.23-1.12-2.22H26.39c-.67,0-1.13.56-1.11,2.22" transform="translate(-0.71 0)"/></g><g id="a44a575e-1f76-4f96-89b7-4b47fb0e4645" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M63.07,8.06h7.78c.68,0,1.14-.56,1.12-2.23" transform="translate(-0.71 0)"/></g><g id="b996e954-0428-45a7-8f64-72dec116ea2c" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M25.28,4.42V6.19" transform="translate(-0.71 0)"/></g><g id="b692f885-5359-4428-83a0-1b1f6cc3294f" data-name="dlFIQRIEBrFAhFefXz443"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M72,4.32V6.19" transform="translate(-0.71 0)"/></g><g id="e242e076-031a-4b6f-b97c-dba45d0a6a1d" data-name="P XejN-1qaYsxss16zLwI"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M65.3,37.89V18.06" transform="translate(-0.71 0)"/></g><g id="e98ed4e9-372b-4e78-929a-73d940165006" data-name="lTDpCcKC40D5A8sL1xawP"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M33.06,8.06H64.18" transform="translate(-0.71 0)"/></g><g id="e09b634e-b991-4d4c-8297-9dc59455a48f" data-name="T608tfJHVr4WVAKU9iJc1"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M33.89,17.19H26.11c-.67,0-1.13-.56-1.11-2.22" transform="translate(-0.71 0)"/></g><g id="ed0369ac-71c4-4fa1-8abf-e2418cf155c4" data-name="i2taEIgYasyF9QUqWHkoE"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M71.69,13.86c0-.7,0-2.24-1.11-2.23s-41.53,0-44.47,0c-.67,0-1.13.56-1.11,2.23" transform="translate(-0.71 0)"/></g><g id="b483eac6-5e15-47c2-8822-eaf9c8a4bb2b" data-name="NmFf8K6tpBGHJF2c Ciq "><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M62.8,17.19h7.78c.67,0,1.13-.56,1.11-2.22" transform="translate(-0.71 0)"/></g><g id="b1fddc8a-ef5b-47e9-93da-3233c7ced1a3" data-name="uddyYndm51nNd3PysMtf1"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M25,13.55v1.77" transform="translate(-0.71 0)"/></g><g id="b923d689-bc30-4098-833d-611c9a2c1c95" data-name="neZDGihypJmerEl uYifO"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M27.78,8v2.93" transform="translate(-0.71 0)"/></g><g id="ac7aea83-6691-4543-a880-9eca4426f3bd" data-name="s 8OH4jhcNKJd47vSWA8A"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M68.63,8.61v2.93" transform="translate(-0.71 0)"/></g><g id="b042037e-ba62-48f2-8581-352b8c5a631f" data-name="DCAivGtc0hmVc-qZseLuG"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M71.69,13.45v1.87" transform="translate(-0.71 0)"/></g><g id="b2e5561b-9a9e-4e4f-9132-af8504111365" data-name="QSyN0JoNGEdJp41vkXrTn"><path class="ae87bdd1-1cb3-4198-8711-edbda1170bec" d="M32.78,17.19H63.91" transform="translate(-0.71 0)"/></g><path class="f90fdfe8-76a5-4cfd-9392-8286d10f4545" d="M21.69,60.57l-14,30.89L3.44,102.67l.2,7.73,4.19,7.75,8.89,4.23L82.9,122l8.78-6,2.69-9.94V98.2l-19.1-38Z" transform="translate(-0.71 0)"/><g id="ad9f4e6d-f4c6-4a24-8ba7-762ca9d69795" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="e95babaf-486c-4294-a57d-8ff9939f7b6c" d="M32.3,36.43s-26,58-27.47,61a22.12,22.12,0,0,0,0,16.61c2.74,6.24,11,8.31,11,8.31H81.76s8.24-2.07,11-8.31a22.17,22.17,0,0,0,0-16.61c-1.48-3.06-27.48-61-27.48-61" transform="translate(-0.71 0)"/></g></svg>`;
+                        break;
+                    case 24: //Complete
+                        svgContent = `<svg id="be964dee-d6a6-4589-ac4a-4c84d8983e84" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 97.2 125.88" width="20" height="20"><defs><style>.e1ff1ab4-809f-48b4-be56-276a81e86a8d,.fe4150e4-7c5d-4312-940a-273f9602dce7{stroke:#a1acb9;stroke-width:5px;}.e1ff1ab4-809f-48b4-be56-276a81e86a8d{fill:url(#b033bac9-9a5e-446d-bd14-d0aee6f7c109);}.fe4150e4-7c5d-4312-940a-273f9602dce7{fill:#fff;fill-opacity:0;}</style><linearGradient id="b033bac9-9a5e-446d-bd14-d0aee6f7c109" x1="11.26" y1="2296.26" x2="71.9" y2="2296.26" gradientTransform="translate(6.44 -2216) scale(1.01 1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9fff9f"/><stop offset="0.09" stop-color="#35ed35"/><stop offset="0.5" stop-color="#35ed35"/><stop offset="1" stop-color="#005a00"/></linearGradient></defs><g id="e8357d20-03c2-40fa-bd6f-f926e9488e46" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="e1ff1ab4-809f-48b4-be56-276a81e86a8d" d="M32,37.13S5.66,95.31,4.16,98.37a22.06,22.06,0,0,0,0,16.68c2.78,6.25,11.11,8.33,11.11,8.33H82s8.34-2.08,11.12-8.33a22.15,22.15,0,0,0,0-16.68C91.59,95.31,65.3,37.13,65.3,37.13" transform="translate(-0.02 0)"/></g><g id="a274f60b-8b17-4424-86a4-823505e31f7e" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M32,37.91V17.49" transform="translate(-0.02 0)"/></g><g id="a2eba8bb-3146-4198-ad5b-0477d7effd97" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M34.17,8.06H26.39c-.67,0-1.13-.56-1.11-2.23" transform="translate(-0.02 0)"/></g><g id="e6249f80-4af0-455e-b198-5b948f355c22" data-name="s8SYpRxWPAIU3cJdedely"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M72,4.72c0-.69-.06-2.23-1.12-2.22H26.39c-.67,0-1.13.56-1.11,2.22" transform="translate(-0.02 0)"/></g><g id="a7380da5-a7f4-4e23-a407-0fe6c80a5541" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M63.07,8.06h7.78c.68,0,1.14-.56,1.12-2.23" transform="translate(-0.02 0)"/></g><g id="bdb2b070-3521-4fdc-92eb-310bbc44c428" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M25.28,4.42V6.19" transform="translate(-0.02 0)"/></g><g id="a44662f3-d602-45ec-b5a2-bc3c3c305f93" data-name="dlFIQRIEBrFAhFefXz443"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M72,4.32V6.19" transform="translate(-0.02 0)"/></g><g id="b577ea71-c9bb-485f-8253-7ffafb256da7" data-name="P XejN-1qaYsxss16zLwI"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M65.3,37.89V18.06" transform="translate(-0.02 0)"/></g><g id="ae57b783-b627-4f89-bb8c-a3a276bef7e8" data-name="lTDpCcKC40D5A8sL1xawP"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M33.06,8.06H64.18" transform="translate(-0.02 0)"/></g><g id="b5e6c69f-e937-4139-a70f-15a2fb56f7c1" data-name="T608tfJHVr4WVAKU9iJc1"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M33.89,17.19H26.11c-.67,0-1.13-.56-1.11-2.22" transform="translate(-0.02 0)"/></g><g id="ab9a5818-8521-4ec7-a47d-30dcf9337c46" data-name="i2taEIgYasyF9QUqWHkoE"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M71.69,13.86c0-.7,0-2.24-1.11-2.23s-41.53,0-44.47,0c-.67,0-1.13.56-1.11,2.23" transform="translate(-0.02 0)"/></g><g id="ad2d7a39-0e4d-48ea-9198-26905482d2b2" data-name="NmFf8K6tpBGHJF2c Ciq "><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M62.8,17.19h7.78c.67,0,1.13-.56,1.11-2.22" transform="translate(-0.02 0)"/></g><g id="fccc20eb-e5c0-4640-83b7-2a3002ca455f" data-name="uddyYndm51nNd3PysMtf1"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M25,13.55v1.77" transform="translate(-0.02 0)"/></g><g id="b2bbc367-ca5d-4de1-b4d4-44f05cdfbe3e" data-name="neZDGihypJmerEl uYifO"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M27.78,8v2.93" transform="translate(-0.02 0)"/></g><g id="bd381b52-b6f4-4144-b595-af60c25edb90" data-name="s 8OH4jhcNKJd47vSWA8A"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M68.63,8.61v2.93" transform="translate(-0.02 0)"/></g><g id="f767bbc7-ba49-46ef-978d-0594cbc599ee" data-name="DCAivGtc0hmVc-qZseLuG"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M71.69,13.45v1.87" transform="translate(-0.02 0)"/></g><g id="e62ecb8c-fb59-4ea1-adbd-fea0d0eb3e55" data-name="QSyN0JoNGEdJp41vkXrTn"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M32.78,17.19H63.91" transform="translate(-0.02 0)"/></g></svg>`;
+                        break;
+                    case 799: //Complete
+                        svgContent = `<svg id="be964dee-d6a6-4589-ac4a-4c84d8983e84" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 97.2 125.88" width="20" height="20"><defs><style>.e1ff1ab4-809f-48b4-be56-276a81e86a8d,.fe4150e4-7c5d-4312-940a-273f9602dce7{stroke:#a1acb9;stroke-width:5px;}.e1ff1ab4-809f-48b4-be56-276a81e86a8d{fill:url(#b033bac9-9a5e-446d-bd14-d0aee6f7c109);}.fe4150e4-7c5d-4312-940a-273f9602dce7{fill:#fff;fill-opacity:0;}</style><linearGradient id="b033bac9-9a5e-446d-bd14-d0aee6f7c109" x1="11.26" y1="2296.26" x2="71.9" y2="2296.26" gradientTransform="translate(6.44 -2216) scale(1.01 1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9fff9f"/><stop offset="0.09" stop-color="#35ed35"/><stop offset="0.5" stop-color="#35ed35"/><stop offset="1" stop-color="#005a00"/></linearGradient></defs><g id="e8357d20-03c2-40fa-bd6f-f926e9488e46" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="e1ff1ab4-809f-48b4-be56-276a81e86a8d" d="M32,37.13S5.66,95.31,4.16,98.37a22.06,22.06,0,0,0,0,16.68c2.78,6.25,11.11,8.33,11.11,8.33H82s8.34-2.08,11.12-8.33a22.15,22.15,0,0,0,0-16.68C91.59,95.31,65.3,37.13,65.3,37.13" transform="translate(-0.02 0)"/></g><g id="a274f60b-8b17-4424-86a4-823505e31f7e" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M32,37.91V17.49" transform="translate(-0.02 0)"/></g><g id="a2eba8bb-3146-4198-ad5b-0477d7effd97" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M34.17,8.06H26.39c-.67,0-1.13-.56-1.11-2.23" transform="translate(-0.02 0)"/></g><g id="e6249f80-4af0-455e-b198-5b948f355c22" data-name="s8SYpRxWPAIU3cJdedely"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M72,4.72c0-.69-.06-2.23-1.12-2.22H26.39c-.67,0-1.13.56-1.11,2.22" transform="translate(-0.02 0)"/></g><g id="a7380da5-a7f4-4e23-a407-0fe6c80a5541" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M63.07,8.06h7.78c.68,0,1.14-.56,1.12-2.23" transform="translate(-0.02 0)"/></g><g id="bdb2b070-3521-4fdc-92eb-310bbc44c428" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M25.28,4.42V6.19" transform="translate(-0.02 0)"/></g><g id="a44662f3-d602-45ec-b5a2-bc3c3c305f93" data-name="dlFIQRIEBrFAhFefXz443"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M72,4.32V6.19" transform="translate(-0.02 0)"/></g><g id="b577ea71-c9bb-485f-8253-7ffafb256da7" data-name="P XejN-1qaYsxss16zLwI"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M65.3,37.89V18.06" transform="translate(-0.02 0)"/></g><g id="ae57b783-b627-4f89-bb8c-a3a276bef7e8" data-name="lTDpCcKC40D5A8sL1xawP"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M33.06,8.06H64.18" transform="translate(-0.02 0)"/></g><g id="b5e6c69f-e937-4139-a70f-15a2fb56f7c1" data-name="T608tfJHVr4WVAKU9iJc1"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M33.89,17.19H26.11c-.67,0-1.13-.56-1.11-2.22" transform="translate(-0.02 0)"/></g><g id="ab9a5818-8521-4ec7-a47d-30dcf9337c46" data-name="i2taEIgYasyF9QUqWHkoE"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M71.69,13.86c0-.7,0-2.24-1.11-2.23s-41.53,0-44.47,0c-.67,0-1.13.56-1.11,2.23" transform="translate(-0.02 0)"/></g><g id="ad2d7a39-0e4d-48ea-9198-26905482d2b2" data-name="NmFf8K6tpBGHJF2c Ciq "><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M62.8,17.19h7.78c.67,0,1.13-.56,1.11-2.22" transform="translate(-0.02 0)"/></g><g id="fccc20eb-e5c0-4640-83b7-2a3002ca455f" data-name="uddyYndm51nNd3PysMtf1"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M25,13.55v1.77" transform="translate(-0.02 0)"/></g><g id="b2bbc367-ca5d-4de1-b4d4-44f05cdfbe3e" data-name="neZDGihypJmerEl uYifO"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M27.78,8v2.93" transform="translate(-0.02 0)"/></g><g id="bd381b52-b6f4-4144-b595-af60c25edb90" data-name="s 8OH4jhcNKJd47vSWA8A"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M68.63,8.61v2.93" transform="translate(-0.02 0)"/></g><g id="f767bbc7-ba49-46ef-978d-0594cbc599ee" data-name="DCAivGtc0hmVc-qZseLuG"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M71.69,13.45v1.87" transform="translate(-0.02 0)"/></g><g id="e62ecb8c-fb59-4ea1-adbd-fea0d0eb3e55" data-name="QSyN0JoNGEdJp41vkXrTn"><path class="fe4150e4-7c5d-4312-940a-273f9602dce7" d="M32.78,17.19H63.91" transform="translate(-0.02 0)"/></g></svg>`;
+                        break;
+                    case 27: //Canceled
+                        svgContent = `<svg id="a9621e4f-f4f2-4789-883a-70329cdde605" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 151.39 124.88"><defs><style>.ee45fef3-4226-4d12-a905-8d4a7acada5f{fill:#fff;fill-opacity:0;}.b1f83759-33f0-4935-9102-3a3db49db191,.ee45fef3-4226-4d12-a905-8d4a7acada5f{stroke:#a1acb9;stroke-width:5px;}.abb1ef51-fb15-433b-9b62-56b6a66459fc{fill:url(#aec1b0de-cda9-4794-b54e-0646b39a8254);}.b1f83759-33f0-4935-9102-3a3db49db191{fill:none;}.a5d9aed6-3747-4d99-a32d-1e63a18d5783{fill:#ff0303;}</style><linearGradient id="aec1b0de-cda9-4794-b54e-0646b39a8254" x1="3.44" y1="91.31" x2="94.37" y2="91.31" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9fff9f"/><stop offset="0.09" stop-color="#35ed35"/><stop offset="0.5" stop-color="#35ed35"/><stop offset="1" stop-color="#005a00"/></linearGradient></defs><g id="a4398f5a-07ca-4446-b981-c35692c98d83" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M32,37.91V17.49" transform="translate(-0.71 0)"/></g><g id="eaf74622-baaa-483c-9ed2-63cdc397a995" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M34.17,8.06H26.39c-.67,0-1.13-.56-1.11-2.23" transform="translate(-0.71 0)"/></g><g id="a271b15f-48ee-4b73-bb62-9df86d4135d6" data-name="s8SYpRxWPAIU3cJdedely"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M72,4.72c0-.69-.06-2.23-1.12-2.22H26.39c-.67,0-1.13.56-1.11,2.22" transform="translate(-0.71 0)"/></g><g id="bf8c07bb-b55d-4e1e-b989-03470372f2dd" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M63.07,8.06h7.78c.68,0,1.14-.56,1.12-2.23" transform="translate(-0.71 0)"/></g><g id="e5f9eb54-a98f-48a2-bb0a-144b389e998c" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M25.28,4.42V6.19" transform="translate(-0.71 0)"/></g><g id="bb061e6e-2921-454b-a5ac-c8c6ea1db79d" data-name="dlFIQRIEBrFAhFefXz443"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M72,4.32V6.19" transform="translate(-0.71 0)"/></g><g id="b8d3bc7d-679c-4279-ac2e-1cbba681c238" data-name="P XejN-1qaYsxss16zLwI"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M65.3,37.89V18.06" transform="translate(-0.71 0)"/></g><g id="a8195ab4-14f2-4ae2-aad2-dfd666ebd88a" data-name="lTDpCcKC40D5A8sL1xawP"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M33.06,8.06H64.18" transform="translate(-0.71 0)"/></g><g id="b7392cc2-2188-4099-81e6-3bd9e9d439c5" data-name="T608tfJHVr4WVAKU9iJc1"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M33.89,17.19H26.11c-.67,0-1.13-.56-1.11-2.22" transform="translate(-0.71 0)"/></g><g id="edb5248d-b39b-45c1-a6cb-6b182e87952f" data-name="i2taEIgYasyF9QUqWHkoE"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M71.69,13.86c0-.7,0-2.24-1.11-2.23s-41.53,0-44.47,0c-.67,0-1.13.56-1.11,2.23" transform="translate(-0.71 0)"/></g><g id="b8138fce-191f-4ffc-b78e-8b8b910ca7ec" data-name="NmFf8K6tpBGHJF2c Ciq "><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M62.8,17.19h7.78c.67,0,1.13-.56,1.11-2.22" transform="translate(-0.71 0)"/></g><g id="e590c8df-df24-40d7-9d41-7c1c2de95433" data-name="uddyYndm51nNd3PysMtf1"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M25,13.55v1.77" transform="translate(-0.71 0)"/></g><g id="a6a8e158-2dce-40e7-bef8-64d06c7ab417" data-name="neZDGihypJmerEl uYifO"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M27.78,8v2.93" transform="translate(-0.71 0)"/></g><g id="b0aa136a-1f68-40b2-bab1-9ceff193b246" data-name="s 8OH4jhcNKJd47vSWA8A"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M68.63,8.61v2.93" transform="translate(-0.71 0)"/></g><g id="eb864431-56c0-4203-a047-9c0075d4b561" data-name="DCAivGtc0hmVc-qZseLuG"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M71.69,13.45v1.87" transform="translate(-0.71 0)"/></g><g id="e02e3948-0808-40c5-9507-a6b858f6f4f4" data-name="QSyN0JoNGEdJp41vkXrTn"><path class="ee45fef3-4226-4d12-a905-8d4a7acada5f" d="M32.78,17.19H63.91" transform="translate(-0.71 0)"/></g><path class="abb1ef51-fb15-433b-9b62-56b6a66459fc" d="M21.69,60.57l-14,30.89L3.44,102.67l.2,7.73,4.19,7.75,8.89,4.23L82.9,122l8.78-6,2.69-9.94V98.2l-19.1-38Z" transform="translate(-0.71 0)"/><g id="b2accf0b-5ebd-4ecc-aadf-c733db042338" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="b1f83759-33f0-4935-9102-3a3db49db191" d="M32.3,36.43s-26,58-27.47,61a22.12,22.12,0,0,0,0,16.61c2.74,6.24,11,8.31,11,8.31H81.76s8.24-2.07,11-8.31a22.17,22.17,0,0,0,0-16.61c-1.48-3.06-27.48-61-27.48-61" transform="translate(-0.71 0)"/></g><path class="a5d9aed6-3747-4d99-a32d-1e63a18d5783" d="M100.56,87.52v-3c.08-.67.15-1.33.24-2a25.79,25.79,0,0,1,21.09-21.89c1-.18,2-.22,2.94-.39h3a3.86,3.86,0,0,0,.49.09,20.82,20.82,0,0,1,2.84.37A25.76,25.76,0,0,1,152,88.55a24.45,24.45,0,0,1-6.21,14.39,25.21,25.21,0,0,1-21.95,8.7,24.52,24.52,0,0,1-14.36-6.17A25.33,25.33,0,0,1,101,90.4C100.77,89.44,100.74,88.47,100.56,87.52Zm8.5,8.69.33-.31q13.41-13.43,26.84-26.84c.3-.29.26-.38-.09-.57a20,20,0,0,0-8-2.45,19.08,19.08,0,0,0-13.35,3.59C108.24,74.44,105.52,81,106.52,89A18.7,18.7,0,0,0,109.06,96.21Zm7.32,7.19a20,20,0,0,0,27.34-27.33Z" transform="translate(-0.71 0)"/></svg>`;
+                        break;
+                    case 21: //Autorizado
+                        svgContent = `<svg id="a0a2b48f-e47a-49fa-b3e6-0d3004a2d0c7" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 151.08 124.88"><defs><style>.af8541c2-5850-4ad3-98ad-5209b50fb99f{fill:#fff;fill-opacity:0;}.a67f898c-1fc2-4159-9666-967319be3713,.af8541c2-5850-4ad3-98ad-5209b50fb99f{stroke:#a1acb9;stroke-width:5px;}.b8fdeff4-9a22-4002-a1f3-f4f7edaa233d{fill:url(#bf18ff92-cb46-434c-b152-c095a564daf2);}.a67f898c-1fc2-4159-9666-967319be3713{fill:none;}.a343e160-cff3-40b6-b17b-da906757b428{fill:url(#b759bccb-9cc4-4b0f-8396-f03925915a32);}</style><linearGradient id="bf18ff92-cb46-434c-b152-c095a564daf2" x1="3.44" y1="80.13" x2="94.37" y2="80.13" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9fff9f"/><stop offset="0.09" stop-color="#35ed35"/><stop offset="0.5" stop-color="#35ed35"/><stop offset="1" stop-color="#005a00"/></linearGradient><linearGradient id="b759bccb-9cc4-4b0f-8396-f03925915a32" x1="102.03" y1="82.14" x2="151.79" y2="82.14" xlink:href="#bf18ff92-cb46-434c-b152-c095a564daf2"/></defs><g id="addafb2f-eda9-49d8-8c7b-4ae93b58ca71" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M32,37.91V17.49" transform="translate(-0.71 0)"/></g><g id="a73ee0b8-796c-4bef-8863-6846acaa5c17" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M34.17,8.06H26.39c-.67,0-1.13-.56-1.11-2.23" transform="translate(-0.71 0)"/></g><g id="a2a5008f-1da8-42da-a1f1-700959bf1fb5" data-name="s8SYpRxWPAIU3cJdedely"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M72,4.72c0-.69-.06-2.23-1.12-2.22H26.39c-.67,0-1.13.56-1.11,2.22" transform="translate(-0.71 0)"/></g><g id="bfb3edfc-638d-4fbb-a33a-022fb9a770a5" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M63.07,8.06h7.78c.68,0,1.14-.56,1.12-2.23" transform="translate(-0.71 0)"/></g><g id="b1ec8138-5bbc-4f0c-834d-32394eaea3c9" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M25.28,4.42V6.19" transform="translate(-0.71 0)"/></g><g id="a5a924cc-d800-4128-83fd-8c26029ec6a5" data-name="dlFIQRIEBrFAhFefXz443"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M72,4.32V6.19" transform="translate(-0.71 0)"/></g><g id="b60e9d92-255a-49a1-90ad-51b19bbb7e5d" data-name="P XejN-1qaYsxss16zLwI"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M65.3,37.89V18.06" transform="translate(-0.71 0)"/></g><g id="b66925dd-64b4-4905-ad99-34fddf725bb1" data-name="lTDpCcKC40D5A8sL1xawP"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M33.06,8.06H64.18" transform="translate(-0.71 0)"/></g><g id="a3305c91-5ba7-434c-a8c1-b398a313bc9e" data-name="T608tfJHVr4WVAKU9iJc1"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M33.89,17.19H26.11c-.67,0-1.13-.56-1.11-2.22" transform="translate(-0.71 0)"/></g><g id="e19d0a55-d1ff-474d-9114-2b1d8865a761" data-name="i2taEIgYasyF9QUqWHkoE"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M71.69,13.86c0-.7,0-2.24-1.11-2.23s-41.53,0-44.47,0c-.67,0-1.13.56-1.11,2.23" transform="translate(-0.71 0)"/></g><g id="b26735c7-b1e9-42fc-8759-31502fa4225f" data-name="NmFf8K6tpBGHJF2c Ciq "><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M62.8,17.19h7.78c.67,0,1.13-.56,1.11-2.22" transform="translate(-0.71 0)"/></g><g id="f513672b-2f0d-41e9-9ab9-c1961b9b52e2" data-name="uddyYndm51nNd3PysMtf1"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M25,13.55v1.77" transform="translate(-0.71 0)"/></g><g id="a6e3db7e-142f-48eb-a38a-5040459b94e4" data-name="neZDGihypJmerEl uYifO"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M27.78,8v2.93" transform="translate(-0.71 0)"/></g><g id="f05c36c3-3a40-4347-ba60-56430a378105" data-name="s 8OH4jhcNKJd47vSWA8A"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M68.63,8.61v2.93" transform="translate(-0.71 0)"/></g><g id="be213aad-1d12-459a-beb7-63c6eb0fb459" data-name="DCAivGtc0hmVc-qZseLuG"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M71.69,13.45v1.87" transform="translate(-0.71 0)"/></g><g id="b912d4d3-c15a-49a0-8245-6a205f04bfca" data-name="QSyN0JoNGEdJp41vkXrTn"><path class="af8541c2-5850-4ad3-98ad-5209b50fb99f" d="M32.78,17.19H63.91" transform="translate(-0.71 0)"/></g><path class="b8fdeff4-9a22-4002-a1f3-f4f7edaa233d" d="M32,37.91,7.68,91.46,3.44,102.67l.2,7.73,4.19,7.75,8.89,4.23L82.9,122l8.78-6,2.69-9.94V98.2L65.3,37.89Z" transform="translate(-0.71 0)"/><g id="abb46fb2-f7d1-46fe-802b-1d61b310ac46" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="a67f898c-1fc2-4159-9666-967319be3713" d="M32.3,36.43s-26,58-27.47,61a22.12,22.12,0,0,0,0,16.61c2.74,6.24,11,8.31,11,8.31H81.76s8.24-2.07,11-8.31a22.17,22.17,0,0,0,0-16.61c-1.48-3.06-27.48-61-27.48-61" transform="translate(-0.71 0)"/></g><path class="a343e160-cff3-40b6-b17b-da906757b428" d="M107.32,81.26a2.77,2.77,0,0,1,1.71.8c1.71,1.4,3.41,2.82,5.12,4.24s3.56,2.94,5.32,4.44c.39.33.59.27.91-.12q11.43-14.15,22.9-28.28c.15-.18.31-.36.48-.53a2,2,0,0,1,2.93-.28c1.05.76,2.05,1.6,3.07,2.41.36.29.72.57,1.06.88a2.05,2.05,0,0,1,.34,3.22c-.72.94-1.51,1.84-2.27,2.75L131,92.12l-8.17,9.72c-1.54,1.82-2.32,1.9-4.17.37L103.36,89.6l-.16-.15c-1.45-1.29-1.54-2.12-.35-3.67.91-1.2,1.82-2.39,2.76-3.56A2.12,2.12,0,0,1,107.32,81.26Z" transform="translate(-0.71 0)"/></svg>`;
+                        break;
+                    case 23: //Rejected
+                        svgContent = `<svg id="a22833e4-ac73-441c-80a7-74ed71416248" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 146.15 124.88"><defs><style>.b5165154-0edd-4224-be22-cf55f4910dbd{fill:#fff;fill-opacity:0;}.a54f92ce-8460-4739-8c58-421b4a98902d,.b5165154-0edd-4224-be22-cf55f4910dbd{stroke:#a1acb9;stroke-width:5px;}.fc9604e2-2962-4768-89f9-9a9c55f1e15c{fill:url(#a9400144-8518-4f44-ac24-faa9c3a46f75);}.a54f92ce-8460-4739-8c58-421b4a98902d{fill:none;}.af6e874f-f167-48cb-982d-3770b4b67cd8{fill:#f90000;}</style><linearGradient id="a9400144-8518-4f44-ac24-faa9c3a46f75" x1="3.44" y1="80.13" x2="94.37" y2="80.13" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9fff9f"/><stop offset="0.09" stop-color="#35ed35"/><stop offset="0.5" stop-color="#35ed35"/><stop offset="1" stop-color="#005a00"/></linearGradient></defs><g id="ba1db980-e864-4fd1-9e6f-264b360b574f" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M32,37.91V17.49" transform="translate(-0.71 0)"/></g><g id="a4dff37c-ffa4-4278-978c-a85c7e692467" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M34.17,8.06H26.39c-.67,0-1.13-.56-1.11-2.23" transform="translate(-0.71 0)"/></g><g id="fb09c9a3-d2c2-4756-983b-2b3a24aa1d79" data-name="s8SYpRxWPAIU3cJdedely"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M72,4.72c0-.69-.06-2.23-1.12-2.22H26.39c-.67,0-1.13.56-1.11,2.22" transform="translate(-0.71 0)"/></g><g id="b1fd9d0e-2fd6-4ab3-845a-1446159b42dd" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M63.07,8.06h7.78c.68,0,1.14-.56,1.12-2.23" transform="translate(-0.71 0)"/></g><g id="ad437235-48da-47de-aa4a-0c9f0194077a" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M25.28,4.42V6.19" transform="translate(-0.71 0)"/></g><g id="fae0a3b8-64dd-4074-a168-813a972407c8" data-name="dlFIQRIEBrFAhFefXz443"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M72,4.32V6.19" transform="translate(-0.71 0)"/></g><g id="f7e8bac8-5b8e-40d2-a858-a93250e3d2b2" data-name="P XejN-1qaYsxss16zLwI"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M65.3,37.89V18.06" transform="translate(-0.71 0)"/></g><g id="a03d1378-206a-4bf5-9808-b0187ab6efdd" data-name="lTDpCcKC40D5A8sL1xawP"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M33.06,8.06H64.18" transform="translate(-0.71 0)"/></g><g id="b909c32f-c5ee-4c12-af35-60366e54de5b" data-name="T608tfJHVr4WVAKU9iJc1"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M33.89,17.19H26.11c-.67,0-1.13-.56-1.11-2.22" transform="translate(-0.71 0)"/></g><g id="a957205b-4792-42e0-b165-63dcecc04fee" data-name="i2taEIgYasyF9QUqWHkoE"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M71.69,13.86c0-.7,0-2.24-1.11-2.23s-41.53,0-44.47,0c-.67,0-1.13.56-1.11,2.23" transform="translate(-0.71 0)"/></g><g id="fddcbcaf-6ecf-492c-9eaa-aa2f734abccf" data-name="NmFf8K6tpBGHJF2c Ciq "><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M62.8,17.19h7.78c.67,0,1.13-.56,1.11-2.22" transform="translate(-0.71 0)"/></g><g id="f17b5f6c-a2f7-4172-a199-29c633ba57ec" data-name="uddyYndm51nNd3PysMtf1"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M25,13.55v1.77" transform="translate(-0.71 0)"/></g><g id="b6a819b9-3e82-4813-90cf-8b33eb79024b" data-name="neZDGihypJmerEl uYifO"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M27.78,8v2.93" transform="translate(-0.71 0)"/></g><g id="bfcde899-e18a-415a-b88a-f8f2952b424e" data-name="s 8OH4jhcNKJd47vSWA8A"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M68.63,8.61v2.93" transform="translate(-0.71 0)"/></g><g id="b1236029-ee4f-43e9-afb8-50e561e7780a" data-name="DCAivGtc0hmVc-qZseLuG"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M71.69,13.45v1.87" transform="translate(-0.71 0)"/></g><g id="ff98d8b6-abb4-4886-8c08-8f7d72c5075c" data-name="QSyN0JoNGEdJp41vkXrTn"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M32.78,17.19H63.91" transform="translate(-0.71 0)"/></g><path class="fc9604e2-2962-4768-89f9-9a9c55f1e15c" d="M32,37.91,7.68,91.46,3.44,102.67l.2,7.73,4.19,7.75,8.89,4.23L82.9,122l8.78-6,2.69-9.94V98.2L65.3,37.89Z" transform="translate(-0.71 0)"/><g id="a497ae3d-9c50-4bc7-a6f0-d17f6a35a398" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="a54f92ce-8460-4739-8c58-421b4a98902d" d="M32.3,36.43s-26,58-27.47,61a22.12,22.12,0,0,0,0,16.61c2.74,6.24,11,8.31,11,8.31H81.76s8.24-2.07,11-8.31a22.17,22.17,0,0,0,0-16.61c-1.48-3.06-27.48-61-27.48-61" transform="translate(-0.71 0)"/></g><path class="af6e874f-f167-48cb-982d-3770b4b67cd8" d="M103.59,98.64a3.59,3.59,0,0,1,1.15-2.48q7.7-7.66,15.36-15.35c.68-.68.68-.68,0-1.37L104.73,64.08a3.15,3.15,0,1,1,4.09-4.79c.24.2.45.43.67.65q7.59,7.57,15.15,15.16c.46.47.71.48,1.18,0q7.71-7.76,15.45-15.47a3.18,3.18,0,0,1,3-1.06,3.14,3.14,0,0,1,1.77,5.13c-.19.22-.4.42-.6.62l-15.1,15.1c-.7.7-.7.7,0,1.43l15.31,15.3a3.2,3.2,0,0,1,1.05,3.12,3.14,3.14,0,0,1-5.05,1.77c-.24-.2-.46-.43-.68-.65q-7.59-7.61-15.19-15.21c-.48-.49-.75-.5-1.24,0-5.11,5.15-10.26,10.28-15.39,15.42a3.18,3.18,0,0,1-5.63-2Z" transform="translate(-0.71 0)"/></svg>`;
+                        break;
+                }
 
 
-        if (selectedIds.length === 0) {
-            alert("No hay elementos seleccionados.");
-            return;
-        }
-        console.log("Selected IDs:", selectedIds);
-
-        $.ajax({
-            url: '@Url.Action("PutStatus5", "Muestras")',
-            method: "PUT",
-            data: {
-                muestras: selectedIds
-            },
-            success: function (result) {
-                // Procesar la respuesta si es necesario
-                DevExpress.ui.notify('Datos enviados correctamente', 'success', 6000);
-                setTimeout(function () {
-                    location.reload();
-                }, 3000);
-            },
-            error: function (error) {
-                DevExpress.ui.notify('Error al enviar los datos', 'error', 6000);
-                console.error("Error al enviar los datos:", error);
+                idSampleCell.innerHTML = svgContent;
             }
-        });
+        }
+    }
+
+    function onCellPrepared2(e) {
+        //console.log(e.column.dataField);
+
+        if (e.rowType === "data" && e.column.dataField === "IdResult") {
+            var cellElement = e.cellElement.get(0);
+            var idResultCell = cellElement.querySelector('.id-result-cell');
+
+            if (idResultCell) {
+                var ResultNumber;
+                if (e.rowType === "data" && e.data) {
+                    for (var key in e.data) {
+                        if (e.data.hasOwnProperty(key) && key == "ResultNumber") {
+                            console.log(key + ": " + e.data[key]);
+                            ResultNumber = e.data[key]
+                        }
+                    }
+                }
+                if (e.rowType === "data" && e.data.IdResult) {
+                    for (var key in e.data) {
+                        if (e.data.hasOwnProperty(key)) {
+                            console.log(key + ": " + e.data[key]);
+
+                        }
+                    }
+                }
+
+                console.log("---------------------");
+                var svgContent;
 
 
 
+                if (ResultNumber == null) {
+                    svgContent = `<svg id="b411fe2c-e2ee-438a-bf94-dfc405888c9e" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 89 230.01" width="20" height="20" ><defs><style>.ff4e38b9-592c-4e5e-bf82-83b33dbda194,.ffe4b7c7-aa8a-4913-81cc-3f84f262c946{fill:#fff;stroke:#a1acb9;stroke-width:5px;}.ff4e38b9-592c-4e5e-bf82-83b33dbda194{fill-opacity:0;}</style></defs><g id="b6b64c8c-aa32-4ce0-8a8e-2869566c725b" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="ffe4b7c7-aa8a-4913-81cc-3f84f262c946" d="M16,39V204s.8,5.9,3.32,10,3,4.3,6.66,7.4a34.66,34.66,0,0,0,8.36,5A27,27,0,0,0,46,229c7.16.1,6.55-.3,11.59-2.4A30.76,30.76,0,0,0,66,221.4a29.66,29.66,0,0,0,6.86-7.4A29.53,29.53,0,0,0,76,204V39" transform="translate(-1.5 -1.5)"/></g><g id="b0722508-783b-4248-9bb6-d86a669b123b" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M16,40V14" transform="translate(-1.5 -1.5)"/></g><g id="ffc1decb-4c92-4f1f-95eb-9ed566477cbb" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M20,14H6c-1.2,0-2-1-2-4" transform="translate(-1.5 -1.5)"/></g><g id="ad3720b1-01ac-4d50-af9d-c7d618f742df" data-name="s8SYpRxWPAIU3cJdedely"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M88,8c0-1.3-.1-4-2-4H6C4.8,4,4,5,4,8" transform="translate(-1.5 -1.5)"/></g><g id="b17dc103-b6e0-4ec2-adf0-08bcbb99902f" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M72,14H86c1.2,0,2-1,2-4" transform="translate(-1.5 -1.5)"/></g><g id="fa60f703-75a6-48d4-8bfa-dae4103871ff" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M4,7.45v3.2" transform="translate(-1.5 -1.5)"/></g><g id="bed67355-cd20-456c-8540-0880e8ac5a97" data-name="dlFIQRIEBrFAhFefXz443"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M88,7.25v3.4" transform="translate(-1.5 -1.5)"/></g><g id="b08f8eb8-f05c-42b2-aea9-cef15351ebbc" data-name="P XejN-1qaYsxss16zLwI"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M76,40V14" transform="translate(-1.5 -1.5)"/></g><g id="b9ff1b84-aea2-4b4f-917b-959de109d52b" data-name="lTDpCcKC40D5A8sL1xawP"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M18,14H74" transform="translate(-1.5 -1.5)"/></g></svg>`;
+
+                }
+                else {
+                    svgContent = `<svg id="e079148b-6b87-439d-8740-1f3cc0a6e669" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 89 230" width="20" height="20"><defs><style>.a2204117-cd42-4ad0-9ad4-491c103bb244,.e406fb6e-4b59-444b-80a0-27d3da05e21a{stroke:#a1acb9;stroke-width:5px;}.e406fb6e-4b59-444b-80a0-27d3da05e21a{fill:url(#ed1961e3-0b45-4a30-90e3-05078b4dcf08);}.a2204117-cd42-4ad0-9ad4-491c103bb244{fill:#fff;fill-opacity:0;}</style><linearGradient id="ed1961e3-0b45-4a30-90e3-05078b4dcf08" x1="-3.26" y1="2341" x2="52.31" y2="2341" gradientTransform="translate(20.24 -2207) scale(1.01 1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9dff9d"/><stop offset="0.23" stop-color="#35ed35"/><stop offset="0.5" stop-color="#35ed35"/><stop offset="1" stop-color="#005a00"/></linearGradient></defs><g id="eb97f46e-1eed-40b5-8e3a-329e96438633" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="e406fb6e-4b59-444b-80a0-27d3da05e21a" d="M16,39V204s.8,5.92,3.3,10,3.07,4.3,6.7,7.39a34.32,34.32,0,0,0,8.38,5A25.48,25.48,0,0,0,46,229c7.13.06,6.6-.31,11.6-2.4a31.51,31.51,0,0,0,8.4-5.24A29.67,29.67,0,0,0,72.81,214,29.47,29.47,0,0,0,76,204V39" transform="translate(-1.5 -1.5)"/></g><g id="b91a1d89-4dd7-4f5f-9f70-867de14e7d00" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M16,40V14" transform="translate(-1.5 -1.5)"/></g><g id="e812cd70-46e4-49a1-a65c-cc7282c93866" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M20,14H6c-1.21,0-2-1-2-4" transform="translate(-1.5 -1.5)"/></g><g id="b6f42584-b2fd-48db-8771-02f57538a381" data-name="s8SYpRxWPAIU3cJdedely"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M88,8c0-1.26-.1-4-2-4S11.29,4,6,4C4.79,4,4,5,4,8" transform="translate(-1.5 -1.5)"/></g><g id="fcdcb636-016a-4f00-a3a7-8a61bdaada5f" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M72,14H86c1.21,0,2-1,2-4" transform="translate(-1.5 -1.5)"/></g><g id="b6be217f-7e51-44f9-8cd0-5f753f9c9fa4" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M4,7.45v3.19" transform="translate(-1.5 -1.5)"/></g><g id="e284799c-4033-4992-bfdc-62a96ce3fb03" data-name="dlFIQRIEBrFAhFefXz443"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M88,7.27v3.37" transform="translate(-1.5 -1.5)"/></g><g id="fcff838a-cb1c-4ba6-aff3-f39409937b5e" data-name="P XejN-1qaYsxss16zLwI"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M76,40V14" transform="translate(-1.5 -1.5)"/></g><g id="a9ba1b2a-6f14-45ad-9e42-3de69b1356b4" data-name="lTDpCcKC40D5A8sL1xawP"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M18,14H74" transform="translate(-1.5 -1.5)"/></g></svg>`;
+
+                }
+
+
+                idResultCell.innerHTML = svgContent;
+            }
+        }
     }
 </script>

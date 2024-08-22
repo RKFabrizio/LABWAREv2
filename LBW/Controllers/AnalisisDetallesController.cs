@@ -22,9 +22,9 @@ namespace LBW.Controllers
         public AnalisisDetallesController(LbwContext context) {
             _context = context;
         }
-
         [HttpGet]
-        public async Task<IActionResult> Get(DataSourceLoadOptions loadOptions) {
+        public async Task<IActionResult> Get(DataSourceLoadOptions loadOptions)
+        {
             var analisisdetalles = _context.AnalisisDetalles.Select(i => new {
                 i.IdComp,
                 i.IdAnalisis,
@@ -39,16 +39,45 @@ namespace LBW.Controllers
                 i.ClampLow,
                 i.ClampHigh
             });
-
             // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
             // This can make SQL execution plans more efficient.
             // For more detailed information, please refer to this discussion: https://github.com/DevExpress/DevExtreme.AspNet.Data/issues/336.
             // loadOptions.PrimaryKey = new[] { "IdComp" };
             // loadOptions.PaginateViaPrimaryKey = true;
-
             return Json(await DataSourceLoader.LoadAsync(analisisdetalles, loadOptions));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Get1(DataSourceLoadOptions loadOptions)
+        {
+            var analisisdetalles = await _context.AnalisisDetalles
+                .AsNoTracking()
+                .GroupBy(i => i.NameComponent)
+                .Select(g => new
+                {
+                    NameComponent = g.Key,
+                    Details = g.OrderByDescending(i => i.Version).FirstOrDefault()
+                })
+                .ToListAsync();
+
+            var result = analisisdetalles.Select(x => new
+            {
+                x.Details.IdComp,
+                x.Details.IdAnalisis,
+                x.Details.IdUnidad,
+                x.Details.NameComponent,
+                x.Details.Version,
+                x.Details.AnalisisData,
+                x.Details.Units,
+                x.Details.Minimun,
+                x.Details.Maximun,
+                x.Details.Reportable,
+                x.Details.ClampLow,
+                x.Details.ClampHigh
+            });
+
+            return Json(DataSourceLoader.Load(result, loadOptions));
+        }
         [HttpPost]
         public async Task<IActionResult> Post(string values) {
             var model = new AnalisisDetalle();

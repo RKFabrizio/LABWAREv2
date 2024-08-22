@@ -58,7 +58,7 @@ namespace LBW.Data
 
         public Usuario ValidarUsuario(string _usuario, string _password)
         {
-            Console.WriteLine("Pass 2 😍",_usuario);
+ 
             return ListaUsuario().Where(item => item.UsuarioID == _usuario && item.Password == _password).FirstOrDefault();
         }
 

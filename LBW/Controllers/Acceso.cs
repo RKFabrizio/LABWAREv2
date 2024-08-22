@@ -10,6 +10,8 @@ using System.Security.Claims;
 using LBW.Models.Entity;
 using Newtonsoft.Json;
 using Usuario = LBW.Models.Usuario;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
 
 namespace LBW.Controllers
 {
@@ -17,42 +19,53 @@ namespace LBW.Controllers
     {
 
         UsuarioDatos _UsuarioDatos = new UsuarioDatos();
+
+        private readonly LbwContext _context;
         public IActionResult Login()
         {
             return View();
         }
 
+        public Acceso(LbwContext context)
+        {
+            _context = context;
+        }
 
         [HttpPost]
         public async Task<IActionResult> Login(Usuario _usuario)
         {
-
-            var usuario = _UsuarioDatos.ValidarUsuario(_usuario.UsuarioID, _usuario.Password);
+            // Convertimos el UsuarioID ingresado a mayúsculas para comparación
+            var usuario = _UsuarioDatos.ValidarUsuario(_usuario.UsuarioID.ToUpper(), _usuario.Password);
 
             try
             {
                 if (usuario != null)
                 {
+                    if (usuario.UsuarioDeshabilitado == true)
+                    {
+                        TempData["Error"] = "El usuario ha sido deshabilitado.";
+                        return RedirectToAction("Login");
+                    }
+
                     var claims = new List<Claim>
-                        {
-                         new Claim(ClaimTypes.Name, usuario.NombreCompleto),
-                         new Claim("UsuarioID", usuario.UsuarioID),
-                         new Claim("CCliente", usuario.CCliente.ToString()),
-                         new Claim("IdRol", usuario.Roles[0]),
-                        };
+                    {
+                    new Claim(ClaimTypes.Name, usuario.NombreCompleto),
+                    new Claim("UsuarioID", usuario.UsuarioID),
+                    new Claim("CCliente", usuario.CCliente.ToString()),
+                    new Claim("IdRol", usuario.Roles[0]),
+                    };
 
                     foreach (string pos in usuario.Roles)
                     {
                         claims.Add(new Claim(ClaimTypes.Role, pos));
-                    };
-
+                    }
 
                     claims.Add(new Claim("UsuarioInfo", JsonConvert.SerializeObject(usuario)));
 
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsPrincipal));
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
 
                     var currentDateTime = DateTime.UtcNow;
                     var dateWithoutTime = new DateTime(currentDateTime.Year, currentDateTime.Month, currentDateTime.Day);
@@ -64,28 +77,21 @@ namespace LBW.Controllers
                     var cookieOptions = new CookieOptions() { IsEssential = true };
                     HttpContext.Response.Cookies.Append("UsuarioInfo", usuarioInfoJson, cookieOptions);
 
-                    
-
                     return RedirectToAction("Bienvenida", "Inicio");
+                }
+                else
+                {
+                    TempData["Error"] = "El usuario o la contraseña son incorrectos.";
+                    return RedirectToAction("Login");
                 }
             }
             catch (Exception ex)
             {
                 TempData["Error"] = "Error al iniciar sesión: " + ex.Message;
-                return View();
+                return RedirectToAction("Login");
             }
-            if (usuario == null)
-            {
-                TempData["Error"] = "No existe el usuario";
-            }
-
-            if (usuario.UsuarioDeshabilitado == true)
-            {
-                TempData["Error"] = "El usuario ha sido deshabilitado";
-            }
-
-            return View();
         }
+
 
         public async Task<IActionResult> Logout()
         {

@@ -38,18 +38,14 @@
     <div class="col">
         <!-- Page pre-title -->
         <div class="user-icon-container">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-cog" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-components" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-                <path d="M6 21v-2a4 4 0 0 1 4 -4h2.5" />
-                <path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                <path d="M19.001 15.5v1.5" />
-                <path d="M19.001 21v1.5" />
-                <path d="M22.032 17.25l-1.299 .75" />
-                <path d="M17.27 20l-1.3 .75" />
-                <path d="M15.97 17.25l1.3 .75" />
-                <path d="M20.733 20l1.3 .75" />
+                <path d="M3 12l3 3l3 -3l-3 -3z" />
+                <path d="M15 12l3 3l3 -3l-3 -3z" />
+                <path d="M9 6l3 3l3 -3l-3 -3z" />
+                <path d="M9 18l3 3l3 -3l-3 -3z" />
             </svg>
+ 
 
             <h2 class="page-title-home">
                 Gestionar Componentes
@@ -65,3 +61,81 @@
 
 }
 
+@(Html.DevExtreme().DataGrid<LBW.Models.Entity.AnalisisDetalle>()
+    .DataSource(ds => ds.Mvc()
+        .Controller("AnalisisDetalles")
+        .UpdateAction("Put")
+        .LoadAction("Get1")
+        .Key("IdComp")
+    )
+    .FilterRow(filterRow => filterRow
+        .Visible(true)
+        .ApplyFilter(GridApplyFilterMode.Auto)
+    )
+     .HeaderFilter(headerFilter => headerFilter.Visible(true).Width(400))
+    .Paging(paging => paging.PageSize(10))
+    .Pager(pager =>
+    {
+        pager.Visible(true);
+        pager.DisplayMode(GridPagerDisplayMode.Full);
+        pager.ShowPageSizeSelector(true);
+        pager.AllowedPageSizes(new JS("[5, 10, 'all']"));
+        pager.ShowInfo(true);
+        pager.ShowNavigationButtons(true);
+    })
+
+    .ShowBorders(true)
+    .RemoteOperations(true)
+    .Editing(e => e.Mode(GridEditMode.Popup)
+            .AllowUpdating(true)
+            .UseIcons(true)
+            .Popup(p => p
+                .Title("Gestionar Componentes")
+                .ShowTitle(true)
+                .Width(700)
+                .Height(425)
+            )
+            .Form(f => f.Items(items =>
+            {
+                items.AddGroup()
+                    .ColCount(2)
+                    .ColSpan(2)
+                    .Items(groupItems =>
+                    {
+                        groupItems.AddSimpleFor(m => m.IdAnalisis);
+                        groupItems.AddSimpleFor(m => m.IdUnidad);
+                        groupItems.AddSimpleFor(m => m.NameComponent);
+                        groupItems.AddSimpleFor(m => m.Reportable);
+                        groupItems.AddSimpleFor(m => m.ClampLow);
+                        groupItems.AddSimpleFor(m => m.ClampHigh);
+                         
+                    });
+
+
+            }))
+        )
+    .Columns(columns => {
+
+        columns.AddFor(m => m.IdAnalisis).Lookup(lookup => lookup
+            .DataSource(ds => ds.WebApi().Controller("AnalisisDetalles").LoadAction("AnalisissLookup").Key("Value"))
+            .ValueExpr("Value")
+            .DisplayExpr("Text")
+        ).Caption("Análisis").AllowEditing(false);
+
+        columns.AddFor(m => m.IdUnidad).Lookup(lookup => lookup
+            .DataSource(ds => ds.WebApi().Controller("AnalisisDetalles").LoadAction("UnidadesLookup").Key("Value"))
+            .ValueExpr("Value")
+            .DisplayExpr("Text")
+        ).Caption("Unidad").AllowEditing(false);
+
+        columns.AddFor(m => m.NameComponent).Caption("Componente").AllowEditing(false);
+
+        columns.AddFor(m => m.Version).Caption("Versión");
+
+        columns.AddFor(m => m.Reportable);
+
+        columns.AddFor(m => m.ClampLow);
+
+        columns.AddFor(m => m.ClampHigh);
+    })
+)

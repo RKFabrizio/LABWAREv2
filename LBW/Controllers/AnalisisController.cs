@@ -48,6 +48,21 @@ namespace LBW.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetAnalisisPorMuestra(int idSample, DataSourceLoadOptions loadOptions)
+        {
+            var idAnalisisDistintos = await _context.Resultados
+                .Where(r => r.IdSample == idSample)
+                .Select(r => r.IdAnalysis)
+                .Distinct()
+                .ToListAsync();
+
+            var analisis = _context.Analisiss
+                .Where(a => idAnalisisDistintos.Contains(a.IdAnalisis));
+
+            return Json(await DataSourceLoader.LoadAsync(analisis, loadOptions));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Get1(DataSourceLoadOptions loadOptions)
         {
             var maxVersionQuery = _context.Analisiss

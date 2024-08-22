@@ -95,7 +95,7 @@ namespace LBW.Controllers
         public async Task<IActionResult> GetCliente(DataSourceLoadOptions loadOptions)
         {
             var proyectos = _context.Proyectos
-                .Where(p => _context.Muestras.Any(m => m.IdProject == p.IdProyecto) && p.Status == 24)
+                .Where(p => _context.Muestras.Any(m => m.IdProject == p.IdProyecto) && p.Status == 21)
                 .Select(i => new {
                     i.IdProyecto,
                     i.ID_TL,

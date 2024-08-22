@@ -38,7 +38,9 @@ namespace LBW.Models.Entity
         public int? Instrument {  get; set;}
         public int? Login {  get; set;}
         public bool? Auditoria { get; set; }
+        public int? IdLista { get; set; }
 
+        public virtual Lista IdListaNavigation { get; set; }
         public virtual Lista IdStatusNavigation { get; set; }
         public virtual Instrumento IdInstrumentNavigation { get; set; }
         public virtual Muestra IdMuestraNavigationR { get; set; }

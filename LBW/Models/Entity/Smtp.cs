@@ -9,5 +9,6 @@
         public string Usuario { get; set; }
         public string Contrasena { get; set; } 
         public string Body { get; set; }
+        public string Ip { get; set; }
     }
 }

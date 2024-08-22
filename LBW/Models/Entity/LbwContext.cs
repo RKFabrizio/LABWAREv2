@@ -89,7 +89,17 @@ namespace LBW.Models.Entity
                 entity.Property(e => e.Login)
                     .HasColumnName("LOGIN")
                     .IsRequired(false);
- 
+
+                entity.Property(e => e.IdLista)
+               .HasColumnName("ID_LISTA")
+               .IsRequired(false);
+
+                entity.HasOne(d => d.IdListaNavigation)
+                      .WithMany(p => p.AuditoriaResultados)
+                      .HasForeignKey(d => d.IdLista)
+                      .OnDelete(DeleteBehavior.ClientSetNull)
+                      .HasConstraintName("FK_RESULTADO_AUDITORIA_LISTA");
+
             });
 
 
@@ -1278,6 +1288,16 @@ namespace LBW.Models.Entity
                 .HasColumnName("LOGIN")
                 .IsRequired(false);
 
+                entity.Property(e => e.IdLista)
+                .HasColumnName("ID_LISTA")
+                .IsRequired(false);
+
+                entity.HasOne(d => d.IdListaNavigation)
+                      .WithMany(p => p.Resultados1)
+                      .HasForeignKey(d => d.IdLista)
+                      .OnDelete(DeleteBehavior.ClientSetNull)
+                      .HasConstraintName("FK_RESULTADO_RAZON_LISTA");
+
                 entity.HasOne(d => d.IdStatusNavigation)
                   .WithMany(p => p.Resultados)
                   .HasForeignKey(d => d.Status)
@@ -1353,6 +1373,9 @@ namespace LBW.Models.Entity
 
                 entity.Property(e => e.Usuario)
                     .HasColumnName("USUARIO");
+
+                entity.Property(e => e.Ip)
+                    .HasColumnName("IP");
 
                 entity.Property(e => e.Contrasena)
                     .HasColumnName("CONTRASENA");

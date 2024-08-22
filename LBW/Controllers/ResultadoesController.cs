@@ -40,7 +40,8 @@ namespace LBW.Controllers
                 i.Status,
                 i.Reportable,
                 i.ChangedOn,
-                i.Instrument
+                i.Instrument,
+                i.IdLista
             });
 
             // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
@@ -71,7 +72,8 @@ namespace LBW.Controllers
                 i.Status,
                 i.Reportable,
                 i.ChangedOn,
-                i.Instrument
+                i.Instrument,
+                i.IdLista
             });
 
             // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
@@ -271,6 +273,24 @@ namespace LBW.Controllers
         }
 
         [HttpPut]
+        public async Task<IActionResult> Put0(int key, string values)
+        {
+            var model = await _context.Resultados.FirstOrDefaultAsync(item => item.IdResult == key);
+            if (model == null)
+                return StatusCode(409, "Object not found");
+
+            var valuesDict = JsonConvert.DeserializeObject<IDictionary>(values);
+            PopulateModel(model, valuesDict);
+
+            if (!TryValidateModel(model))
+                return BadRequest(GetFullErrorMessage(ModelState));
+
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+
+        [HttpPut]
         public async Task<IActionResult> Put(int key, string values)
         {
             var model = await _context.Resultados.FirstOrDefaultAsync(item => item.IdResult == key);
@@ -290,7 +310,10 @@ namespace LBW.Controllers
             {
                 model.Status = 254; 
             }
- 
+            else if(model.ResultNumber != null && model.Status == 799)
+            {
+                model.Status = 799;
+            }
             else
             {
                 model.Status = 26;
@@ -322,16 +345,21 @@ namespace LBW.Controllers
 
             int idProject = muestra.IdProject.Value;
 
-            if (resultadosSinValor == 0)
+            if (muestra.Status == 799)
             {
-                // Todos los Resultados tienen un valor, actualizar el estado a 27
+                // No hacer nada si el estado es 799
+                return;
+            }
+            else if (resultadosSinValor == 0)
+            {
+                // Todos los Resultados tienen un valor, actualizar el estado a 24
                 muestra.Status = 24;
-
                 await _context.SaveChangesAsync();
                 await UpdateProyectoStatus(idProject);
             }
             else if (muestra.Status == 24)
             {
+                // Mantener el estado en 24 si ya estaba en 24
                 muestra.Status = 24;
             }
             else
@@ -392,6 +420,21 @@ namespace LBW.Controllers
                          };
             return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ListasLookup1(DataSourceLoadOptions loadOptions)
+        {
+            var lookup = from i in _context.Listas
+                         orderby i.IdLista
+                         where i.IdLista >= 28 && i.IdLista <= 32
+                         select new
+                         {
+                             Value = i.IdLista,
+                             Text = i.Value
+                         };
+            return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> InstrumentosLookup(DataSourceLoadOptions loadOptions) {
@@ -466,8 +509,9 @@ namespace LBW.Controllers
             string REPORTABLE = nameof(Resultado.Reportable);
             string CHANGED_ON = nameof(Resultado.ChangedOn);
             string INSTRUMENT = nameof(Resultado.Instrument);
+            string ID_LISTA = nameof(Resultado.IdLista);
 
-            if(values.Contains(ID_RESULT)) {
+            if (values.Contains(ID_RESULT)) {
                 model.IdResult = Convert.ToInt32(values[ID_RESULT]);
             }
 
@@ -519,7 +563,12 @@ namespace LBW.Controllers
                 model.Reportable = Convert.ToBoolean(values[REPORTABLE]);
             }
 
-            if(values.Contains(CHANGED_ON)) {
+            if (values.Contains(ID_LISTA))
+            {
+                model.IdLista = Convert.ToInt32(values[ID_LISTA]);
+            }
+
+            if (values.Contains(CHANGED_ON)) {
                 model.ChangedOn = values[CHANGED_ON] != null ? Convert.ToDateTime(values[CHANGED_ON]) : (DateTime?)null;
             }
 

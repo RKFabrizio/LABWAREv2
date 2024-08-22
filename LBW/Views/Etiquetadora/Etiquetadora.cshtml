@@ -1,10 +1,10 @@
 ﻿
 @{
-    ViewData["Title"] = "Autorizar";
+    ViewData["Title"] = "Etiquetadora";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
+ 
 <style>
     .user-icon-container {
         display: flex;
@@ -31,154 +31,109 @@
     .page-title-home {
         margin-top: 18px;
     }
- 
 
 </style>
 
 @section PagePreTitle {
 
-
-    <div id="sticky-title">
-        <div class="col">
-            <!-- Page pre-title -->
-            <div class="user-icon-container">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-like" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#A79A66" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M3 16m0 1a1 1 0 0 1 1 -1h1a1 1 0 0 1 1 1v3a1 1 0 0 1 -1 1h-1a1 1 0 0 1 -1 -1z" />
-                    <path d="M6 20a1 1 0 0 0 1 1h3.756a1 1 0 0 0 .958 -.713l1.2 -3c.09 -.303 .133 -.63 -.056 -.884c-.188 -.254 -.542 -.403 -.858 -.403h-2v-2.467a1.1 1.1 0 0 0 -2.015 -.61l-1.985 3.077v4z" />
-                    <path d="M14 3v4a1 1 0 0 0 1 1h4" />
-                    <path d="M5 12.1v-7.1a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2h-2.3" />
-                </svg>
-                <h2 class="page-title-home">
-                    Autorizar/Resultados
-                </h2>
-            </div>
+    <div class="col">
+        <!-- Page pre-title -->
+        <div class="user-icon-container">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-scan" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M4 7v-1a2 2 0 0 1 2 -2h2" />
+                <path d="M4 17v1a2 2 0 0 0 2 2h2" />
+                <path d="M16 4h2a2 2 0 0 1 2 2v1" />
+                <path d="M16 20h2a2 2 0 0 0 2 -2v-1" />
+                <path d="M5 12l14 0" />
+            </svg>
+            <h2 class="page-title-home">
+                Etiquetadora
+            </h2>
         </div>
     </div>
-
 }
-
-
-
-@section PageActions {
-
-
-}
-
-<div style="height:20px">
-
+<div style="height:30px;">
 </div>
 
-@(Html.DevExtreme().Button()
-            .Text("Autorizado")
-            .OnClick("updateStatusA")
-            )
+@Html.DevExtreme().Button().ID("PrintButton").Text("Imprimir Etiqueta").OnClick("printReport")
 
-@(Html.DevExtreme().Button()
-            .Text("Reprocesar")
-            .OnClick("updateStatusC")
-            )
- 
-
-
-<div style="height:30px">
+<div style="height:30px;">
 </div>
 
-@(Html.DevExtreme().DataGrid<LBW.Models.Entity.Proyecto>()
+@(Html.DevExtreme().DataGrid<LBW.Models.Entity.Muestra>()
+    .ID("gridContainer")
     .DataSource(ds => ds.Mvc()
-        .Controller("Proyectoes")
-        .LoadAction("GetProyecto")
-        .Key("IdProyecto")
+        .Controller("Muestras")
+        .LoadAction("GetSample")
+        .Key("IdSample")
+
     )
+    .DataSourceOptions(o => o.ReshapeOnPush(true))
+    .RepaintChangesOnly(true)
     .ShowBorders(true)
     .RemoteOperations(true)
-    .Columns(columns => {
+    .FilterRow(filterRow => filterRow
+        .Visible(true)
+        .ApplyFilter(GridApplyFilterMode.Auto)
+    )
+     .HeaderFilter(headerFilter => headerFilter.Visible(true).Width(400))
+    .Paging(paging => paging.PageSize(10))
+    .Pager(pager =>
+    {
+        pager.Visible(true);
+        pager.DisplayMode(GridPagerDisplayMode.Full);
+        pager.ShowPageSizeSelector(true);
+        pager.AllowedPageSizes(new JS("[5, 10, 'all']"));
+        pager.ShowInfo(true);
+        pager.ShowNavigationButtons(true);
+    })
+    .OnSelectionChanged("onSelectionChanged")
+    .Selection(s => s.Mode(SelectionMode.Single))
+    .Columns(columns =>
+    {
 
-        columns.AddFor(m => m.IdProyecto).Caption("").Width(40)
+        columns.AddFor(m => m.IdSample).Caption("").Width(40)
             .CellTemplate(@<text>
-    <svg id="b85b20e3-dab5-479e-af55-9db5513a104e" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248.4 179.68" width="20px" height="20px">
-        <defs>
-            <style>
-                .b2a62799-dfac-4166-a62d-67a24fe80fc7 {
-                    fill: #f7c53d;
-                }
-
-                .a30f54ed-8086-4fe4-9d08-ffe018ddc737 {
-                    fill: #fefefe;
-                }</style>
-        </defs>
-        <path class="b2a62799-dfac-4166-a62d-67a24fe80fc7" d="M159.51,201.32q-55.63,0-111.28,0a15.33,15.33,0,0,1-7.69-1.7,8.76,8.76,0,0,1-5-8.18q0-75,0-150c0-5.51,4.23-9.5,10.5-9.76a5.49,5.49,0,0,0,4.51-2.37,19.51,19.51,0,0,1,15.72-7.66q17.69,0,35.35,0a19.22,19.22,0,0,1,15.63,7.82,5.06,5.06,0,0,0,4.61,2.14q74.39-.06,148.77,0a18.48,18.48,0,0,1,5.48.55c5.21,1.58,7.79,4.9,7.79,10.34q0,73.62,0,147.24c0,7.24-4.26,11.51-11.64,11.56-8.81.06-17.62,0-26.44,0Z" transform="translate(-35.57 -21.66)" />
-        <path class="a30f54ed-8086-4fe4-9d08-ffe018ddc737" d="M83.78,45.87c-6,0-11.89-.12-17.83.05-3,.09-4.51-1.24-5.25-4a13.8,13.8,0,0,1-.32-5.78c.65-4.24,2-5.34,6.28-5.34h34.73c3.69,0,5,1.1,5.55,4.66a16.72,16.72,0,0,1,.07,5.19c-.61,4-1.89,5.2-6,5.21Z" transform="translate(-35.57 -21.66)" />
-    </svg>
-            </text>
+    <div class="id-sample-cell"></div>
+</text>
             );
 
-        columns.AddFor(m => m.Name).Caption("Proyecto");
-        columns.AddFor(m => m.DateCreated).Caption("Fecha")
+        columns.AddFor(m => m.TextID).Caption("Muestra");
+        columns.AddFor(m => m.Fecha).Caption("Fecha")
         .Format("dd/MM/yyyy")
         .SortOrder(SortOrder.Desc);
+
+        columns.AddFor(m => m.IdProject)
+                       .Lookup(lookup => lookup
+                       .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("ProyectosLookup").Key("Value"))
+                       .ValueExpr("Value")
+                       .DisplayExpr("Text")).GroupIndex(0).Caption("Proyecto").SortOrder(SortOrder.Desc);
+
+        columns.AddFor(m => m.LoginBy)
+               .Lookup(lookup => lookup
+               .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("Usuarios1Lookup").Key("Value"))
+               .ValueExpr("Value")
+               .DisplayExpr("Text")).Caption("Usuario");
+
     })
-          .FilterRow(f => f.Visible(true))
-           .MasterDetail(m => m
-                .Enabled(true)
-                .AutoExpandAll(false)
-                .Template(new TemplateName("gridContainer-details1"))
-                )
+    .OnCellPrepared("onCellPrepared")
+    .FilterRow(f => f.Visible(true))
+          .MasterDetail(m => m
+            .Enabled(true)
+            .AutoExpandAll(false)
+            .Template(new TemplateName("gridContainer-details1"))
+            )
 )
+
 
 
 @using (Html.DevExtreme().NamedTemplate("gridContainer-details1"))
 {
-    @(Html.DevExtreme().DataGrid<LBW.Models.Entity.Muestra>()
-        .DataSource(ds => ds.Mvc()
-            .Controller("Muestras")
-            .LoadAction("GetIdProjectA")
-            .LoadParams(new { id = new JS("data.IdProyecto") })
-            .Key("IdSample")
-        )
-        .Selection(s => s.Mode(SelectionMode.Multiple))
-        .OnSelectionChanged("onSelectionChanged")
-        .ShowBorders(true)
-        .RemoteOperations(true)
-                .Selection(s => s.Mode(SelectionMode.Multiple))
-                .RemoteOperations(true)
-                                .DataSourceOptions(o => o.ReshapeOnPush(true))
-                .RepaintChangesOnly(true)
-                .ColumnAutoWidth(true)
-
-        .Columns(columns =>
-        {
-
-            columns.AddFor(m => m.IdSample).Caption("").Width(40)
-                .CellTemplate(@<text>
-                    <div class="id-sample-cell"></div>
-                </text>
-                );
-
-            columns.AddFor(m => m.TextID).Caption("Muestra");
-            columns.AddFor(m => m.LoginDate).Caption("Fecha")
-                .Format("dd/MM/yyyy")
-            .SortOrder(SortOrder.Desc);
-            
-
-        })
- 
-            .OnCellPrepared("onCellPrepared")
-
-              .MasterDetail(m => m
-                .Enabled(true)
-                .AutoExpandAll(false)
-                .Template(new TemplateName("gridContainer-details2"))
-                )
-    )
-}
-
-@using (Html.DevExtreme().NamedTemplate("gridContainer-details2"))
-{
     @(Html.DevExtreme().DataGrid<LBW.Models.Entity.Resultado>()
         .DataSource(ds => ds.Mvc()
         .Controller("Resultadoes")
-        .LoadAction("GetIdSample")
+         .LoadAction("GetIdSample")
         .UpdateAction("Put")
         .LoadParams(new { id = new JS("data.IdSample") })
         .Key("IdResult")
@@ -191,9 +146,11 @@
         {
 
             columns.AddFor(m => m.IdResult).Caption("").Width(40)
-            .CellTemplate(@<text>
-            <div class="id-result-cell"></div>
-            </text>);
+                .CellTemplate(@<text>
+
+    <div class="id-result-cell"></div>
+</text>
+                    );
 
             columns.AddFor(m => m.IdAnalysis)
                 .Lookup(lookup => lookup
@@ -202,7 +159,7 @@
                 .DisplayExpr("Text")).GroupIndex(0).Caption("Análisis");
 
             columns.AddFor(m => m.NameComponent).Caption("Componente").AllowEditing(false);
-            columns.AddFor(m => m.ResultNumber).Caption("Valor");
+                columns.AddFor(m => m.ResultNumber).Caption("Valor").AllowEditing(false);
             columns.AddFor(m => m.IdUnidad).Lookup(lookup => lookup
                 .DataSource(ds => ds.WebApi().Controller("Resultadoes").LoadAction("UnidadesStringLookup").Key("Value"))
                 .ValueExpr("Value")
@@ -211,14 +168,11 @@
 
         })
             .OnCellPrepared("onCellPrepared2")
-@*             .OnRowUpdating("onRowUpdating") // Nuevo evento 
-            .OnRowUpdated("onRowUpdated") // Nuevo evento *@
             .ShowBorders(true)
- 
             .AllowColumnReordering(true)
             .RowAlternationEnabled(false)
             .ShowColumnLines(true)
-            .Grouping(g => g.AutoExpandAll(true))
+            .Grouping(g => g.AutoExpandAll(false))
             .ShowRowLines(true)
             .Paging(paging => paging.PageSize(20))
             .FilterRow(f => f.Visible(true))
@@ -232,26 +186,74 @@
             .Visible(true)
             .HighlightCaseSensitive(true)
             )
-          
+            .Editing(editing =>
+            {
+                editing.Mode(GridEditMode.Batch);
+                editing.AllowUpdating(true);
+                editing.SelectTextOnEditStart(true);
+                editing.StartEditAction(GridStartEditAction.Click);
+            })
+
             )
-} 
+}
+ 
 
-
-
+ 
 <script>
 
-    // function onRowUpdating(e) {
-    //     // Mostrar un indicador de carga o bloquear la interfaz de usuario
-    //     var grid = e.component;
-    //     grid.getDataSource().reload();
-    // }
+    function printReport() {
+        $.ajax({
+            url: '@Url.Action("PrintXtraReportToZebraPrinter", "Etiquetadora")',
+            method: "POST",
+            data: IdMuestra;
+            success: function (result) {
+                DevExpress.ui.notify('Datos enviados correctamente', 'success', 6000);
+            },
+            error: function (error) {
+                DevExpress.ui.notify('Error al enviar los datos', 'error', 6000);
+                console.error("Error al enviar los datos:", error);
+            }
+        });
+    }
 
-    // function onRowUpdated(e) {
-    //     // Recargar los datos del DataGrid principal de Muestras
-    //     var grid = e.component;
-    //     grid.getDataSource().reload();
-    // }
-    
+    var selected2Ids = [];
+    var selected21Ids = [];
+
+    function onSelectionChanged(e) {
+        selected2Ids = e.selectedRowKeys;
+        selected21Ids = e.selectedRowKeys;
+    }
+
+    function updateStatusC() {
+
+        if (selected2Ids.length === 0) {
+            alert("No hay elementos seleccionados.");
+            return;
+        }
+        console.log("Selected IDs:", selected2Ids);
+
+        $.ajax({
+            url: '@Url.Action("PutStatus2", "Muestras")',
+            method: "PUT",
+            data: {
+                muestras: selected2Ids
+            },
+            success: function (result) {
+                // Procesar la respuesta si es necesario
+                DevExpress.ui.notify('Datos enviados correctamente', 'success', 6000);
+                setTimeout(function () {
+                    location.reload();
+                }, 3000);
+            },
+            error: function (error) {
+                DevExpress.ui.notify('Error al enviar los datos', 'error', 6000);
+                console.error("Error al enviar los datos:", error);
+            }
+        });
+    }
+
+
+
     function onCellPrepared(e) {
         //console.log(e.column.dataField);
 
@@ -260,11 +262,26 @@
             var idSampleCell = cellElement.querySelector('.id-sample-cell');
 
             if (idSampleCell) {
+                var status;
+                if (e.rowType === "data" && e.data.IdSample) {
+                    for (var key in e.data) {
+                        if (e.data.hasOwnProperty(key) && key == "Status") {
+                            //console.log(key + ": " + e.data[key]);
+                            status = e.data[key]
+                        }
+                    }
+                }
+                if (e.rowType === "data" && e.data.IdSample) {
+                    for (var key in e.data) {
+                        if (e.data.hasOwnProperty(key)) {
+                            //console.log(key + ": " + e.data[key]);
 
-                var status = e.data.Status;
+                        }
+                    }
+                }
 
+                //console.log("---------------------");
                 var svgContent;
-
 
                 switch (status) {
                     case 254: //Unreceived
@@ -288,9 +305,6 @@
                     case 23: //Rejected
                         svgContent = `<svg id="a22833e4-ac73-441c-80a7-74ed71416248" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 146.15 124.88"><defs><style>.b5165154-0edd-4224-be22-cf55f4910dbd{fill:#fff;fill-opacity:0;}.a54f92ce-8460-4739-8c58-421b4a98902d,.b5165154-0edd-4224-be22-cf55f4910dbd{stroke:#a1acb9;stroke-width:5px;}.fc9604e2-2962-4768-89f9-9a9c55f1e15c{fill:url(#a9400144-8518-4f44-ac24-faa9c3a46f75);}.a54f92ce-8460-4739-8c58-421b4a98902d{fill:none;}.af6e874f-f167-48cb-982d-3770b4b67cd8{fill:#f90000;}</style><linearGradient id="a9400144-8518-4f44-ac24-faa9c3a46f75" x1="3.44" y1="80.13" x2="94.37" y2="80.13" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9fff9f"/><stop offset="0.09" stop-color="#35ed35"/><stop offset="0.5" stop-color="#35ed35"/><stop offset="1" stop-color="#005a00"/></linearGradient></defs><g id="ba1db980-e864-4fd1-9e6f-264b360b574f" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M32,37.91V17.49" transform="translate(-0.71 0)"/></g><g id="a4dff37c-ffa4-4278-978c-a85c7e692467" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M34.17,8.06H26.39c-.67,0-1.13-.56-1.11-2.23" transform="translate(-0.71 0)"/></g><g id="fb09c9a3-d2c2-4756-983b-2b3a24aa1d79" data-name="s8SYpRxWPAIU3cJdedely"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M72,4.72c0-.69-.06-2.23-1.12-2.22H26.39c-.67,0-1.13.56-1.11,2.22" transform="translate(-0.71 0)"/></g><g id="b1fd9d0e-2fd6-4ab3-845a-1446159b42dd" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M63.07,8.06h7.78c.68,0,1.14-.56,1.12-2.23" transform="translate(-0.71 0)"/></g><g id="ad437235-48da-47de-aa4a-0c9f0194077a" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M25.28,4.42V6.19" transform="translate(-0.71 0)"/></g><g id="fae0a3b8-64dd-4074-a168-813a972407c8" data-name="dlFIQRIEBrFAhFefXz443"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M72,4.32V6.19" transform="translate(-0.71 0)"/></g><g id="f7e8bac8-5b8e-40d2-a858-a93250e3d2b2" data-name="P XejN-1qaYsxss16zLwI"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M65.3,37.89V18.06" transform="translate(-0.71 0)"/></g><g id="a03d1378-206a-4bf5-9808-b0187ab6efdd" data-name="lTDpCcKC40D5A8sL1xawP"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M33.06,8.06H64.18" transform="translate(-0.71 0)"/></g><g id="b909c32f-c5ee-4c12-af35-60366e54de5b" data-name="T608tfJHVr4WVAKU9iJc1"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M33.89,17.19H26.11c-.67,0-1.13-.56-1.11-2.22" transform="translate(-0.71 0)"/></g><g id="a957205b-4792-42e0-b165-63dcecc04fee" data-name="i2taEIgYasyF9QUqWHkoE"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M71.69,13.86c0-.7,0-2.24-1.11-2.23s-41.53,0-44.47,0c-.67,0-1.13.56-1.11,2.23" transform="translate(-0.71 0)"/></g><g id="fddcbcaf-6ecf-492c-9eaa-aa2f734abccf" data-name="NmFf8K6tpBGHJF2c Ciq "><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M62.8,17.19h7.78c.67,0,1.13-.56,1.11-2.22" transform="translate(-0.71 0)"/></g><g id="f17b5f6c-a2f7-4172-a199-29c633ba57ec" data-name="uddyYndm51nNd3PysMtf1"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M25,13.55v1.77" transform="translate(-0.71 0)"/></g><g id="b6a819b9-3e82-4813-90cf-8b33eb79024b" data-name="neZDGihypJmerEl uYifO"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M27.78,8v2.93" transform="translate(-0.71 0)"/></g><g id="bfcde899-e18a-415a-b88a-f8f2952b424e" data-name="s 8OH4jhcNKJd47vSWA8A"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M68.63,8.61v2.93" transform="translate(-0.71 0)"/></g><g id="b1236029-ee4f-43e9-afb8-50e561e7780a" data-name="DCAivGtc0hmVc-qZseLuG"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M71.69,13.45v1.87" transform="translate(-0.71 0)"/></g><g id="ff98d8b6-abb4-4886-8c08-8f7d72c5075c" data-name="QSyN0JoNGEdJp41vkXrTn"><path class="b5165154-0edd-4224-be22-cf55f4910dbd" d="M32.78,17.19H63.91" transform="translate(-0.71 0)"/></g><path class="fc9604e2-2962-4768-89f9-9a9c55f1e15c" d="M32,37.91,7.68,91.46,3.44,102.67l.2,7.73,4.19,7.75,8.89,4.23L82.9,122l8.78-6,2.69-9.94V98.2L65.3,37.89Z" transform="translate(-0.71 0)"/><g id="a497ae3d-9c50-4bc7-a6f0-d17f6a35a398" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="a54f92ce-8460-4739-8c58-421b4a98902d" d="M32.3,36.43s-26,58-27.47,61a22.12,22.12,0,0,0,0,16.61c2.74,6.24,11,8.31,11,8.31H81.76s8.24-2.07,11-8.31a22.17,22.17,0,0,0,0-16.61c-1.48-3.06-27.48-61-27.48-61" transform="translate(-0.71 0)"/></g><path class="af6e874f-f167-48cb-982d-3770b4b67cd8" d="M103.59,98.64a3.59,3.59,0,0,1,1.15-2.48q7.7-7.66,15.36-15.35c.68-.68.68-.68,0-1.37L104.73,64.08a3.15,3.15,0,1,1,4.09-4.79c.24.2.45.43.67.65q7.59,7.57,15.15,15.16c.46.47.71.48,1.18,0q7.71-7.76,15.45-15.47a3.18,3.18,0,0,1,3-1.06,3.14,3.14,0,0,1,1.77,5.13c-.19.22-.4.42-.6.62l-15.1,15.1c-.7.7-.7.7,0,1.43l15.31,15.3a3.2,3.2,0,0,1,1.05,3.12,3.14,3.14,0,0,1-5.05,1.77c-.24-.2-.46-.43-.68-.65q-7.59-7.61-15.19-15.21c-.48-.49-.75-.5-1.24,0-5.11,5.15-10.26,10.28-15.39,15.42a3.18,3.18,0,0,1-5.63-2Z" transform="translate(-0.71 0)"/></svg>`;
                         break;
-                    default:
-                        svgContent = "N/A"; // Default content for undefined status
-                        break;
                 }
 
 
@@ -307,20 +321,32 @@
             var idResultCell = cellElement.querySelector('.id-result-cell');
 
             if (idResultCell) {
-                
-                var ResultNumber = e.data.ResultNumber;
-                var StatusResult = e.data.Status;
+                var ResultNumber;
+                if (e.rowType === "data" && e.data) {
+                    for (var key in e.data) {
+                        if (e.data.hasOwnProperty(key) && key == "ResultNumber") {
+                            console.log(key + ": " + e.data[key]);
+                            ResultNumber = e.data[key]
+                        }
+                    }
+                }
+                if (e.rowType === "data" && e.data.IdResult) {
+                    for (var key in e.data) {
+                        if (e.data.hasOwnProperty(key)) {
+                            console.log(key + ": " + e.data[key]);
 
+                        }
+                    }
+                }
+
+                console.log("---------------------");
                 var svgContent;
 
-            
 
-                if (StatusResult == 254) {
+
+                if (ResultNumber == null) {
                     svgContent = `<svg id="b411fe2c-e2ee-438a-bf94-dfc405888c9e" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 89 230.01" width="20" height="20" ><defs><style>.ff4e38b9-592c-4e5e-bf82-83b33dbda194,.ffe4b7c7-aa8a-4913-81cc-3f84f262c946{fill:#fff;stroke:#a1acb9;stroke-width:5px;}.ff4e38b9-592c-4e5e-bf82-83b33dbda194{fill-opacity:0;}</style></defs><g id="b6b64c8c-aa32-4ce0-8a8e-2869566c725b" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="ffe4b7c7-aa8a-4913-81cc-3f84f262c946" d="M16,39V204s.8,5.9,3.32,10,3,4.3,6.66,7.4a34.66,34.66,0,0,0,8.36,5A27,27,0,0,0,46,229c7.16.1,6.55-.3,11.59-2.4A30.76,30.76,0,0,0,66,221.4a29.66,29.66,0,0,0,6.86-7.4A29.53,29.53,0,0,0,76,204V39" transform="translate(-1.5 -1.5)"/></g><g id="b0722508-783b-4248-9bb6-d86a669b123b" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M16,40V14" transform="translate(-1.5 -1.5)"/></g><g id="ffc1decb-4c92-4f1f-95eb-9ed566477cbb" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M20,14H6c-1.2,0-2-1-2-4" transform="translate(-1.5 -1.5)"/></g><g id="ad3720b1-01ac-4d50-af9d-c7d618f742df" data-name="s8SYpRxWPAIU3cJdedely"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M88,8c0-1.3-.1-4-2-4H6C4.8,4,4,5,4,8" transform="translate(-1.5 -1.5)"/></g><g id="b17dc103-b6e0-4ec2-adf0-08bcbb99902f" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M72,14H86c1.2,0,2-1,2-4" transform="translate(-1.5 -1.5)"/></g><g id="fa60f703-75a6-48d4-8bfa-dae4103871ff" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M4,7.45v3.2" transform="translate(-1.5 -1.5)"/></g><g id="bed67355-cd20-456c-8540-0880e8ac5a97" data-name="dlFIQRIEBrFAhFefXz443"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M88,7.25v3.4" transform="translate(-1.5 -1.5)"/></g><g id="b08f8eb8-f05c-42b2-aea9-cef15351ebbc" data-name="P XejN-1qaYsxss16zLwI"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M76,40V14" transform="translate(-1.5 -1.5)"/></g><g id="b9ff1b84-aea2-4b4f-917b-959de109d52b" data-name="lTDpCcKC40D5A8sL1xawP"><path class="ff4e38b9-592c-4e5e-bf82-83b33dbda194" d="M18,14H74" transform="translate(-1.5 -1.5)"/></g></svg>`;
 
-                }
-                else if (StatusResult == 21) {
-                    svgContent = `<svg id="b8e62f41-4d98-4b98-8255-a42a05ac2fa6" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 189.42 230" width="20" height="20"><defs><style>.ad3e1ec2-3026-4535-9dde-fb0d15b34f44,.fadf7617-5db9-4447-868c-c9055fc46885{stroke:#a1acb9;stroke-width:5px;}.ad3e1ec2-3026-4535-9dde-fb0d15b34f44{fill:url(#aa30982e-6b5b-49df-b356-3266247ad9c2);}.fadf7617-5db9-4447-868c-c9055fc46885{fill:#fff;fill-opacity:0;}.bae6e0ea-e026-4670-893c-2d97a945fe5d{fill:url(#a8a7b597-6413-4873-88d4-aefe9d8a7a66);}</style><linearGradient id="aa30982e-6b5b-49df-b356-3266247ad9c2" x1="-3.26" y1="2341" x2="52.31" y2="2341" gradientTransform="translate(20.24 -2207) scale(1.01 1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9dff9d"/><stop offset="0.23" stop-color="#35ed35"/><stop offset="0.5" stop-color="#35ed35"/><stop offset="1" stop-color="#005a00"/></linearGradient><linearGradient id="a8a7b597-6413-4873-88d4-aefe9d8a7a66" x1="105.82" y1="90.48" x2="191.62" y2="90.48" gradientTransform="matrix(1, 0, 0, -1, -0.71, 234)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9fff9f"/><stop offset="0.09" stop-color="#35ed35"/><stop offset="0.5" stop-color="#35ed35"/><stop offset="1" stop-color="#005a00"/></linearGradient></defs><g id="f45d4171-8fee-49cf-bd52-b9229cb7cea5" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="ad3e1ec2-3026-4535-9dde-fb0d15b34f44" d="M16,39V204s.8,5.92,3.3,10,3.07,4.3,6.7,7.39a34.32,34.32,0,0,0,8.38,5A25.48,25.48,0,0,0,46,229c7.13.06,6.6-.31,11.6-2.4a31.51,31.51,0,0,0,8.4-5.24A29.67,29.67,0,0,0,72.81,214,29.47,29.47,0,0,0,76,204V39" transform="translate(-1.5 -1.5)"/></g><g id="a4ab2532-2787-4ec3-b30d-e3c758ba04e4" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="fadf7617-5db9-4447-868c-c9055fc46885" d="M16,40V14" transform="translate(-1.5 -1.5)"/></g><g id="b683a21a-1894-433e-bf4d-bdf7c8454e6c" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="fadf7617-5db9-4447-868c-c9055fc46885" d="M20,14H6c-1.21,0-2-1-2-4" transform="translate(-1.5 -1.5)"/></g><g id="b9ad909a-1d91-4633-87b9-da68ae8438de" data-name="s8SYpRxWPAIU3cJdedely"><path class="fadf7617-5db9-4447-868c-c9055fc46885" d="M88,8c0-1.26-.1-4-2-4S11.29,4,6,4C4.79,4,4,5,4,8" transform="translate(-1.5 -1.5)"/></g><g id="a2e3e2d2-7ddf-4163-8251-49313c612938" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="fadf7617-5db9-4447-868c-c9055fc46885" d="M72,14H86c1.21,0,2-1,2-4" transform="translate(-1.5 -1.5)"/></g><g id="be6e0c33-fcd5-43eb-a804-4e349fc66ad7" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="fadf7617-5db9-4447-868c-c9055fc46885" d="M4,7.45v3.19" transform="translate(-1.5 -1.5)"/></g><g id="bc21b653-1cca-4569-950e-cb20fbaa1368" data-name="dlFIQRIEBrFAhFefXz443"><path class="fadf7617-5db9-4447-868c-c9055fc46885" d="M88,7.27v3.37" transform="translate(-1.5 -1.5)"/></g><g id="b31946c8-1086-48dd-8f63-330665dcda84" data-name="P XejN-1qaYsxss16zLwI"><path class="fadf7617-5db9-4447-868c-c9055fc46885" d="M76,40V14" transform="translate(-1.5 -1.5)"/></g><g id="b9a6001c-9b6c-40f0-b1f2-ab111faaf001" data-name="lTDpCcKC40D5A8sL1xawP"><path class="fadf7617-5db9-4447-868c-c9055fc46885" d="M18,14H74" transform="translate(-1.5 -1.5)"/></g><path class="bae6e0ea-e026-4670-893c-2d97a945fe5d" d="M114.24,142a4.85,4.85,0,0,1,3,1.36q4.41,3.55,8.82,7.18c3,2.4,6.14,5,9.18,7.52.67.56,1,.46,1.57-.2q19.69-24,39.48-47.9c.26-.3.54-.61.83-.9a3.49,3.49,0,0,1,4.83-.65l.22.18c1.81,1.29,3.54,2.71,5.3,4.08.62.49,1.24,1,1.82,1.49a3.43,3.43,0,0,1,1.14,4.78,3.56,3.56,0,0,1-.55.68c-1.24,1.59-2.6,3.11-3.91,4.65L155.07,160.4,141,176.86c-2.65,3.08-4,3.21-7.19.62l-26.38-21.35-.28-.26c-2.5-2.18-2.65-3.59-.6-6.21,1.57-2,3.14-4,4.76-6A3.68,3.68,0,0,1,114.24,142Z" transform="translate(-1.5 -1.5)"/></svg> `;
                 }
                 else {
                     svgContent = `<svg id="e079148b-6b87-439d-8740-1f3cc0a6e669" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 89 230" width="20" height="20"><defs><style>.a2204117-cd42-4ad0-9ad4-491c103bb244,.e406fb6e-4b59-444b-80a0-27d3da05e21a{stroke:#a1acb9;stroke-width:5px;}.e406fb6e-4b59-444b-80a0-27d3da05e21a{fill:url(#ed1961e3-0b45-4a30-90e3-05078b4dcf08);}.a2204117-cd42-4ad0-9ad4-491c103bb244{fill:#fff;fill-opacity:0;}</style><linearGradient id="ed1961e3-0b45-4a30-90e3-05078b4dcf08" x1="-3.26" y1="2341" x2="52.31" y2="2341" gradientTransform="translate(20.24 -2207) scale(1.01 1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9dff9d"/><stop offset="0.23" stop-color="#35ed35"/><stop offset="0.5" stop-color="#35ed35"/><stop offset="1" stop-color="#005a00"/></linearGradient></defs><g id="eb97f46e-1eed-40b5-8e3a-329e96438633" data-name="iKFDj0kg9Z7rAJNhnUljb"><path class="e406fb6e-4b59-444b-80a0-27d3da05e21a" d="M16,39V204s.8,5.92,3.3,10,3.07,4.3,6.7,7.39a34.32,34.32,0,0,0,8.38,5A25.48,25.48,0,0,0,46,229c7.13.06,6.6-.31,11.6-2.4a31.51,31.51,0,0,0,8.4-5.24A29.67,29.67,0,0,0,72.81,214,29.47,29.47,0,0,0,76,204V39" transform="translate(-1.5 -1.5)"/></g><g id="b91a1d89-4dd7-4f5f-9f70-867de14e7d00" data-name="XN8UZQ70T0RvsJ5VMa4Kb"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M16,40V14" transform="translate(-1.5 -1.5)"/></g><g id="e812cd70-46e4-49a1-a65c-cc7282c93866" data-name="NRt2ceM2nUSDG 63RTn7p"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M20,14H6c-1.21,0-2-1-2-4" transform="translate(-1.5 -1.5)"/></g><g id="b6f42584-b2fd-48db-8771-02f57538a381" data-name="s8SYpRxWPAIU3cJdedely"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M88,8c0-1.26-.1-4-2-4S11.29,4,6,4C4.79,4,4,5,4,8" transform="translate(-1.5 -1.5)"/></g><g id="fcdcb636-016a-4f00-a3a7-8a61bdaada5f" data-name="jr bdNPwxVP1tR-x2jqCO"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M72,14H86c1.21,0,2-1,2-4" transform="translate(-1.5 -1.5)"/></g><g id="b6be217f-7e51-44f9-8cd0-5f753f9c9fa4" data-name="R4Pa0 qX7JfWipx57qbDI"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M4,7.45v3.19" transform="translate(-1.5 -1.5)"/></g><g id="e284799c-4033-4992-bfdc-62a96ce3fb03" data-name="dlFIQRIEBrFAhFefXz443"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M88,7.27v3.37" transform="translate(-1.5 -1.5)"/></g><g id="fcff838a-cb1c-4ba6-aff3-f39409937b5e" data-name="P XejN-1qaYsxss16zLwI"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M76,40V14" transform="translate(-1.5 -1.5)"/></g><g id="a9ba1b2a-6f14-45ad-9e42-3de69b1356b4" data-name="lTDpCcKC40D5A8sL1xawP"><path class="a2204117-cd42-4ad0-9ad4-491c103bb244" d="M18,14H74" transform="translate(-1.5 -1.5)"/></g></svg>`;
@@ -331,75 +357,5 @@
                 idResultCell.innerHTML = svgContent;
             }
         }
-    }
-
-    var selectedIds = [];
-
-    function onSelectionChanged(e) {
-        selectedIds = e.selectedRowKeys;
-    }
-
-    function updateStatusA() {
-
-
-        if (selectedIds.length === 0) {
-            alert("No hay elementos seleccionados.");
-            return;
-        }
-        console.log("Selected IDs:", selectedIds);
-
-        $.ajax({
-            url: '@Url.Action("PutStatus3", "Muestras")',
-            method: "PUT",
-            data: {
-                muestras: selectedIds
-            },
-            success: function (result) {
-                // Procesar la respuesta si es necesario
-                DevExpress.ui.notify('Datos enviados correctamente', 'success', 6000);
-                setTimeout(function () {
-                    location.reload();
-                }, 3000);
-            },
-            error: function (error) {
-                DevExpress.ui.notify('Error al enviar los datos', 'error', 6000);
-                console.error("Error al enviar los datos:", error);
-            }
-        });
-
-
-        
-    }
-
-    function updateStatusC() {
-
-
-        if (selectedIds.length === 0) {
-            alert("No hay elementos seleccionados.");
-            return;
-        }
-        console.log("Selected IDs:", selectedIds);
-
-        $.ajax({
-            url: '@Url.Action("PutStatus5", "Muestras")',
-            method: "PUT",
-            data: {
-                muestras: selectedIds
-            },
-            success: function (result) {
-                // Procesar la respuesta si es necesario
-                DevExpress.ui.notify('Datos enviados correctamente', 'success', 6000);
-                setTimeout(function () {
-                    location.reload();
-                }, 3000);
-            },
-            error: function (error) {
-                DevExpress.ui.notify('Error al enviar los datos', 'error', 6000);
-                console.error("Error al enviar los datos:", error);
-            }
-        });
-
-
-
     }
 </script>

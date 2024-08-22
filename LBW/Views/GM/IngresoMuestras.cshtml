@@ -104,6 +104,9 @@
                             items.Add()
                             .Title("Asignar Análisis")
                             .Template(new TemplateName("TAB2"));
+                            items.Add()
+                            .Title("Ver mis Análisis Asignados")
+                            .Template(new TemplateName("TAB3"));
 
                         })
                         .SelectedIndex(0)
@@ -247,13 +250,10 @@
     }
 }
 
- 
-
 @using (Html.DevExtreme().NamedTemplate("TAB2"))
 {
     <div style="margin:10px">
-        <div style="height:15px;">
-        </div>
+
              
  
 
@@ -387,10 +387,114 @@
    
 }
 
+@using (Html.DevExtreme().NamedTemplate("TAB3"))
+{
+     <div style="margin:10px">
+        <div style="height:15px;">
+        </div>
 
+
+
+
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 20px;">
+            <div style="flex: 1;">
+                @(Html.DevExtreme().Lookup()
+                    .ID("muestraLookup")
+                    .DataSource(d => d.Mvc()
+                    .Controller("Muestras")
+                    .LoadAction("MuestrasPuntoLookup")
+                    .Key("Value")
+                    )
+                    .ValueExpr("Value")
+                    .DisplayExpr("Text")
+                    .Placeholder("Selecciona una muestra")
+                    .ShowClearButton(true)
+                    )
+               
+            </div>
+            <div>
+                @(Html.DevExtreme().Button()
+                    .Text("Ver Análisis")
+                    .Type(ButtonType.Success)
+                    .StylingMode(ButtonStylingMode.Outlined)
+                    .OnClick("verAnalisis")
+                    )
+            </div>
+        </div>
+
+        <div style="height:15px;">
+        </div>
+
+        @(Html.DevExtreme().DataGrid<LBW.Models.Entity.Analisis>()
+            .ID("analisisDataGrid")
+            .DataSource(new List<LBW.Models.Entity.Analisis>()) // Se inicializa vacío
+            .DataSourceOptions(o => o.ReshapeOnPush(true))
+            .RepaintChangesOnly(true)
+            .ColumnAutoWidth(true)
+            .RemoteOperations(true)
+
+            .ShowBorders(true)
+            .Editing(editing =>
+            {
+                editing.Mode(GridEditMode.Cell);
+                editing.AllowUpdating(true);
+            })
+            .Scrolling(scrolling => scrolling.RowRenderingMode(GridRowRenderingMode.Virtual))
+            .Paging(paging => paging.PageSize(5))
+            .Pager(pager =>
+            {
+                pager.Visible(true);
+                pager.DisplayMode(GridPagerDisplayMode.Full);
+                pager.ShowPageSizeSelector(true);
+                pager.AllowedPageSizes(new JS("[5]"));
+                pager.ShowInfo(true);
+                pager.ShowNavigationButtons(true);
+            })
+
+            .ColumnHidingEnabled(true)
+            .Columns(columns =>
+            {
+                columns.AddFor(m => m.IdTipoA).Lookup(lookup => lookup
+                .DataSource(ds => ds.WebApi().Controller("Analisis").LoadAction("TipoAnalisissLookup").Key("Value"))
+                .ValueExpr("Value")
+                .DisplayExpr("Text")
+                ).Caption("Tipo Análisis");
+
+                columns.AddFor(m => m.NameAnalisis).Caption("Análisis");
+
+                columns.AddFor(m => m.AliasName).Caption("Alias");
+
+                columns.AddFor(m => m.Version).Caption("Versión");
+            })
+            )
+    </div>
+}
 <script>
 
-     
+    function verAnalisis() {
+        var idSample = $('#muestraLookup').dxLookup('instance').option('value');
+
+        if (idSample) {
+            // Realiza la llamada AJAX al controlador
+            $.ajax({
+                url: '@Url.Action("GetAnalisisPorMuestra", "Analisis")',
+                type: 'GET',
+                data: { idSample: idSample },
+                success: function (data) {
+                    // Carga los datos en el DataGrid
+                    var dataGrid = $('#analisisDataGrid').dxDataGrid('instance');
+                    dataGrid.option('dataSource', data.data);
+                    dataGrid.refresh();
+                },
+                error: function () {
+                    DevExpress.ui.notify("Error al cargar los análisis.", "error", 2000);
+                }
+            });
+        } else {
+            DevExpress.ui.notify("Por favor, selecciona una muestra.", "warning", 2000);
+        }
+    }
+ 
 
     var productoId = 0;
 

@@ -94,7 +94,7 @@
         columns.AddFor(m => m.Usuario).Visible(false);
 
         columns.AddFor(m => m.Contrasena).Caption("Contraseña");
-        columns.AddFor(m => m.Puerto);
+
 
         columns.AddFor(m => m.Body).Caption("Cuerpo").Visible(false);
     })
@@ -117,7 +117,7 @@
                     {
                         groupItems.AddSimpleFor(m => m.Correo);
                         groupItems.AddSimpleFor(m => m.Host);
-                        groupItems.AddSimpleFor(m => m.Puerto);
+ 
                         groupItems.AddSimple()
     .Editor(editor => editor.TextBox()
         .Mode(TextBoxMode.Password)
@@ -149,6 +149,69 @@
             }))
         )
 )
+
+<div style="height:10px;">
+
+</div>
+<h5> Configuración Etiquetadora </h5>
+
+@(Html.DevExtreme().DataGrid<LBW.Models.Entity.Smtp>()
+    .DataSource(ds => ds.Mvc()
+        .Controller("Smtps")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .Key("ID")
+    )
+    .ShowBorders(true)
+    .Paging(paging => paging.PageSize(10))
+    .Pager(pager =>
+    {
+        pager.Visible(true);
+        pager.DisplayMode(GridPagerDisplayMode.Full);
+        pager.ShowPageSizeSelector(true);
+        pager.AllowedPageSizes(new JS("[5, 10, 'all']"));
+        pager.ShowInfo(true);
+        pager.ShowNavigationButtons(true);
+    })
+    .FilterRow(f => f.Visible(true))
+    .RemoteOperations(true)
+    .Columns(columns =>
+    {
+
+        columns.AddFor(m => m.Ip).Caption("Ip");
+
+
+        columns.AddFor(m => m.Puerto);
+
+
+    })
+    .Editing(e => e.Mode(GridEditMode.Popup)
+            .AllowUpdating(true)
+
+            .UseIcons(true)
+            .Popup(p => p
+                .Title("Configuración Etiquetadora")
+                .ShowTitle(true)
+                .Width(800)
+                .Height(350)
+            )
+            .Form(f => f.Items(items =>
+            {
+                items.AddGroup()
+                    .ColCount(2)
+                    .ColSpan(2)
+                    .Items(groupItems =>
+                    {
+                        groupItems.AddSimpleFor(m => m.Ip);
+                        groupItems.AddSimpleFor(m => m.Puerto);
+
+                    });
+
+            }))
+        )
+)
+ 
 
 <script>
     function changePasswordMode() {

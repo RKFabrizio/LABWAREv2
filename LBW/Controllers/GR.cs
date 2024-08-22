@@ -23,6 +23,13 @@ namespace LBW.Controllers
             return View();
         }
 
+        public IActionResult Reprocesar()
+        {
+            @ViewBag.gr = "active";
+            @ViewBag.reprocesar = "active";
+            return View();
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

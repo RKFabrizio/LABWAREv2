@@ -32,7 +32,8 @@ namespace LBW.Controllers
                 i.Puerto,
                 i.Usuario,
                 i.Contrasena,
-                i.Body
+                i.Body,
+                i.Ip
             });
 
             // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
@@ -92,6 +93,7 @@ namespace LBW.Controllers
             string USUARIO = nameof(Smtp.Usuario);
             string CONTRASENA = nameof(Smtp.Contrasena);
             string BODY = nameof(Smtp.Body);
+            string IP = nameof(Smtp.Ip);
 
             if (values.Contains(ID)) {
                 model.ID = Convert.ToInt32(values[ID]);
@@ -120,6 +122,10 @@ namespace LBW.Controllers
             if (values.Contains(BODY))
             {
                 model.Body = Convert.ToString(values[BODY]);
+            }
+            if (values.Contains(IP))
+            {
+                model.Ip = Convert.ToString(values[IP]);
             }
         }
 

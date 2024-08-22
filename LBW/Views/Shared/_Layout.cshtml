@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Dashboard - Labware</title>
     <!-- CSS files -->
+
     <link href="~/dist/css/tabler.min.css?1692870487" rel="stylesheet" />
     <link href="~/dist/css/tabler-flags.min.css?1692870487" rel="stylesheet" />
     <link href="~/dist/css/tabler-payments.min.css?1692870487" rel="stylesheet" />
@@ -56,16 +57,15 @@
  
     </style>
 </head>
+
 <body>
     <script src="~/dist/js/demo-theme.min.js"></script>
     <!-- Sidebar -->
     <aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="dark">
         <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+
             <h1 class="navbar-brand navbar-brand-autodark" style="margin-top: 20px;">
-                <a href=".">
+                <a href="#">
                     <img src="~/img/GoIntegreat.webp" width="110" height="32" alt="Tabler" class="navbar-brand-image">
                 </a>
             </h1>
@@ -182,7 +182,7 @@
                     @if (User.IsInRole("2"))
                     {
                         <li class="nav-item dropdown @ViewBag.gr">
-                            <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                            <a class="nav-link" href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <!-- Download SVG icon from http://tabler-icons.io/i/star -->
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-folder-check" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#A79A66" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -214,16 +214,44 @@
                                             </span>
                                         </a>
 
+                                        <a asp-controller="GR" asp-action="Reprocesar" class="dropdown-item @ViewBag.reprocesar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-loader-3" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M3 12a9 9 0 0 0 9 9a9 9 0 0 0 9 -9a9 9 0 0 0 -9 -9" />
+                                                <path d="M17 12a5 5 0 1 0 -5 5" />
+                                            </svg>
+
+                                            <span class="nav-link-title" style="margin-left:0.4rem;">
+                                                Reprocesar/Resultados
+                                            </span>
+
+                                        </a>
                                          
                                     </div>
                                 </div>
                             </div>
                         </li>
+
+                        <li class="nav-item @ViewBag.Etiquetadora">
+                            <a asp-controller="Etiquetadora" asp-action="Etiquetadora" class="nav-link">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-scan" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M4 7v-1a2 2 0 0 1 2 -2h2" />
+                                    <path d="M4 17v1a2 2 0 0 0 2 2h2" />
+                                    <path d="M16 4h2a2 2 0 0 1 2 2v1" />
+                                    <path d="M16 20h2a2 2 0 0 0 2 -2v-1" />
+                                    <path d="M5 12l14 0" />
+                                </svg>
+                                <span class="nav-link-title" style="margin-left:1rem; align-items:center;">
+                                    Etiquetadora
+                                </span>
+                            </a>
+                        </li>
                     }
                     @if (User.IsInRole("3"))
                     {
                         <li class="nav-item dropdown @ViewBag.gr">
-                            <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                            <a class="nav-link" href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <!-- Download SVG icon from http://tabler-icons.io/i/star -->
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-folder-check" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#A79A66" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -266,6 +294,19 @@
 
                                             <span class="nav-link-title" style="margin-left:0.4rem;">
                                                 Autorizar/Resultados
+                                            </span>
+
+                                        </a>
+
+                                        <a asp-controller="GR" asp-action="Reprocesar" class="dropdown-item @ViewBag.reprocesar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-loader-3" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M3 12a9 9 0 0 0 9 9a9 9 0 0 0 9 -9a9 9 0 0 0 -9 -9" />
+                                                <path d="M17 12a5 5 0 1 0 -5 5" />
+                                            </svg>
+
+                                            <span class="nav-link-title" style="margin-left:0.4rem;">
+                                                Reprocesar/Resultados
                                             </span>
 
                                         </a>
@@ -428,6 +469,20 @@
                                             </span>
                                         </a>
 
+                                        <a asp-controller="Administracion" asp-action="TablaComponente" class="dropdown-item @ViewBag.adcom">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-components" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M3 12l3 3l3 -3l-3 -3z" />
+                                                <path d="M15 12l3 3l3 -3l-3 -3z" />
+                                                <path d="M9 6l3 3l3 -3l-3 -3z" />
+                                                <path d="M9 18l3 3l3 -3l-3 -3z" />
+                                            </svg>
+
+                                            <span class="nav-link-title" style="margin-left:0.4rem; align-items:center;">
+                                                Gestionar Componente
+                                            </span>
+                                        </a>
+
                                     </div>
                                 </div>
                             </div>
@@ -490,6 +545,8 @@
                                 </div>
                             </div>
                         </li>
+
+                      
                     }
 
                     
@@ -509,20 +566,25 @@
                         </a>
                     </li>
 
-                    <li class="nav-item @ViewBag.SMTP">
-                        <a asp-controller="SMTP" asp-action="SMTP" class="nav-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail-forward" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M12 18h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5" />
-                                <path d="M3 6l9 6l9 -6" />
-                                <path d="M15 18h6" />
-                                <path d="M18 15l3 3l-3 3" />
-                            </svg>
-                            <span class="nav-link-title" style="margin-left:1rem; align-items:center;">
-                                Configuración SMTP
-                            </span>
-                        </a>
-                    </li>
+               
+
+                      @if (User.IsInRole("3"))
+                    {
+                        <li class="nav-item @ViewBag.SMTP">
+                            <a asp-controller="SMTP" asp-action="SMTP" class="nav-link">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail-forward" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a79a66" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M12 18h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5" />
+                                    <path d="M3 6l9 6l9 -6" />
+                                    <path d="M15 18h6" />
+                                    <path d="M18 15l3 3l-3 3" />
+                                </svg>
+                                <span class="nav-link-title" style="margin-left:1rem; align-items:center;">
+                                    Configuración SMTP
+                                </span>
+                            </a>
+                        </li>
+                    }
 
 
                     <li class="nav-item @ViewBag.acceso">
@@ -545,8 +607,8 @@
     </aside>
 
     <div class="page-wrapper">
-        <div class="container-xl">
-            <div class="page-header d-print-none">
+        <div class="page-header d-print-none">
+            <div class="container-xl">
                 <div class="row g-2 align-items-center">
                     <div class="col">
                         @RenderSection("PagePreTitle", false)
@@ -575,7 +637,7 @@
         <div class="container-xl">
             <div class="row text-center align-items-center justify-content-between">
                 <div class="col-lg-auto ms-lg-auto">
-                    <p style="color: #182433; text-decoration: none; margin-bottom: 0; font-size:15px;">Copyright (c) 2024 Barrick Labware</p>
+                    <p style="color: #182433; text-decoration: none; margin-bottom: 0; font-size:15px;">Copyright © 2024 LIMS GoSoft</p>
                 </div>
                 <div class="col-lg-auto">
                     <ul class="list-inline list-inline-dots mb-0">
@@ -588,6 +650,7 @@
                                 <span style="margin-left: 5px; font-size:15px; color: #182433; text-decoration: none;">Ayuda</span>
                             </a>
                         </li>
+
                     </ul>
                 </div>
             </div>

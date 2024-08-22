@@ -81,19 +81,14 @@
         pager.ShowInfo(true);
         pager.ShowNavigationButtons(true);
     })
-      .CustomizeColumns(@<text>
-    function(columns) {
-    columns[1].dataType = "string";
-    }
-    </text>)
- 
- 
+      
     .ShowBorders(true)
     .RemoteOperations(true)
     .Columns(columns => {
 
         columns.AddFor(m => m.Fecha_N).Caption("Fecha").Format("dd/MM/yyyy");
-        columns.AddFor(m => m.Fecha).Caption("Hora").Format("HH:mm:ss");
+        columns.AddFor(m => m.Fecha).Caption("Hora").Format("HH:mm:ss").SortOrder(SortOrder.Desc);
+
         columns.AddFor(m => m.Analisis).Caption("Análisis");
 
         columns.AddFor(m => m.Muestra);
@@ -109,9 +104,15 @@
                        .DataSource(ds => ds.WebApi().Controller("Muestras").LoadAction("Usuarios1Lookup").Key("Value"))
                        .ValueExpr("Value")
                        .DisplayExpr("Text")).Caption("Usuario");
+    
 
+        columns.AddFor(m => m.Proyecto);
 
-        columns.AddFor(m => m.Proyecto).GroupIndex(0);
+        columns.AddFor(m => m.IdLista).Lookup(lookup => lookup
+                    .DataSource(ds => ds.Mvc().Controller("Resultadoes").LoadAction("ListasLookup1").Key("Value"))
+                    .ValueExpr("Value")
+                    .DisplayExpr("Text")
+                    ).Caption("Razón");
 
 
     })

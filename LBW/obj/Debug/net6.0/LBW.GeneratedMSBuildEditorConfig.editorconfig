@@ -42,6 +42,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXVkaXRvcmlhXEF1ZGl0b3JpYVYuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/fabri/OneDrive/Desktop/GITA/LBW/Views/Etiquetadora/Etiquetadora.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXRpcXVldGFkb3JhXEV0aXF1ZXRhZG9yYS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/fabri/OneDrive/Desktop/GITA/LBW/Views/GM/IngresoMuestras.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR01cSW5ncmVzb011ZXN0cmFzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -56,6 +60,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/fabri/OneDrive/Desktop/GITA/LBW/Views/GR/Autorizar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR1JcQXV0b3JpemFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fabri/OneDrive/Desktop/GITA/LBW/Views/GR/Reprocesar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR1JcUmVwcm9jZXNhci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/fabri/OneDrive/Desktop/GITA/LBW/Views/Informes/Informes4.cshtml]

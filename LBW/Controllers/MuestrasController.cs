@@ -327,6 +327,99 @@ namespace LBW.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetMuestrasA( DataSourceLoadOptions loadOptions)
+        {
+            var muestras = _context.Muestras
+                .Where(m => m.Status == 24 || m.Status == 21)
+                .Select(i => new {
+                    i.IdSample,
+                    i.IdPm,
+                    i.IdCliente,
+                    i.IdLocation,
+                    i.SampleNumber,
+                    i.TextID,
+                    i.Status,
+                    i.ChangedOn,
+                    i.OriginalSample,
+                    i.LoginDate,
+                    i.LoginBy,
+                    i.SampleDate,
+                    i.RecdDate,
+                    i.ReceivedBy,
+                    i.DateStarted,
+                    i.DueDate,
+                    i.DateCompleted,
+                    i.DateReviewed,
+                    i.PreBy,
+                    i.Reviewer,
+                    i.SamplingPoint,
+                    i.SampleType,
+                    i.IdProject,
+                    i.SampleName,
+                    i.Location,
+                    i.Customer,
+                    i.Observaciones,
+                    i.IdPlanta,
+                    i.IdGrado,
+                    i.AnalisisMuestra
+                });
+            var muestras2 = _context.Muestras
+              .Where(m => m.Status == 24 || m.Status == 21)
+              .Select(i => new {
+                  i.IdSample,
+                  i.IdPm,
+                  i.IdCliente,
+                  i.IdLocation,
+                  i.SampleNumber,
+                  i.TextID,
+                  i.Status,
+                  i.ChangedOn,
+                  i.OriginalSample,
+                  i.LoginDate,
+                  i.LoginBy,
+                  i.SampleDate,
+                  i.RecdDate,
+                  i.ReceivedBy,
+                  i.DateStarted,
+                  i.DueDate,
+                  i.DateCompleted,
+                  i.DateReviewed,
+                  i.PreBy,
+                  i.Reviewer,
+                  i.SamplingPoint,
+                  i.SampleType,
+                  i.IdProject,
+                  i.SampleName,
+                  i.Location,
+                  i.Customer,
+                  i.Observaciones,
+                  i.IdPlanta,
+                  i.IdGrado,
+                  i.AnalisisMuestra
+              }).ToList();
+            if (muestras2.Count == 0)
+            {
+                // Manejar el caso cuando no se encuentran muestras
+                return NotFound(); // Devolver un resultado 404 Not Found, o cualquier otro manejo adecuado
+            }
+
+            Console.WriteLine("............................");
+            Console.WriteLine(muestras2[0]);
+            Console.WriteLine("............................");
+            // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
+            // This can make SQL execution plans more efficient.
+            // For more detailed information, please refer to this discussion: https://github.com/DevExpress/DevExtreme.AspNet.Data/issues/336.
+            // loadOptions.PrimaryKey = new[] { "IdSample" };
+            // loadOptions.PaginateViaPrimaryKey = true;
+
+            var result = await DataSourceLoader.LoadAsync(muestras, loadOptions);
+
+            return Json(result);
+        }
+
+
+
+        [HttpGet]
         public async Task<IActionResult> GetIdProjectA1(int id, DataSourceLoadOptions loadOptions)
         {
             var muestras = _context.Muestras
@@ -423,7 +516,98 @@ namespace LBW.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetMuestrasA(DataSourceLoadOptions loadOptions)
+        public IActionResult GetMuestrasPre(DataSourceLoadOptions loadOptions)
+        {
+            var muestrasConResultadosAuditoria = _context.Muestras
+                .Where(m => m.Status == 799)
+                .Select(i => new {
+                    i.IdSample,
+                    i.IdPm,
+                    i.IdCliente,
+                    i.IdLocation,
+                    i.SampleNumber,
+                    i.TextID,
+                    i.Status,
+                    i.ChangedOn,
+                    i.OriginalSample,
+                    i.LoginDate,
+                    i.LoginBy,
+                    i.SampleDate,
+                    i.RecdDate,
+                    i.ReceivedBy,
+                    i.DateStarted,
+                    i.DueDate,
+                    i.DateCompleted,
+                    i.DateReviewed,
+                    i.PreBy,
+                    i.Reviewer,
+                    i.SamplingPoint,
+                    i.SampleType,
+                    i.IdProject,
+                    i.SampleName,
+                    i.Location,
+                    i.Customer,
+                    i.Observaciones,
+                    i.IdPlanta,
+                    i.IdGrado,
+                    i.AnalisisMuestra,
+                    i.Fecha
+                });
+
+            // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
+            // This can make SQL execution plans more efficient.
+   
+
+            return Json(DataSourceLoader.Load(muestrasConResultadosAuditoria, loadOptions));
+        }
+
+        [HttpGet]
+        public IActionResult GetSample(DataSourceLoadOptions loadOptions)
+        {
+            var muestrasConResultadosAuditoria = _context.Muestras
+                .Where(m => m.Status == 24 || m.Status == 25 || m.Status == 26 || m.Status == 21)
+                .Select(i => new {
+                    i.IdSample,
+                    i.IdPm,
+                    i.IdCliente,
+                    i.IdLocation,
+                    i.SampleNumber,
+                    i.TextID,
+                    i.Status,
+                    i.ChangedOn,
+                    i.OriginalSample,
+                    i.LoginDate,
+                    i.LoginBy,
+                    i.SampleDate,
+                    i.RecdDate,
+                    i.ReceivedBy,
+                    i.DateStarted,
+                    i.DueDate,
+                    i.DateCompleted,
+                    i.DateReviewed,
+                    i.PreBy,
+                    i.Reviewer,
+                    i.SamplingPoint,
+                    i.SampleType,
+                    i.IdProject,
+                    i.SampleName,
+                    i.Location,
+                    i.Customer,
+                    i.Observaciones,
+                    i.IdPlanta,
+                    i.IdGrado,
+                    i.AnalisisMuestra,
+                    i.Fecha
+                });
+
+            // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
+            // This can make SQL execution plans more efficient.
+
+            return Json(DataSourceLoader.Load(muestrasConResultadosAuditoria, loadOptions));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetMuestrasAutorizado(DataSourceLoadOptions loadOptions)
         {
             var muestras = _context.Muestras
                  .Where(m => m.Status == 21 || m.Status == 24)
@@ -457,7 +641,8 @@ namespace LBW.Controllers
                     i.Observaciones,
                     i.IdPlanta,
                     i.IdGrado,
-                    i.AnalisisMuestra
+                    i.AnalisisMuestra,
+                    i.Fecha
                 });
 
             // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
@@ -864,6 +1049,11 @@ namespace LBW.Controllers
                     .Where(r => muestrasList.Select(m => m.IdSample).Contains(r.IdSample))
                     .ToListAsync();
 
+                //Obtener los proyectos a actualizar
+                var proyectosList = await _context.Proyectos
+                    .Where(r => muestrasList.Select(m => m.IdProject).Contains(r.IdProyecto))
+                    .ToListAsync();
+
                 //Actualizar el estado de proyecto
 
 
@@ -880,8 +1070,15 @@ namespace LBW.Controllers
                 {
                     resultadoItem.Status = 21; // Modificar el estado según lo requerido
                     resultadoItem.ChangedOn = DateTime.Now;
-
+                    resultadoItem.Auditoria = false;
                 }
+
+                // Actualizar el estado de cada muestra
+                foreach (var proyectoItem in proyectosList)
+                {
+                    proyectoItem.Status = 21; // Modificar el estado según lo requerido
+                }
+
 
                 await _context.SaveChangesAsync();
                 return Ok(new { success = true });
@@ -916,16 +1113,21 @@ namespace LBW.Controllers
                     .Where(r => muestrasList.Select(m => m.IdSample).Contains(r.IdSample))
                     .ToListAsync();
 
+                //Obtener los proyectos a actualizar
+                var proyectosList = await _context.Proyectos
+                    .Where(r => muestrasList.Select(m => m.IdProject).Contains(r.IdProyecto))
+                    .ToListAsync();
+
                 //Actualizar el estado de proyecto
 
-                
+
                 // Actualizar el estado de cada muestra
                 foreach (var muestraItem in muestrasList)
                 {
                     if(muestraItem.Status == 21)
                     {
-                        muestraItem.Status = 24; // Modificar el estado según lo requerido
-
+                        muestraItem.Status = 799;
+                        //muestraItem.Status = 24; // Modificar el estado según lo requerido
                     }
  
                 }
@@ -935,10 +1137,20 @@ namespace LBW.Controllers
                 {
                     if(resultadoItem.Status == 21)
                     {
-                        resultadoItem.Status = 24; // Modificar el estado según lo requerido
+                        resultadoItem.Status = 799; // Modificar el estado según lo requerido
                         resultadoItem.Auditoria = true;
                     }
                     
+                }
+
+                // Actualizar el estado de cada proyecto
+                foreach (var proyectoItem in proyectosList)
+                {
+                    if (proyectoItem.Status == 21)
+                    {
+                        proyectoItem.Status = 799; // Modificar el estado según lo requerido
+                    }
+
                 }
 
                 await _context.SaveChangesAsync();
@@ -1031,6 +1243,8 @@ namespace LBW.Controllers
             return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
         }
 
+ 
+
         [HttpGet]
         public async Task<IActionResult> Usuarios1Lookup(DataSourceLoadOptions loadOptions)
         {
@@ -1065,6 +1279,39 @@ namespace LBW.Controllers
                          };
             return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
         }
+
+        //PuntoMuestrasLookup
+        [HttpGet]
+        public async Task<IActionResult> MuestrasPuntoLookup(DataSourceLoadOptions loadOptions)
+        {
+            // Obtener la información del usuario desde las cookies
+            string usuarioInfoJson = HttpContext.Request.Cookies["UsuarioInfo"];
+            LBW.Models.Usuario usuario = JsonConvert.DeserializeObject<LBW.Models.Usuario>(usuarioInfoJson);
+
+            var ultimoProyecto = await _context.Proyectos
+                .Where(p => p.Owner == usuario.IdUser)
+                .OrderByDescending(p => p.IdProyecto)
+                .FirstOrDefaultAsync();
+
+            if (ultimoProyecto == null)
+            {
+                return Json(new { });
+            }
+
+            var lookup = from i in _context.Muestras
+                         where i.IdProject == ultimoProyecto.IdProyecto
+                         orderby i.IdSample
+                         select new
+                         {
+                             Value = i.IdSample,
+                             Text = i.TextID
+                         };
+
+            return Json(await DataSourceLoader.LoadAsync(lookup, loadOptions));
+        }
+
+
+
 
         [HttpGet]
         public async Task<IActionResult> CodigoPuntoMuestrasLookup(DataSourceLoadOptions loadOptions)

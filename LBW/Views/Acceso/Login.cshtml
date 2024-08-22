@@ -1,68 +1,108 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
-
 }
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f5f5f5;
+    }
 
+    .card {
+        width: 350px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        background-color: #fff;
+        text-align: center;
+    }
+
+    .form-container {
+        margin-top: 20px;
+    }
+
+    .alert-danger {
+        margin-bottom: 15px;
+        text-align: center;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .botton {
+        width: 100%;
+        background-color: #007bff;
+        color: white;
+    }
+
+    .form-input-user {
+        width: 100%;
+    }
 </style>
 
- 
-
-<div class="page page-center" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-    <h1 style="margin-bottom:3%;">
-        ACCESO AL SISTEMA
-    </h1>
-    <div class="form-container">
-        @using (Html.BeginForm())
+<div class="login-container">
+    <div>
+        @if (TempData["Error"] != null)
         {
-            using (Html.DevExtreme().ValidationGroup())
-            {
-                @Html.AntiForgeryToken()
-                @(Html.DevExtreme().Form<LBW.Models.Usuario>()
-                    .LabelLocation(FormLabelLocation.Top)
-                    .ShowValidationSummary(true)
-                    .Items(items =>
-                    {
-                        items.AddGroup()
-                        .Items(groupItems =>
-                        {
-                            groupItems.AddSimpleFor(m => m.UsuarioID)
-                        .Label(l => l.Visible(false))
-                        .Editor(e => e.TextBox()
-                        .Placeholder("Usuario")
-                        .ElementAttr(new { @class = "form-input-user" }));
-
-                            groupItems.AddSimpleFor(m => m.Password)
-                        .Label(l => l.Visible(false))
-                        .Editor(e => e.TextBox()
-                        .Mode(TextBoxMode.Password)
-                        .Placeholder("Contraseña")
-                        .ElementAttr(new { @class = "form-input-user" }));
-                        });
-
-                        items.AddButton()
-                        .ButtonOptions(b => b.Text("Acceder")
-                        .Type(ButtonType.Default)
-                        .UseSubmitBehavior(true)
-                        .ElementAttr(new { @class = "botton" }));
-                    })
-                    .FormData(Model))
-            }
+            <div class="alert alert-danger">
+                @TempData["Error"]
+            </div>
         }
-    </div>
-    @if (TempData["Error"] != null)
-    {
-        <div class="alert alert-danger" style="width: 300px; height: 100px; margin: auto; margin-top: 20px;">
-            @TempData["Error"]
+
+        <div class="card">
+            <h1>
+                <a href="#">
+                    <img src="~/img/GIG Img03.webp" width="330" height="130" alt="01">
+                </a>
+            </h1>
+
+            <div class="form-container">
+                @using (Html.BeginForm())
+                {
+                    using (Html.DevExtreme().ValidationGroup())
+                    {
+                        @Html.AntiForgeryToken()
+                        @(Html.DevExtreme().Form<LBW.Models.Usuario>()
+                            .LabelLocation(FormLabelLocation.Top)
+                            .ShowValidationSummary(true)
+                            .Items(items =>
+                            {
+                                items.AddGroup()
+                                .Items(groupItems =>
+                                {
+                                    groupItems.AddSimpleFor(m => m.UsuarioID)
+                                .Label(l => l.Visible(false))
+                                .Editor(e => e.TextBox()
+                                .Placeholder("Usuario")
+                                .ElementAttr(new { @class = "form-input-user" }));
+
+                                    groupItems.AddSimpleFor(m => m.Password)
+                                .Label(l => l.Visible(false))
+                                .Editor(e => e.TextBox()
+                                .Mode(TextBoxMode.Password)
+                                .Placeholder("Contraseña")
+                                .ElementAttr(new { @class = "form-input-user" }));
+                                });
+
+                                items.AddButton()
+                                .ButtonOptions(b => b.Text("Acceder")
+                                .Type(ButtonType.Default)
+                                .UseSubmitBehavior(true)
+                                .ElementAttr(new { @class = "botton" }));
+                            })
+                            .FormData(Model))
+                    }
+                }
+            </div>
         </div>
-    }
-</div>
-<div class="dx-form-validation-summary dx-validationsummary dx-widget dx-collection">
-    <div class="dx-item dx-validationsummary-item">
-        <div class="dx-item-content dx-validationsummary-item-content">@ViewBag.msg</div>
     </div>
 </div>
+
+
+
+ 
+ 
